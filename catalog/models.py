@@ -5,7 +5,7 @@ from django.utils import timezone
 
 class Mark(models.Model):
     producer = models.CharField(max_length=200)
-    brand = models. CharField(max_length=200)
+    brand = models. CharField(max_length=200, blank=True)
 
     def __str__(self):
         return self.brand
@@ -46,8 +46,8 @@ class Prod_type(models.Model):
         return self.name
 
 class Product(models.Model):
-    prod_type = models.CharField(Prod_type)
-    sub_type = models.CharField(Sub_type)
+    prod_type = models.ForeignKey(Prod_type)
+    sub_type = models.ForeignKey(Sub_type)
     mark = models.ForeignKey(Mark)
     name = models.CharField(max_length=100)
     description = models.TextField()
@@ -55,7 +55,7 @@ class Product(models.Model):
     def __str__(self):
         return self.name
 
-class spec_prod(models.Model):
+class Spec_prod(models.Model):
     product = models.ForeignKey(Product)
     int_opts = models.ManyToManyField(Int_opt)
     text_opts = models.ManyToManyField(Text_opt)
