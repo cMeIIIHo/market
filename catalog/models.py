@@ -40,14 +40,14 @@ class Sub_type(models.Model):
 
 class Prod_type(models.Model):
     name = models.CharField(max_length=100)
-    sub_type_list = models.ManyToManyField(Sub_type)
+    sub_type_list = models.ManyToManyField(Sub_type, blank=True)
 
     def __str__(self):
         return self.name
 
 class Product(models.Model):
     prod_type = models.ForeignKey(Prod_type)
-    sub_type = models.ForeignKey(Sub_type)
+    sub_type = models.ForeignKey(Sub_type, blank=True)
     mark = models.ForeignKey(Mark)
     name = models.CharField(max_length=100)
     description = models.TextField()
@@ -56,6 +56,7 @@ class Product(models.Model):
         return self.name
 
 class Spec_prod(models.Model):
+
     product = models.ForeignKey(Product)
     int_opts = models.ManyToManyField(Int_opt)
     text_opts = models.ManyToManyField(Text_opt)
