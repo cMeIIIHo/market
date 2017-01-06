@@ -31,6 +31,13 @@ class Text_opt(models.Model):
     def __str__(self):
         return self.name
 
+class Float_opt(models.Model):
+    name = models.ForeignKey(Option_name)
+    value = models.FloatField()
+
+    def __str__(self):
+        return self.name
+
 class Sub_type(models.Model):
     name = models.CharField(max_length=100)
     opt_list = models.ManyToManyField(Option_name)
@@ -60,8 +67,9 @@ class Product(models.Model):
 class Spec_prod(models.Model):
 
     product = models.ForeignKey(Product)
-    int_opts = models.ManyToManyField(Int_opt)
-    text_opts = models.ManyToManyField(Text_opt)
+    int_opts = models.ManyToManyField(Int_opt, blank=True)
+    text_opts = models.ManyToManyField(Text_opt, blank=True)
+    float_opts = models.ManyToManyField(Float_opt, blank=True)
     code = models.IntegerField()
     amount = models.IntegerField()
     price = models.FloatField()
