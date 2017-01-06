@@ -22,21 +22,21 @@ class Int_opt(models.Model):
     value = models.IntegerField()
 
     def __str__(self):
-        return self.name
+        return '%s = %s' % (self.name.name, self.value)
 
 class Text_opt(models.Model):
     name = models.ForeignKey(Option_name)
     value = models.TextField()
 
     def __str__(self):
-        return self.name
+        return '%s = %s' % (self.name.name, self.value)
 
 class Float_opt(models.Model):
     name = models.ForeignKey(Option_name)
     value = models.FloatField()
 
     def __str__(self):
-        return self.name
+        return '%s = %s' % (self.name.name, self.value)
 
 class Sub_type(models.Model):
     name = models.CharField(max_length=100)

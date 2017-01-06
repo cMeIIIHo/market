@@ -1,16 +1,19 @@
 from django.contrib import admin
-from catalog.models import Int_opt, Mark, Option_name, Text_opt, Sub_type, Prod_type, Product, Spec_prod
+from catalog.models import Int_opt, Mark, Option_name, Text_opt, Sub_type, Prod_type, Product, Spec_prod, Float_opt
 
 # Register your models here.
 
 admin.site.register(Int_opt)
 admin.site.register(Text_opt)
+admin.site.register(Float_opt)
 admin.site.register(Mark)
 admin.site.register(Option_name)
 admin.site.register(Sub_type)
 admin.site.register(Product)
 admin.site.register(Prod_type)
 admin.site.register(Spec_prod)
+
+
 
 # class Mark(models.Model):
 #     producer = models.CharField(max_length=200)
