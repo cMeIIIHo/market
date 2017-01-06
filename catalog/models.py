@@ -64,18 +64,30 @@ class Product(models.Model):
     def __str__(self):
         return self.name
 
-class Spec_prod(models.Model):
 
+def get_code():
+    try:
+        return Spec_prod.objects.all().order_by('-id')[0].code+1
+    except IndexError:
+        return 1001
+
+
+    # try:
+    #     return Spec_prod.objects.all()[-1].id + 2000
+    # except AssertionError:
+    #     return 1001
+
+class Spec_prod(models.Model):
     product = models.ForeignKey(Product)
     int_opts = models.ManyToManyField(Int_opt, blank=True)
     text_opts = models.ManyToManyField(Text_opt, blank=True)
     float_opts = models.ManyToManyField(Float_opt, blank=True)
-    code = models.IntegerField()
+    code = models.IntegerField(default=get_code)
     amount = models.IntegerField()
     price = models.FloatField()
 
     def __str__(self):
-        return self.code
+        return '%s-%s-%s' % (self.code, self.product.prod_type.name, self.product.name)
 
 
 
