@@ -14,12 +14,18 @@ class Mark(models.Model):
 class Option_name(models.Model):
     name = models.CharField(max_length=100)
 
+    class Meta:
+        ordering = ['name']
+
     def __str__(self):
         return self.name
 
 class Int_opt(models.Model):
     name = models.ForeignKey(Option_name)
     value = models.IntegerField()
+
+    class Meta:
+        ordering = ['name']
 
     def __str__(self):
         return '%s = %s' % (self.name.name, self.value)
@@ -28,12 +34,18 @@ class Text_opt(models.Model):
     name = models.ForeignKey(Option_name)
     value = models.TextField()
 
+    class Meta:
+        ordering = ['name']
+
     def __str__(self):
         return '%s = %s' % (self.name.name, self.value)
 
 class Float_opt(models.Model):
     name = models.ForeignKey(Option_name)
     value = models.FloatField()
+
+    class Meta:
+        ordering = ['name']
 
     def __str__(self):
         return '%s = %s' % (self.name.name, self.value)
