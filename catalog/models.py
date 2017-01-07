@@ -25,7 +25,7 @@ class Int_opt(models.Model):
     value = models.IntegerField()
 
     class Meta:
-        ordering = ['name']
+        ordering = ['name', 'value']
 
     def __str__(self):
         return '%s = %s' % (self.name.name, self.value)
@@ -35,7 +35,7 @@ class Text_opt(models.Model):
     value = models.TextField()
 
     class Meta:
-        ordering = ['name']
+        ordering = ['name', 'value']
 
     def __str__(self):
         return '%s = %s' % (self.name.name, self.value)
@@ -45,7 +45,7 @@ class Float_opt(models.Model):
     value = models.FloatField()
 
     class Meta:
-        ordering = ['name']
+        ordering = ['name', 'value']
 
     def __str__(self):
         return '%s = %s' % (self.name.name, self.value)
