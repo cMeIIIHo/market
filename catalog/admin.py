@@ -3,15 +3,43 @@ from catalog.models import Int_opt, Mark, Option_name, Text_opt, Sub_type, Prod_
 
 # Register your models here.
 
-admin.site.register(Int_opt)
+class Int_optAdmin(admin.ModelAdmin):
+    pass
+    # ordering = ['name']
+
+
+
+admin.site.register(Int_opt, Int_optAdmin)
 admin.site.register(Text_opt)
 admin.site.register(Float_opt)
 admin.site.register(Mark)
-admin.site.register(Option_name)
+
+class Option_name_Admin(admin.ModelAdmin):
+    ordering = ['name']
+admin.site.register(Option_name, Option_name_Admin)
 admin.site.register(Sub_type)
 admin.site.register(Product)
 admin.site.register(Prod_type)
-admin.site.register(Spec_prod)
+
+class Spec_prodAdmin(admin.ModelAdmin):
+
+    # separates inform into logical blocks
+    fieldsets = [
+        ('Товар', {'fields':['code', 'product']}),
+        ('Набор параметров', {'fields':['int_opts', 'text_opts', 'float_opts']}),
+        ('Цена, остаток', {'fields':['amount', 'price']}),
+    ]
+
+    '''По умолчанию, поле ManyToManyField отображается как <select multiple>.
+    Однако, это поле тяжело использовать при большом количестве объектов.
+    Добавив ManyToManyField в этот атрибут, будет использоваться “виджет”
+    с JavaScript фильтром для поиска. Смотрите описание filter_vertical
+    про использование вертикального “виджета”.'''
+    filter_horizontal = ['int_opts', 'float_opts', 'text_opts']
+
+    readonly_fields = ['code']
+
+admin.site.register(Spec_prod, Spec_prodAdmin)
 
 
 
