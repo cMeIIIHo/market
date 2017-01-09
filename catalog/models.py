@@ -8,7 +8,10 @@ class Mark(models.Model):
     brand = models. CharField(max_length=200, blank=True)
 
     def __str__(self):
-        return self.brand
+        if not self.brand:
+            return self.producer
+        else:
+            return self.brand
 
 
 class Option_name(models.Model):
