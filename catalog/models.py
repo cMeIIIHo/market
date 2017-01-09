@@ -101,6 +101,17 @@ class Spec_prod(models.Model):
     def __str__(self):
         return '%s-%s-%s' % (self.code, self.product.prod_type.name, self.product.name)
 
+    def get_int_opts(self):
+        return '; '.join([str(obj) for obj in self.int_opts.all()])
+
+    def get_float_opts(self):
+        return '; '.join([str(obj) for obj in self.float_opts.all()])
+
+    def get_text_opts(self):
+        return '; '.join([str(obj) for obj in self.text_opts.all()])
+
+
+
 
 
 

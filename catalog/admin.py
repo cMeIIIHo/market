@@ -23,6 +23,8 @@ admin.site.register(Prod_type)
 
 class Spec_prodAdmin(admin.ModelAdmin):
 
+    list_display = ('code', 'product', 'get_int_opts', 'get_float_opts', 'get_text_opts', 'amount', 'price')
+
     # separates inform into logical blocks
     fieldsets = [
         ('Товар', {'fields':['code', 'product']}),
