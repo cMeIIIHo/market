@@ -23,6 +23,8 @@ admin.site.register(Prod_type)
 
 class Spec_prodAdmin(admin.ModelAdmin):
 
+    # specify fields to be shown on the 'list of goods' page
+    #here i use models methods (f.e. get_int_opts)
     list_display = ('code', 'product', 'get_int_opts', 'get_float_opts', 'get_text_opts', 'amount', 'price')
 
     # separates inform into logical blocks
@@ -37,6 +39,8 @@ class Spec_prodAdmin(admin.ModelAdmin):
     Добавив ManyToManyField в этот атрибут, будет использоваться “виджет”
     с JavaScript фильтром для поиска. Смотрите описание filter_vertical
     про использование вертикального “виджета”.'''
+
+    #remastering of ManyToManyField widget
     filter_horizontal = ['int_opts', 'float_opts', 'text_opts']
 
     readonly_fields = ['code']
