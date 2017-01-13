@@ -9,4 +9,7 @@ from django.utils import timezone
 # Create your views here.
 
 def index(request):
-    return render_to_response("catalog/index.html")
+    context = {
+
+    }
+    return render_to_response("catalog/index.html", context)

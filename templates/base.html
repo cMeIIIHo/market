@@ -17,7 +17,7 @@
     <header class="mdl-layout__header">
       <div class="mdl-layout__header-row">
         <!-- Title -->
-        <span class="mdl-layout-title">Title</span>
+        <span class="mdl-layout-title">D-vision</span>
         <!-- Add spacer, to align navigation to the right -->
         <div class="mdl-layout-spacer"></div>
         <!-- Navigation. We hide it in small screens. -->
@@ -30,70 +30,53 @@
       </div>
     </header>
     <div class="mdl-layout__drawer">
-      <span class="mdl-layout-title">Title</span>
+      <span class="mdl-layout-title">Меню</span>
       <nav class="mdl-navigation">
-        <a class="mdl-navigation__link" href="">Link</a>
-        <a class="mdl-navigation__link" href="">Link</a>
-        <a class="mdl-navigation__link" href="">Link</a>
-        <a class="mdl-navigation__link" href="">Link</a>
+        <a class="mdl-navigation__link" href="">Подбор линз</a>
+        <a class="mdl-navigation__link" href="">Доставка и оплата</a>
+        <a class="mdl-navigation__link" href="">Пункты выдачи</a>
+        <a class="mdl-navigation__link" href="">Акции</a>
       </nav>
     </div>
     <main class="mdl-layout__content">
       <div class="page-content">
+          {% block content %}
+            <!-- Your content goes here -->
+            <style>.mdl-cell {
+              box-sizing: border-box;
+              background-color: #BDBDBD;
+              height: 200px;
+              padding-left: 8px;
+              padding-top: 4px;
+              color: white;
+            }
+            .mdl-grid:first-of-type .mdl-cell {
+              height: 200px;
+            }
+            </style>
 
-        <!-- Your content goes here -->
-        <style>.mdl-cell {
-          box-sizing: border-box;
-          background-color: #BDBDBD;
-          height: 200px;
-          padding-left: 8px;
-          padding-top: 4px;
-          color: white;
-        }
-        .mdl-grid:first-of-type .mdl-cell {
-          height: 50px;
-        }
-        </style>
+            <div class="mdl-grid">
+              <div class="mdl-cell mdl-cell--12-col">1</div>
+            </div>
+            <div class="mdl-grid">
+              <div class="mdl-cell mdl-cell--3-col">4</div>
+              <div class="mdl-cell mdl-cell--3-col">4</div>
+              <div class="mdl-cell mdl-cell--3-col">4</div>
+              <div class="mdl-cell mdl-cell--3-col">4</div>
+            </div>
+            <div class="mdl-grid">
+              <div class="mdl-cell mdl-cell--3-col">4</div>
+              <div class="mdl-cell mdl-cell--3-col">4</div>
+              <div class="mdl-cell mdl-cell--3-col">4</div>
+              <div class="mdl-cell mdl-cell--3-col">4</div>
+            </div>
+            <div class="mdl-grid">
+              <div class="mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet">6 (8 tablet)</div>
+              <div class="mdl-cell mdl-cell--4-col mdl-cell--6-col-tablet">4 (6 tablet)</div>
+              <div class="mdl-cell mdl-cell--2-col mdl-cell--4-col-phone">2 (4 phone)</div>
+            </div>
 
-        <div class="mdl-grid">
-          <div class="mdl-cell mdl-cell--1-col">1</div>
-          <div class="mdl-cell mdl-cell--1-col">1</div>
-          <div class="mdl-cell mdl-cell--1-col">1</div>
-          <div class="mdl-cell mdl-cell--1-col">1</div>
-          <div class="mdl-cell mdl-cell--1-col">1</div>
-          <div class="mdl-cell mdl-cell--1-col">1</div>
-          <div class="mdl-cell mdl-cell--1-col">1</div>
-          <div class="mdl-cell mdl-cell--1-col">1</div>
-          <div class="mdl-cell mdl-cell--1-col">1</div>
-          <div class="mdl-cell mdl-cell--1-col">1</div>
-          <div class="mdl-cell mdl-cell--1-col">1</div>
-          <div class="mdl-cell mdl-cell--1-col">1</div>
-        </div>
-        <div class="mdl-grid">
-          <div class="mdl-cell mdl-cell--4-col">4</div>
-          <div class="mdl-cell mdl-cell--4-col">4</div>
-          <div class="mdl-cell mdl-cell--4-col">4</div>
-        </div>
-        <div class="mdl-grid">
-          <div class="mdl-cell mdl-cell--6-col">6</div>
-          <div class="mdl-cell mdl-cell--4-col">4</div>
-          <div class="mdl-cell mdl-cell--2-col">2</div>
-        </div>
-        <div class="mdl-grid">
-          <div class="mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet">6 (8 tablet)</div>
-          <div class="mdl-cell mdl-cell--4-col mdl-cell--6-col-tablet">4 (6 tablet)</div>
-          <div class="mdl-cell mdl-cell--2-col mdl-cell--4-col-phone">2 (4 phone)</div>
-        </div>
-        <div class="mdl-grid">
-          <div class="mdl-cell mdl-cell--6-col">6</div>
-          <div class="mdl-cell mdl-cell--4-col">4</div>
-          <div class="mdl-cell mdl-cell--2-col">2</div>
-        </div>
-        <div class="mdl-grid">
-          <div class="mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet">6 (8 tablet)</div>
-          <div class="mdl-cell mdl-cell--4-col mdl-cell--6-col-tablet">4 (6 tablet)</div>
-          <div class="mdl-cell mdl-cell--2-col mdl-cell--4-col-phone">2 (4 phone)</div>
-        </div>
+          {% endblock %}
 
           {% block display %}{% endblock %}
 
