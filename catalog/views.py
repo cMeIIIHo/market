@@ -10,6 +10,9 @@ from django.utils import timezone
 
 def index(request):
     context = {
-
+        'img_paths': ['catalog/index_lens_1.jpg',
+                      'catalog/index_lens_2.jpg',
+                      'catalog/index_lens_3.jpg',
+                      'catalog/index_lens_4.jpg',]
     }
     return render_to_response("catalog/index.html", context)
