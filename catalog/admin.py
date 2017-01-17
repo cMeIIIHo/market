@@ -1,8 +1,9 @@
 from django.contrib import admin
-from catalog.models import Int_opt, Mark, Option_name, Text_opt, Sub_type, Prod_type, Product, Spec_prod, Float_opt
+from catalog.models import Int_opt, Mark, Option_name, Text_opt, Sub_type, Prod_type, Product, Spec_prod, Float_opt, Sale_card
 
 # Register your models here.
 
+admin.site.register(Sale_card)
 class Int_optAdmin(admin.ModelAdmin):
     pass
     # ordering = ['name']

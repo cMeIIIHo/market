@@ -113,7 +113,14 @@ class Spec_prod(models.Model):
     def get_text_opts(self):
         return '; '.join([str(obj) for obj in self.text_opts.all()])
 
+class Sale_card(models.Model):
+    picture = models.ImageField(upload_to='sale_cards/', blank=True)
+    title = models.CharField(max_length=50, blank=True)
+    text = models.CharField(max_length=300, blank=True)
+    link = models.CharField(max_length=300, blank=True)
 
+    def __str__(self):
+        return self.title
 
 
 
