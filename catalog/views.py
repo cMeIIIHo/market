@@ -14,3 +14,9 @@ def index(request):
         'sale_cards': Sale_card.objects.all()
     }
     return render_to_response("catalog/index.html", context)
+
+def filter(request):
+    context = {
+
+    }
+    return render_to_response('catalog/filter.html', context)

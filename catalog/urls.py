@@ -5,7 +5,8 @@ app_name = 'catalog'
 
 
 urlpatterns = [
-    url(r'', views.index, name='index'),
+    url(r'^$', views.index, name='index'),
+    url(r'^filter/$', views.filter, name='filter'),
 ]
 
 # urlpatterns = [
