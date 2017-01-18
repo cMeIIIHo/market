@@ -7,57 +7,75 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.light_green-yellow.min.css">
     <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+    <style>
+        .page-content {
+            background-color: #f5f5f5;
+        }
+        .mdl-layout__drawer{
+            background-color: #263238;
+            color: #f5f5f5;
+        }
+        .mdl-layout__drawer .mdl-navigation .mdl-navigation__link {
+            color: rgba(255, 255, 255, 0.56);
+        }
+        .mdl-layout__drawer .mdl-navigation {
+            background-color: #37474f;
+            flex-grow: 1;
+        }
+
+
+    </style>
 </head>
 <body>
-    {% load staticfiles %}
+{% load staticfiles %}
 
-  <!-- The drawer is always open in large screens. The header is always shown,
-    even in small screens. -->
-  <div class="mdl-layout mdl-js-layout mdl-layout--fixed-drawer
+<!-- The drawer is always open in large screens. The header is always shown,
+  even in small screens. -->
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-drawer
               mdl-layout--fixed-header">
     <header class="mdl-layout__header">
-      <div class="mdl-layout__header-row">
-        <!-- Title -->
-        <span class="mdl-layout-title">D-vision</span>
-        <!-- Add spacer, to align navigation to the right -->
-        <div class="mdl-layout-spacer"></div>
-        <!-- Navigation. We hide it in small screens. -->
-        <nav class="mdl-navigation mdl-layout--large-screen-only">
-          <a class="mdl-navigation__link" href="">Link</a>
-          <a class="mdl-navigation__link" href="">Link</a>
-          <a class="mdl-navigation__link" href="">Link</a>
-          <a class="mdl-navigation__link" href="">Link</a>
-        </nav>
-      </div>
+        <div class="mdl-layout__header-row">
+            <!-- Title -->
+            <span class="mdl-layout-title">D-vision</span>
+            <!-- Add spacer, to align navigation to the right -->
+            <div class="mdl-layout-spacer"></div>
+            <!-- Navigation. We hide it in small screens. -->
+            <nav class="mdl-navigation mdl-layout--large-screen-only">
+                <a class="mdl-navigation__link" href="">Link</a>
+                <a class="mdl-navigation__link" href="">Link</a>
+                <a class="mdl-navigation__link" href="">Link</a>
+                <a class="mdl-navigation__link" href="">Link</a>
+            </nav>
+        </div>
     </header>
     <div class="mdl-layout__drawer">
-      <span class="mdl-layout-title">Меню</span>
-      <nav class="mdl-navigation">
-        <a class="mdl-navigation__link" href="">Подбор линз</a>
-        <a class="mdl-navigation__link" href="">Доставка и оплата</a>
-        <a class="mdl-navigation__link" href="">Пункты выдачи</a>
-        <a class="mdl-navigation__link" href="">Акции</a>
-      </nav>
+        <span class="mdl-layout-title">Меню</span>
+        <nav class="mdl-navigation">
+            <a class="mdl-navigation__link" href="">Подбор линз</a>
+            <a class="mdl-navigation__link" href="">Доставка и оплата</a>
+            <a class="mdl-navigation__link" href="">Пункты выдачи</a>
+            <a class="mdl-navigation__link" href="">Акции</a>
+        </nav>
     </div>
     <main class="mdl-layout__content">
-      <div class="page-content">
-          {% block content %}{% endblock %}
-      </div>
+        <div class="page-content">
+            {% block content %}{% endblock %}
+        </div>
 
-      {% block footer %}
-      <footer class="mdl-mini-footer">
-          <div class="mdl-mini-footer__left-section">
-            <div class="mdl-logo">Title</div>
-            <ul class="mdl-mini-footer__link-list">
-              <li><a href="#">Help</a></li>
-              <li><a href="#">Privacy & Terms</a></li>
-            </ul>
-          </div>
-      </footer>
-      {% endblock %}
+        {% block footer %}
+        <footer class="mdl-mini-footer">
+            <div class="mdl-mini-footer__left-section">
+                <div class="mdl-logo">Title</div>
+                <ul class="mdl-mini-footer__link-list">
+                    <li><a href="#">Help</a></li>
+                    <li><a href="#">Privacy & Terms</a></li>
+                </ul>
+            </div>
+        </footer>
+        {% endblock %}
 
     </main>
-  </div>
+</div>
 </body>
 </html>
 
