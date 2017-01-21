@@ -1,8 +1,82 @@
 {% extends "base.html" %}
 
 {% block content %}
+<style>
+    .my-filter {
+        background-color: #37474f;
+    }
+    .my-filter__title {
+        padding: 10px 20px;
+        color: #8dc351;
+        font-size: 15px;
+        background: #263238;
+    }
+    .my-filter-block__title {
+        padding: 10px 20px;
+        color: #8dc351;
+        font-size: 15px;
+        background: #263238;
+    }
+
+</style>
 <div class="mdl-grid">
-    <div class="mdl-cell mdl-cell--3-col"></div>
+    <div class="mdl-cell mdl-cell--3-col">
+        <div class="my-filter">
+            <div class="my-filter__title">
+                Подбор линз
+            </div>
+            {% for filter in filters %}
+            <div class="my-filter-block">
+                <div class="my-filter-block__title">{{filter.name}}</div>
+                <div class="my-filter-block__filters"></div>
+            </div>
+            {% endfor %}
+            {{filters}}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </div>
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     <div class="mdl-cell mdl-cell--9-col"></div>
 </div>
 {% endblock %}
