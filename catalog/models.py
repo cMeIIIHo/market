@@ -16,6 +16,7 @@ class Mark(models.Model):
 
 class Option_name(models.Model):
     name = models.CharField(max_length=100)
+    usage_in_filters = models.BooleanField(default=True)
 
     class Meta:
         ordering = ['name']

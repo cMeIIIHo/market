@@ -25,10 +25,14 @@
             <div class="my-filter__title">
                 Подбор линз
             </div>
-            {% for filter in filters %}
+            {% for filter_name, filter_values in filters.items %}
             <div class="my-filter-block">
-                <div class="my-filter-block__title">{{filter.name}}</div>
-                <div class="my-filter-block__filters"></div>
+                <div class="my-filter-block__title">{{ filter_name }}</div>
+                <div class="my-filter-block__filters">
+                    {% for filter_value in filter_values %}
+                    <div>{{ filter_value }}</div>
+                    {% endfor %}
+                </div>
             </div>
             {% endfor %}
             {{filters}}

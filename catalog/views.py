@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404, render, render_to_response
 from catalog.models import Sale_card
 from catalog.models import *
+from django.db import connection
 from django.db.models import Q
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
@@ -33,9 +34,33 @@ def filter(request):
     # i = Option_name.objects.get(pk=1)
     # filters = i.sub_type_set.all()
 
-    filters = Option_name.objects.filter(Q(int_opt__spec_prod__product__prod_type__name='Линзы') \
-                                             | Q(text_opt__spec_prod__product__prod_type__name='Линзы') \
-                                             | Q(float_opt__spec_prod__product__prod_type__name='Линзы')).distinct()
+
+
+    # filter_names = Option_name.objects.filter(Q(int_opt__spec_prod__product__prod_type__name='Линзы') \
+    #                                          | Q(text_opt__spec_prod__product__prod_type__name='Линзы') \
+    #                                          | Q(float_opt__spec_prod__product__prod_type__name='Линзы')).distinct()\
+    #                                         .filter(usage_in_filters=True).values('name')
+
+    int_opts = Int_opt.objects.filter(spec_prod__product__prod_type__name='Линзы', name__usage_in_filters=True).select_related('name')
+    text_opts = Text_opt.objects.filter(spec_prod__product__prod_type__name='Линзы', name__usage_in_filters=True).select_related('name')
+    float_opts = Float_opt.objects.filter(spec_prod__product__prod_type__name='Линзы', name__usage_in_filters=True).select_related('name')
+
+    # for filter_name in filter_names:
+    #     filters[filter_name] =
+
+    filters = {}
+
+    def add_filter_block(filter_opts):
+        for filter_opt in filter_opts:
+            if filter_opt.name.name in filters.keys():
+                filters[filter_opt.name.name].append(filter_opt.value)
+            else:
+                filters[filter_opt.name.name] = [filter_opt.value]
+
+    add_filter_block(int_opts)
+    add_filter_block(text_opts)
+    add_filter_block(float_opts)
+
 
     context = {
         'filters': filters,
