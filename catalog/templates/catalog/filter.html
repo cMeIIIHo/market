@@ -17,6 +17,9 @@
         font-size: 15px;
         background: #263238;
     }
+    .my-filter-block__filters {
+        background: #37474f;
+    }
 
 </style>
 <div class="mdl-grid">
@@ -25,61 +28,38 @@
             <div class="my-filter__title">
                 Подбор линз
             </div>
-            {% for filter_name, filter_values in filters.items %}
+            <!-- manufacturers-->
             <div class="my-filter-block">
-                <div class="my-filter-block__title">{{ filter_name }}</div>
+                <div class="my-filter-block__title">Бренды</div>
                 <div class="my-filter-block__filters">
-                    {% for filter_value in filter_values %}
-                    <div>{{ filter_value }}</div>
+                    {% for manufacturer in manufacturers %}
+                    <div>{{manufacturer.brand}}</div>
+                    {% endfor %}
+                </div>
+            </div>
+            <!-- lens types-->
+            <div class="my-filter-block">
+                <div class="my-filter-block__title">Типы</div>
+                <div class="my-filter-block__filters">
+                    {% for lens_type in lens_types %}
+                    <div>{{lens_type.name}}</div>
+                    {% endfor %}
+                </div>
+            </div>
+            <!-- filters -->
+            {% for filter_name_obj, filter_value_obj_list in filters.items %}
+            <div class="my-filter-block">
+                <div class="my-filter-block__title">{{filter_name_obj.name}}</div>
+                <div class="my-filter-block__filters">
+                    {% for filter_value_obj in filter_value_obj_list %}
+                    <div>{{filter_value_obj.value}}</div>
                     {% endfor %}
                 </div>
             </div>
             {% endfor %}
-            {{filters}}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         </div>
 
     </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     <div class="mdl-cell mdl-cell--9-col"></div>
 </div>
