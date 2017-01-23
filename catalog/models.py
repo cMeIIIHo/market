@@ -19,7 +19,7 @@ class Option_name(models.Model):
     usage_in_filters = models.BooleanField(default=True)
 
     class Meta:
-        ordering = ['name']
+        ordering = ['id']
 
     def __str__(self):
         return self.name
