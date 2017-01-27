@@ -54,7 +54,17 @@ class Float_opt(models.Model):
     def __str__(self):
         return '%s = %s' % (self.name.name, self.value)
 
+
+class Category(models.Model):
+    name = models.CharField(max_length=100)
+    parent_category = models.ForeignKey('self', null=True, blank=True)
+    opt_list = models.ManyToManyField(Option_name, blank=True)
+
+    def __str__(self):
+        return self.name
+
 class Product(models.Model):
+    Category = models.ForeignKey(Category, null=True, blank=True)
     mark = models.ForeignKey(Mark)
     name = models.CharField(max_length=100)
     description = models.TextField()

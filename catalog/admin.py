@@ -13,6 +13,7 @@ class Int_optAdmin(admin.ModelAdmin):
 admin.site.register(Int_opt, Int_optAdmin)
 admin.site.register(Text_opt)
 admin.site.register(Float_opt)
+admin.site.register(Category)
 admin.site.register(Mark)
 
 class Option_name_Admin(admin.ModelAdmin):
