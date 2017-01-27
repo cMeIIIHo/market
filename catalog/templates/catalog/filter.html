@@ -4,23 +4,26 @@
 <style>
     .my-filter {
         background-color: #37474f;
+        font-size: 16px;
     }
     .my-filter__title {
         padding: 10px 20px;
         color: #8dc351;
-        font-size: 15px;
         background: #263238;
+        font-size: 20px;
     }
     .my-filter-block__title {
         padding: 10px 20px;
         color: #8dc351;
-        font-size: 15px;
         background: #263238;
     }
     .my-filter-block__filters {
         background: #37474f;
+        padding-left: 15px;
     }
-
+    .mdl-checkbox__label {
+        font-size: 15px;
+    }
 </style>
 <div class="mdl-grid">
     <div class="mdl-cell mdl-cell--3-col">
@@ -33,7 +36,10 @@
                 <div class="my-filter-block__title">Бренды</div>
                 <div class="my-filter-block__filters">
                     {% for manufacturer in manufacturers %}
-                    <div>{{manufacturer.brand}}</div>
+                    <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="cb_m_{{manufacturer.id}}">
+                        <input type="checkbox" id="cb_m_{{manufacturer.id}}" class="mdl-checkbox__input">
+                        <span class="mdl-checkbox__label">{{manufacturer.brand}}</span>
+                    </label>
                     {% endfor %}
                 </div>
             </div>
@@ -42,17 +48,23 @@
                 <div class="my-filter-block__title">Типы</div>
                 <div class="my-filter-block__filters">
                     {% for lens_type in lens_types %}
-                    <div>{{lens_type.name}}</div>
+                    <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="cb_lt_{{lens_type.id}}">
+                        <input type="checkbox" id="cb_lt_{{lens_type.id}}" class="mdl-checkbox__input">
+                        <span class="mdl-checkbox__label">{{lens_type.name}}</span>
+                    </label>
                     {% endfor %}
                 </div>
             </div>
             <!-- filters -->
-            {% for filter_name_obj, filter_value_obj_list in filters.items %}
+            {% for filter_name, filter_values in filters.items %}
             <div class="my-filter-block">
-                <div class="my-filter-block__title">{{filter_name_obj.name}}</div>
+                <div class="my-filter-block__title">{{filter_name.name}}</div>
                 <div class="my-filter-block__filters">
-                    {% for filter_value_obj in filter_value_obj_list %}
-                    <div>{{filter_value_obj.value}}</div>
+                    {% for filter_value in filter_values %}
+                    <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="cb_{{filter_name.id}}_{{filter_value.id}}">
+                        <input type="checkbox" id="cb_{{filter_name.id}}_{{filter_value.id}}" class="mdl-checkbox__input">
+                        <span class="mdl-checkbox__label">{{filter_value.value}}</span>
+                    </label>
                     {% endfor %}
                 </div>
             </div>
