@@ -1,5 +1,5 @@
 from django.contrib import admin
-from catalog.models import Int_opt, Mark, Option_name, Text_opt, Sub_type, Prod_type, Product, Spec_prod, Float_opt, Sale_card
+from catalog.models import *
 
 # Register your models here.
 
@@ -18,9 +18,7 @@ admin.site.register(Mark)
 class Option_name_Admin(admin.ModelAdmin):
     ordering = ['name']
 admin.site.register(Option_name, Option_name_Admin)
-admin.site.register(Sub_type)
 admin.site.register(Product)
-admin.site.register(Prod_type)
 
 class Spec_prodAdmin(admin.ModelAdmin):
 

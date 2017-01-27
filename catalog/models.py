@@ -54,23 +54,7 @@ class Float_opt(models.Model):
     def __str__(self):
         return '%s = %s' % (self.name.name, self.value)
 
-class Sub_type(models.Model):
-    name = models.CharField(max_length=100)
-    opt_list = models.ManyToManyField(Option_name)
-
-    def __str__(self):
-        return self.name
-
-class Prod_type(models.Model):
-    name = models.CharField(max_length=100)
-    sub_type_list = models.ManyToManyField(Sub_type, blank=True)
-
-    def __str__(self):
-        return self.name
-
 class Product(models.Model):
-    prod_type = models.ForeignKey(Prod_type)
-    sub_type = models.ForeignKey(Sub_type, blank=True)
     mark = models.ForeignKey(Mark)
     name = models.CharField(max_length=100)
     description = models.TextField()
@@ -103,7 +87,7 @@ class Spec_prod(models.Model):
     price = models.FloatField()
 
     def __str__(self):
-        return '%s-%s-%s' % (self.code, self.product.prod_type.name, self.product.name)
+        return '%s-%s-%s' % (self.code, self.product.name, self.product.name)
 
     def get_int_opts(self):
         return '; '.join([str(obj) for obj in self.int_opts.all()])
