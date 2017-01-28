@@ -121,14 +121,17 @@ class Spec_prod(models.Model):
         opt_list.extend(list(self.float_opts.all()))
         return opt_list
 
-    # def save(self):
-    #     super().save()
-    #     if self.amount > 0:
-    #         for opt in self.option_list:
-    #             if self.product.category not in opt.active_in.all():
-    #                 opt.active_in.add(self.product.category)
-    #     else:
-    #         for opt in self.option_list:
+    def save(self, *args, **kwargs):
+        super().save()
+        if self.amount == 0:
+            for opt in self.option_list():
+                if not opt.spec_prod_set.filter(product__category=self.product.category, amount__gt=0).exists():
+                    opt.active_in.remove(self.product.category)
+        else:
+            for opt in self.option_list():
+                if self.product.category not in opt.active_in.all():
+                    opt.active_in.add(self.product.category)
+
 
 
 class Sale_card(models.Model):
