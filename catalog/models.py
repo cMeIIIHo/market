@@ -24,9 +24,19 @@ class Option_name(models.Model):
     def __str__(self):
         return self.name
 
+class Category(models.Model):
+    name = models.CharField(max_length=100)
+    parent_category = models.ForeignKey('self', null=True, blank=True)
+    opt_list = models.ManyToManyField(Option_name, blank=True)
+
+    def __str__(self):
+        return self.name
+
 class Int_opt(models.Model):
     name = models.ForeignKey(Option_name)
     value = models.IntegerField()
+    active_in = models.ManyToManyField(Category, blank=True)
+
 
     class Meta:
         ordering = ['name', 'value']
@@ -37,6 +47,8 @@ class Int_opt(models.Model):
 class Text_opt(models.Model):
     name = models.ForeignKey(Option_name)
     value = models.TextField()
+    active_in = models.ManyToManyField(Category, blank=True)
+
 
     class Meta:
         ordering = ['name', 'value']
@@ -47,6 +59,8 @@ class Text_opt(models.Model):
 class Float_opt(models.Model):
     name = models.ForeignKey(Option_name)
     value = models.FloatField()
+    active_in = models.ManyToManyField(Category, blank=True)
+
 
     class Meta:
         ordering = ['name', 'value']
@@ -55,16 +69,8 @@ class Float_opt(models.Model):
         return '%s = %s' % (self.name.name, self.value)
 
 
-class Category(models.Model):
-    name = models.CharField(max_length=100)
-    parent_category = models.ForeignKey('self', null=True, blank=True)
-    opt_list = models.ManyToManyField(Option_name, blank=True)
-
-    def __str__(self):
-        return self.name
-
 class Product(models.Model):
-    Category = models.ForeignKey(Category, null=True, blank=True)
+    category = models.ForeignKey(Category, null=True, blank=True)
     mark = models.ForeignKey(Mark)
     name = models.CharField(max_length=100)
     description = models.TextField()
@@ -107,6 +113,23 @@ class Spec_prod(models.Model):
 
     def get_text_opts(self):
         return '; '.join([str(obj) for obj in self.text_opts.all()])
+
+    def option_list(self):
+        opt_list = []
+        opt_list.extend(list(self.int_opts.all()))
+        opt_list.extend(list(self.text_opts.all()))
+        opt_list.extend(list(self.float_opts.all()))
+        return opt_list
+
+    # def save(self):
+    #     super().save()
+    #     if self.amount > 0:
+    #         for opt in self.option_list:
+    #             if self.product.category not in opt.active_in.all():
+    #                 opt.active_in.add(self.product.category)
+    #     else:
+    #         for opt in self.option_list:
+
 
 class Sale_card(models.Model):
     picture = models.ImageField(upload_to='sale_cards/', blank=True)
