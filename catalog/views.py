@@ -19,36 +19,67 @@ def index(request):
     }
     return render_to_response("catalog/index.html", context)
 
-def filter(request):
-    manufacturers = Mark.objects.filter(product__prod_type__name='Линзы').distinct()
-    lens_types = Sub_type.objects.filter(prod_type__name='Линзы')
+def filter(request, category_name='Линзы'):
+    # received category
+    main_cat = Category.objects.get(name=category_name)
 
-    #fina all option objects ( name+value) for lenses
-    int_opts = Int_opt.objects.filter(spec_prod__product__prod_type__name='Линзы', name__usage_in_filters=True).distinct()
-    text_opts = Text_opt.objects.filter(spec_prod__product__prod_type__name='Линзы', name__usage_in_filters=True).distinct()
-    float_opts = Float_opt.objects.filter(spec_prod__product__prod_type__name='Линзы', name__usage_in_filters=True).distinct()
+    # if it has children, list them
+    cats_to_filter = main_cat.category_set.all()
 
+    # if it has not, just make it iterable
+    if not cats_to_filter:
+        cats_to_filter = [main_cat]
 
-    # create a dict with remaiing filters (as color, size )
+    # make filters dictionary
     filters = collections.OrderedDict()
 
-    #firstly add filter names
-    filter_names = Option_name.objects.filter(sub_type__prod_type__name='Линзы', usage_in_filters=True).distinct()
+    # fill dictionary with filter-block's names in correct order
+    filter_names = Option_name.objects.filter(category__in=cats_to_filter, usage_in_filters=True).distinct()
     for filter_name in filter_names:
         filters[filter_name] = []
 
-    #secondly fill filter blocks with values
-    def fill_filter_block(opts):
-        for opt in opts:
-            filters[opt.name].append(opt)
+    # fill dictionary with filters values
+    for cat in cats_to_filter:
+        for option in cat.int_opt_set.filter(name__in=filter_names):
+            filters[option.name].append(option)
+        for option in cat.text_opt_set.filter(name__in=filter_names):
+            filters[option.name].append(option)
+        for option in cat.float_opt_set.filter(name__in=filter_names):
+            filters[option.name].append(option)
 
-    fill_filter_block(int_opts)
-    fill_filter_block(text_opts)
-    fill_filter_block(float_opts)
-
-    context = {
-        'manufacturers': manufacturers,
-        'lens_types': lens_types,
-        'filters': filters,
-    }
+    context = {'filters': filters,}
     return render_to_response('catalog/filter.html', context)
+
+# def filter(request):
+#     manufacturers = Mark.objects.filter(product__prod_type__name='Линзы').distinct()
+#     lens_types = Sub_type.objects.filter(prod_type__name='Линзы')
+#
+#     #fina all option objects ( name+value) for lenses
+#     int_opts = Int_opt.objects.filter(spec_prod__product__prod_type__name='Линзы', name__usage_in_filters=True).distinct()
+#     text_opts = Text_opt.objects.filter(spec_prod__product__prod_type__name='Линзы', name__usage_in_filters=True).distinct()
+#     float_opts = Float_opt.objects.filter(spec_prod__product__prod_type__name='Линзы', name__usage_in_filters=True).distinct()
+#
+#
+#     # create a dict with remaiing filters (as color, size )
+#     filters = collections.OrderedDict()
+#
+#     #firstly add filter names
+#     filter_names = Option_name.objects.filter(sub_type__prod_type__name='Линзы', usage_in_filters=True).distinct()
+#     for filter_name in filter_names:
+#         filters[filter_name] = []
+#
+#     #secondly fill filter blocks with values
+#     def fill_filter_block(opts):
+#         for opt in opts:
+#             filters[opt.name].append(opt)
+#
+#     fill_filter_block(int_opts)
+#     fill_filter_block(text_opts)
+#     fill_filter_block(float_opts)
+#
+#     context = {
+#         'manufacturers': manufacturers,
+#         'lens_types': lens_types,
+#         'filters': filters,
+#     }
+#     return render_to_response('catalog/filter.html', context)

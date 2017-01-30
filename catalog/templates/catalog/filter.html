@@ -4,7 +4,6 @@
 <style>
     .my-filter {
         background-color: #37474f;
-        font-size: 16px;
     }
     .my-filter__title {
         padding: 10px 20px;
@@ -16,6 +15,7 @@
         padding: 10px 20px;
         color: #8dc351;
         background: #263238;
+        font-size: 16px;
     }
     .my-filter-block__filters {
         background: #37474f;
@@ -31,6 +31,20 @@
             <div class="my-filter__title">
                 Подбор линз
             </div>
+            <!-- product types-->
+            {% if sub_cat_list %}
+            <div class="my-filter-block">
+                <div class="my-filter-block__title">Типы</div>
+                <div class="my-filter-block__filters">
+                    {% for sub_cat in sub_cat_list %}
+                    <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="cb_sc_{{sub_cat.id}}">
+                        <input type="checkbox" id="cb_sc_{{sub_cat.id}}" class="mdl-checkbox__input">
+                        <span class="mdl-checkbox__label">{{sub_cat.name}}</span>
+                    </label>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
             <!-- manufacturers-->
             <div class="my-filter-block">
                 <div class="my-filter-block__title">Бренды</div>
@@ -43,18 +57,7 @@
                     {% endfor %}
                 </div>
             </div>
-            <!-- lens types-->
-            <div class="my-filter-block">
-                <div class="my-filter-block__title">Типы</div>
-                <div class="my-filter-block__filters">
-                    {% for lens_type in lens_types %}
-                    <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="cb_lt_{{lens_type.id}}">
-                        <input type="checkbox" id="cb_lt_{{lens_type.id}}" class="mdl-checkbox__input">
-                        <span class="mdl-checkbox__label">{{lens_type.name}}</span>
-                    </label>
-                    {% endfor %}
-                </div>
-            </div>
+
             <!-- filters -->
             {% for filter_name, filter_values in filters.items %}
             <div class="my-filter-block">
@@ -69,11 +72,14 @@
                 </div>
             </div>
             {% endfor %}
+
         </div>
 
     </div>
 
-    <div class="mdl-cell mdl-cell--9-col"></div>
+    <div class="mdl-cell mdl-cell--9-col">
+
+    </div>
 </div>
 {% endblock %}
 
