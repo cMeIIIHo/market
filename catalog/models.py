@@ -74,7 +74,7 @@ class Product(models.Model):
     mark = models.ForeignKey(Mark)
     name = models.CharField(max_length=100)
     description = models.TextField()
-    pictute = models.ImageField(upload_to='products/', blank=True)
+    picture = models.ImageField(upload_to='products/', blank=True)
     banner = models.ImageField(upload_to='products/', blank=True)
 
     def __str__(self):
@@ -99,7 +99,7 @@ class Spec_prod(models.Model):
     text_opts = models.ManyToManyField(Text_opt, blank=True)
     float_opts = models.ManyToManyField(Float_opt, blank=True)
     code = models.IntegerField(default=get_code)
-    amount = models.IntegerField()
+    amount = models.PositiveIntegerField()
     price = models.FloatField()
 
     def __str__(self):
