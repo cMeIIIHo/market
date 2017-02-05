@@ -30,11 +30,11 @@ class Option_name(models.Model):
         return self.name
 
     def get_values(self):
-        if self.float_opt_set.exist():
+        if self.float_opt_set.exists():
             return self.float_opt_set.all()
-        elif self.float_opt_set.exist():
+        elif self.int_opt_set.exists():
             return self.int_opt_set.all()
-        elif self.float_opt_set.exist():
+        elif self.text_opt_set.exists():
             return self.text_opt_set.all()
         else:
             return False
@@ -52,7 +52,6 @@ class Category(models.Model):
             yield self
         else:
             for cat in self.category_set.all():
-                # yield from cat.get_kids()
                 for kid in cat.get_kids_generator():
                     yield kid
 

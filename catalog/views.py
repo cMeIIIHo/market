@@ -25,12 +25,12 @@ def filter(request, category_id=1):
     products = Product.objects.filter(category__in=sub_cats)
     filter_names = Option_name.objects.filter(category__in=sub_cats, usage_in_filters=True).distinct()
     filters = collections.OrderedDict()
-    # for filter_name in filter_names:
-    #     filters[filter_name] = filter_name.
+    for filter_name in filter_names:
+        filters[filter_name] = filter_name.get_values()
 
 
     context = {
-        'test': filter_names
+        'test': filters
     }
     return render_to_response('catalog/filter.html', context)
 
