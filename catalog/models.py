@@ -39,8 +39,6 @@ class Option_name(models.Model):
         else:
             return False
 
-
-
 class Category(models.Model):
     name = models.CharField(max_length=100)
     parent_category = models.ForeignKey('self', null=True, blank=True)
@@ -58,56 +56,38 @@ class Category(models.Model):
                 for kid in cat.get_kids_generator():
                     yield kid
 
-
-class Int_opt(models.Model):
+class Opt(models.Model):
     name = models.ForeignKey(Option_name)
+
+    def __str__(self):
+        return '%s = %s' % (self.name.name, self.value)
+
+    def save(self, *args, **kwargs):
+        super().save()
+        if self.name.data_type == '':
+            if isinstance(self.value, float):
+                self.name.data_type = 'float'
+            elif isinstance(self.value, int):
+                self.name.data_type = 'int'
+            elif isinstance(self.value, str):
+                self.name.data_type = 'text'
+            self.name.save()
+
+    class Meta:
+        ordering = ['name', 'value']
+        abstract = True
+
+
+class Int_opt(Opt):
     value = models.IntegerField()
 
-    class Meta:
-        ordering = ['name', 'value']
 
-    def __str__(self):
-        return '%s = %s' % (self.name.name, self.value)
-
-    def save(self, *args, **kwargs):
-        super().save()
-        if self.name.data_type == '':
-            self.name.data_type = 'int'
-            self.name.save()
-
-
-class Text_opt(models.Model):
-    name = models.ForeignKey(Option_name)
+class Text_opt(Opt):
     value = models.TextField()
 
-    class Meta:
-        ordering = ['name', 'value']
 
-    def __str__(self):
-        return '%s = %s' % (self.name.name, self.value)
-
-    def save(self, *args, **kwargs):
-        super().save()
-        if self.name.data_type == '':
-            self.name.data_type = 'text'
-            self.name.save()
-
-
-class Float_opt(models.Model):
-    name = models.ForeignKey(Option_name)
+class Float_opt(Opt):
     value = models.FloatField()
-
-    class Meta:
-        ordering = ['name', 'value']
-
-    def __str__(self):
-        return '%s = %s' % (self.name.name, self.value)
-
-    def save(self, *args, **kwargs):
-        super().save()
-        if self.name.data_type == '':
-            self.name.data_type = 'float'
-            self.name.save()
 
 
 class Product(models.Model):
