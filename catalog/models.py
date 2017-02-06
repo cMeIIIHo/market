@@ -37,7 +37,7 @@ class Option_name(models.Model):
         elif self.text_opt_set.exists():
             return self.text_opt_set.all()
         else:
-            return False
+            return []
 
 class Category(models.Model):
     name = models.CharField(max_length=100)

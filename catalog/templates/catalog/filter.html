@@ -26,17 +26,19 @@
     }
 </style>
 <div class="mdl-grid">
+
+    <!-- filters block -->
     <div class="mdl-cell mdl-cell--3-col">
         <div class="my-filter">
             <div class="my-filter__title">
                 Подбор линз
             </div>
             <!-- product types-->
-            {% if sub_cat_list %}
+            {% if cat_list|length > 1 %}
             <div class="my-filter-block">
-                <div class="my-filter-block__title">Типы</div>
+                <div class="my-filter-block__title">Категории</div>
                 <div class="my-filter-block__filters">
-                    {% for sub_cat in sub_cat_list %}
+                    {% for sub_cat in cat_list %}
                     <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="cb_sc_{{sub_cat.id}}">
                         <input type="checkbox" id="cb_sc_{{sub_cat.id}}" class="mdl-checkbox__input">
                         <span class="mdl-checkbox__label">{{sub_cat.name}}</span>
@@ -57,7 +59,6 @@
                     {% endfor %}
                 </div>
             </div>
-
             <!-- filters -->
             {% for filter_name, filter_values in filters.items %}
             <div class="my-filter-block">
@@ -77,10 +78,29 @@
 
     </div>
 
+    <!-- products block -->
     <div class="mdl-cell mdl-cell--9-col">
-        <div>{{test}}</div>
+
+        <div class="mdl-grid">
+                {% for product in products %}
+            <div class="mdl-cell mdl-cell--3-col mdl-cell--4-col-tablet">
+                <div class="mdl-card mdl-shadow--4dp">
+                    <a class="my-link" href="">
+                        <div class="mdl-card__media"><img src="{{ product.picture.url }}" border="0" alt=""></div>
+                        <div class="mdl-card__title">
+                            <h2 class="mdl-card__title-text">{{ product.name }}</h2>
+                        </div>
+                    </a>
+                    <div class="mdl-card__supporting-text">
+                        {{ product.price }}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
 
     </div>
+
 </div>
 {% endblock %}
 

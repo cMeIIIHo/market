@@ -21,16 +21,23 @@ def index(request):
 
 def filter(request, category_id=1):
     given_cat = Category.objects.get(pk=category_id)
-    sub_cats = list(given_cat.get_kids_generator())
-    products = Product.objects.filter(category__in=sub_cats)
-    filter_names = Option_name.objects.filter(category__in=sub_cats, usage_in_filters=True).distinct()
+    cat_list = list(given_cat.get_kids_generator())
+    products = Product.objects.filter(category__in=cat_list)
+
+    manufacturers = Mark.objects.filter(product__in=products).distinct()
+
     filters = collections.OrderedDict()
+    filter_names = Option_name.objects.filter(category__in=cat_list, usage_in_filters=True).distinct()
     for filter_name in filter_names:
-        filters[filter_name] = filter_name.get_values()
+        filters[filter_name] = filter_name.get_values().filter(spec_prod__product__in=products,
+                                                               spec_prod__amount__gt=0).distinct()
 
 
     context = {
-        'test': filters
+        'cat_list': cat_list,
+        'filters': filters,
+        'manufacturers': manufacturers,
+        'products': products,
     }
     return render_to_response('catalog/filter.html', context)
 
