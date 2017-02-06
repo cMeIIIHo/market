@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="mdl-grid">
-    <div class="mdl-cell mdl-cell--12-col">12</div>
+    <div class="mdl-cell mdl-cell--12-col">BANNER HERE</div>
 </div>
 <div class="mdl-grid">
     <!-- cards -->
@@ -10,7 +10,7 @@
     <div class="mdl-cell mdl-cell--3-col mdl-cell--4-col-tablet">
         <div class="mdl-card mdl-shadow--4dp">
             <a class="my-link" href="">
-                <div class="mdl-card__media"><img src="{{ sale_card.picture.url }}" border="0"
+                <div class="mdl-card__media my-sale_card__media"><img src="{{ sale_card.picture.url }}" border="0"
                                                   alt="">
                 </div>
                 <div class="mdl-card__title">
@@ -23,18 +23,6 @@
         </div>
     </div>
     {% endfor %}
-</div>
-
-<div class="mdl-grid">
-    <div class="mdl-cell mdl-cell--3-col">4</div>
-    <div class="mdl-cell mdl-cell--3-col">4</div>
-    <div class="mdl-cell mdl-cell--3-col">4</div>
-    <div class="mdl-cell mdl-cell--3-col">4</div>
-</div>
-<div class="mdl-grid">
-    <div class="mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet">6 (8 tablet)</div>
-    <div class="mdl-cell mdl-cell--4-col mdl-cell--6-col-tablet">4 (6 tablet)</div>
-    <div class="mdl-cell mdl-cell--2-col mdl-cell--4-col-phone">2 (4 phone)</div>
 </div>
 {% endblock %}
 
