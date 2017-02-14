@@ -36,6 +36,7 @@ def parse(html):
             sub_href = link.get('href')
             full_link = BASE_URL + sub_href
             print(counter, full_link)
+            product_dict['link']=full_link
 
             # get product's page
             product_soup = BeautifulSoup(get_html(full_link))
@@ -152,6 +153,8 @@ def parse(html):
             texts = description_block.find_all('p')
             product_dict['description'] = [text.get_text() for text in texts if text.string is not None and not ""]
             print(product_dict['description'])
+
+
 
             prod_list.append(product_dict)
 

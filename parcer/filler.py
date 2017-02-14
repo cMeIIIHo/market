@@ -9,10 +9,18 @@ import json
 
 with open('vl_data.json', 'r') as f:
     data = json.load(f)
-    for product in data:
-        product['Тип линз'] = product['Тип линз'] + " линзы"
+    for num, product in enumerate(data):
+        print(num)
+        for key in product:
+            print(key, ' = ', product[key])
+        product['Тип линз'] += " линзы"
         category = Category.objects.get_or_create(name=product['Тип линз'])
+        if 'brand' in product:
+            mark = Mark.objects.get_or_create(producer=product['producer'], brand=product['brand'])
+        else:
+            print(product['producer'])
+            mark = Mark.objects.get_or_create(producer=product['producer'], brand='')
 
 
         for key in product:
-            print(product[key])
+            print(key, ' = ', product[key])
