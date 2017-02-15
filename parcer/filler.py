@@ -7,6 +7,7 @@ django.setup()
 from catalog.models import *
 import json
 import requests
+from django.core.files import File
 
 ''' getting info from json file. Still in incorrect form,
 so have to do some magic. After manipulations with data form,
@@ -16,7 +17,8 @@ objects - look models. '''
 
 
 def get_pict(prod, pic_type):
-    name = '{}_for_{}'.format(pic_type, prod['name'])
+    pic_format = prod[pic_type].split('.')[-1]
+    name = '{}_for_{}.{}'.format(pic_type, prod['name'], pic_format)
     with open(name, 'wb') as f:
         pic = requests.get(prod[pic_type]).content
         f.write(pic)
@@ -24,7 +26,7 @@ def get_pict(prod, pic_type):
 
 with open('vl_data.json', 'r') as f:
     data = json.load(f)
-    for num, product in enumerate(data):
+    for num, product in enumerate(data[:1]):
         print(num)
         for key in product:
             print(key, ' = ', product[key])
@@ -45,16 +47,15 @@ with open('vl_data.json', 'r') as f:
         banner = get_pict(product, 'banner')
 
         # create Product object
-        Product.objects.get_or_create(
+        p = Product.objects.get_or_create(
             category=category,
             mark=mark,
             name=product['name'],
             description='\n'.join([line.replace('\xa0', ' ') for line in product['description'] if len(line) > 20]),
-            # TODO are u sure its gonna be in defaults? mby try DB delete
-            defaults={
-                'picture': picture,
-                'banner': banner,
-            },
+        )[0]
+        pict_name = get_pict(product, 'picture')
+        p.picture.save(pict_name, File(open(pict_name, 'rb')))
+        banner_name = get_pict(product, 'banner')
+        p.banner.save(banner_name, File(open(banner_name, 'rb')))
 
-        )
 
