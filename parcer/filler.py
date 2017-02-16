@@ -46,16 +46,18 @@ with open('vl_data.json', 'r') as f:
         picture = get_pict(product, 'picture')
         banner = get_pict(product, 'banner')
 
-        # create Product object
+        # get or create Product object
         p = Product.objects.get_or_create(
             category=category,
             mark=mark,
             name=product['name'],
             description='\n'.join([line.replace('\xa0', ' ') for line in product['description'] if len(line) > 20]),
         )[0]
-        pict_name = get_pict(product, 'picture')
-        p.picture.save(pict_name, File(open(pict_name, 'rb')))
-        banner_name = get_pict(product, 'banner')
-        p.banner.save(banner_name, File(open(banner_name, 'rb')))
+        if 'picture' in product:
+            pict_name = get_pict(product, 'picture')
+            p.picture.save(pict_name, File(open(pict_name, 'rb')))
+        if 'banner' in product:
+            banner_name = get_pict(product, 'banner')
+            p.banner.save(banner_name, File(open(banner_name, 'rb')))
 
 
