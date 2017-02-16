@@ -15,6 +15,9 @@ i save it as Product object. Each Product got some features, so
 after being created, i loop its features and create some Spec_prod
 objects - look models. '''
 
+# def make_spec_prods(prod_data, prod_object):
+
+
 
 def get_pict(prod, pic_type):
     pic_format = prod[pic_type].split('.')[-1]
@@ -43,17 +46,20 @@ with open('vl_data.json', 'r') as f:
             mark = Mark.objects.get_or_create(producer=product['producer'], brand='')[0]
 
         # get or create Product object
-        p = Product.objects.get_or_create(
+        p, created = Product.objects.get_or_create(
             category=category,
             mark=mark,
             name=product['name'],
             description='\n'.join([line.replace('\xa0', ' ') for line in product['description'] if len(line) > 20]),
-        )[0]
-        if 'picture' in product:
-            pict_name = get_pict(product, 'picture')
-            p.picture.save(pict_name, File(open(pict_name, 'rb')))
-        if 'banner' in product:
-            banner_name = get_pict(product, 'banner')
-            p.banner.save(banner_name, File(open(banner_name, 'rb')))
+        )
+        print(created)
+        if created:
+            if 'picture' in product:
+                pict_name = get_pict(product, 'picture')
+                p.picture.save(pict_name, File(open(pict_name, 'rb')))
+            if 'banner' in product:
+                banner_name = get_pict(product, 'banner')
+                p.banner.save(banner_name, File(open(banner_name, 'rb')))
+
 
 
