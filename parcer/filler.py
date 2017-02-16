@@ -26,7 +26,7 @@ def get_pict(prod, pic_type):
 
 with open('vl_data.json', 'r') as f:
     data = json.load(f)
-    for num, product in enumerate(data[:1]):
+    for num, product in enumerate(data):
         print(num)
         for key in product:
             print(key, ' = ', product[key])
@@ -41,10 +41,6 @@ with open('vl_data.json', 'r') as f:
         else:
             print(product['producer'])
             mark = Mark.objects.get_or_create(producer=product['producer'], brand='')[0]
-
-        # get picts
-        picture = get_pict(product, 'picture')
-        banner = get_pict(product, 'banner')
 
         # get or create Product object
         p = Product.objects.get_or_create(
