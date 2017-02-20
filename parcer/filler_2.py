@@ -46,25 +46,27 @@ import random
 
 def create_object(params):
     if 'name' in params:
-        p, created = Product.objects.get(name=params.pop('name'))
-        opt_list = p.category.opt_list.all()
+        p = Product.objects.get(name=params.pop('name'))
+        opt_list = [opt.name for opt in p.category.opt_list.all()]
         spec_prod = Spec_prod(
             product=p,
             price=params['price'],
             amount=random.randint(0, 15)
         )
+        spec_prod.save()
         for opt, value in params.items():
             if opt in opt_list:
                 if type(value) == str:
-                    opt, created = Text_opt.objects.get_or_create(name=opt, value=value)
+                    opt, created = Text_opt.objects.get_or_create(name=Option_name.objects.get(name=opt), value=value)
                     spec_prod.text_opts.add(opt)
                 if type(value) == int:
-                    opt, created = Int_opt.objects.get_or_create(name=opt, value=value)
+                    opt, created = Int_opt.objects.get_or_create(name=Option_name.objects.get(name=opt), value=value)
                     spec_prod.int_opts.add(opt)
                 if type(value) == float:
-                    opt, created = Float_opt.objects.get_or_create(name=opt, value=value)
+                    opt, created = Float_opt.objects.get_or_create(name=Option_name.objects.get(name=opt), value=value)
                     spec_prod.float_opts.add(opt)
-        spec_prod.save()
+
+
 
 
 
