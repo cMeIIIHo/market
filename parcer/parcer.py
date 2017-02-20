@@ -74,6 +74,8 @@ def parse(html):
 
             # get prod's "радиус кривизны" if it exists
             radius_krivizni_field = prod_right_block.find('select', id='Радиус_кривизны_field')
+            if radius_krivizni_field is None:
+                radius_krivizni_field = prod_right_block.find('select', id='Радиус_базовой_кривизны_field')
             if radius_krivizni_field is not None:
                 krivizna_options = radius_krivizni_field.find_all('option')
                 product_dict['krivizna_options'] = [k_opt.text for k_opt in krivizna_options]

@@ -15,7 +15,21 @@ i save it as Product object. Each Product got some features, so
 after being created, i loop its features and create some Spec_prod
 objects - look models. '''
 
-# def make_spec_prods(prod_data, prod_object):
+# opt_set = {'colors': 'Цвет',
+#            'cilinder': 'Цилиндр',
+#            'addidation': 'Аддидация',
+#            'krivizna_options': 'Радиус кривизны',
+#            'axis': 'Ось', 'sphere': 'Сфера',
+#            'opt_force_options': 'Оптическая сила'}
+
+# def make_spec_prods(product, p):
+#     if p.category.name == 'Прозрачные линзы':
+#         dkt = Int_opt.get_or_create(name=Option_name.objects.get(name='DK/T'), value=int(product['DK/T']))
+#         water = Int_opt.get_or_create(name=Option_name.objects.get(name='Влагосодержание, \%'), value=int(product['Влагосодержание']))
+
+
+
+
 
 
 

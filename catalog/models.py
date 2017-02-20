@@ -3,6 +3,7 @@ from django.db import models
 import datetime
 from django.utils import timezone
 
+
 class Mark(models.Model):
     producer = models.CharField(max_length=200)
     brand = models. CharField(max_length=200, blank=True)
@@ -39,6 +40,7 @@ class Option_name(models.Model):
         else:
             return []
 
+
 class Category(models.Model):
     name = models.CharField(max_length=100)
     parent_category = models.ForeignKey('self', null=True, blank=True)
@@ -54,6 +56,7 @@ class Category(models.Model):
             for cat in self.category_set.all():
                 for kid in cat.get_kids_generator():
                     yield kid
+
 
 class Opt(models.Model):
     name = models.ForeignKey(Option_name)
