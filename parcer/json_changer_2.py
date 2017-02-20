@@ -107,19 +107,57 @@ with open('vl_data_2.json', 'r') as f:
     new_data[124]['Оптическая сила'] = [0.0]
 
     for num, p in enumerate(new_data):
+        if 'price' not in p:
+            print('sdfsdf')
         product = Product.objects.get(name=p['name'])
         opt_list = [opt.name for opt in product.category.opt_list.all()]
-        for key, value in p.items():
-            if key == 'price':
-                print(key, type(value), value)
+        for opt in opt_list:
+            if opt not in p.keys():
+                print(num, opt)
+    print('_____________________________')
+
+    names = []
+    data_2 = []
+    for num, p in enumerate(new_data):
+        if p['name'] not in names:
+            data_2.append(p)
+            names.append(p['name'])
+
+
+    print(len(names))
+    print(len(set(names)))
+    print(len(data_2))
+
+
+    for num, p in enumerate(data_2):
+        if 'price' not in p:
+            print('sdfsdf')
+        product = Product.objects.get(name=p['name'])
+        opt_list = [opt.name for opt in product.category.opt_list.all()]
+        for opt in opt_list:
+            if opt not in p.keys():
+                print(num, opt)
+
+    print('____________________')
+    print(len(data_2))
+
+
+
+
+
+
+
+        # for key, value in p.items():
+        #     if key == 'price':
+        #         print(num, key, type(value), value)
     #         if key not in opt_list and key != 'name':
     #             print(num, key)
     #             print(p['name'])
     #             print(data[num]['link'])
     #             print(data[num]['Тип линз'])
     #             print('____________________________________________________')
-    # with open('vl_data_3.json', 'w') as f2:
-    #     json.dump(new_data, f2)
+    with open('vl_data_3.json', 'w') as f2:
+        json.dump(data_2, f2)
 
 
 
