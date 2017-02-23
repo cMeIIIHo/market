@@ -3,6 +3,7 @@ from django.db import models
 import datetime
 from django.utils import timezone
 
+
 class Mark(models.Model):
     producer = models.CharField(max_length=200)
     brand = models. CharField(max_length=200, blank=True)
@@ -17,12 +18,28 @@ class Mark(models.Model):
 class Option_name(models.Model):
     name = models.CharField(max_length=100)
     usage_in_filters = models.BooleanField(default=True)
+    data_type = models.CharField(max_length=10, blank=True, choices=(
+        ('int', 'Целое число'),
+        ('float', 'Десятичная дробь'),
+        ('text', 'Текст'),
+    ))
 
     class Meta:
         ordering = ['id']
 
     def __str__(self):
         return self.name
+
+    def get_values(self):
+        if self.float_opt_set.exists():
+            return self.float_opt_set.all()
+        elif self.int_opt_set.exists():
+            return self.int_opt_set.all()
+        elif self.text_opt_set.exists():
+            return self.text_opt_set.all()
+        else:
+            return []
+
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
@@ -32,41 +49,47 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
-class Int_opt(models.Model):
+    def get_kids_generator(self):
+        if not self.category_set.all():
+            yield self
+        else:
+            for cat in self.category_set.all():
+                for kid in cat.get_kids_generator():
+                    yield kid
+
+
+class Opt(models.Model):
     name = models.ForeignKey(Option_name)
+
+    def __str__(self):
+        return '%s = %s' % (self.name.name, self.value)
+
+    def save(self, *args, **kwargs):
+        super().save()
+        if self.name.data_type == '':
+            if isinstance(self.value, float):
+                self.name.data_type = 'float'
+            elif isinstance(self.value, int):
+                self.name.data_type = 'int'
+            elif isinstance(self.value, str):
+                self.name.data_type = 'text'
+            self.name.save()
+
+    class Meta:
+        ordering = ['name', 'value']
+        abstract = True
+
+
+class Int_opt(Opt):
     value = models.IntegerField()
-    active_in = models.ManyToManyField(Category, blank=True)
 
 
-    class Meta:
-        ordering = ['name', 'value']
-
-    def __str__(self):
-        return '%s = %s' % (self.name.name, self.value)
-
-class Text_opt(models.Model):
-    name = models.ForeignKey(Option_name)
+class Text_opt(Opt):
     value = models.TextField()
-    active_in = models.ManyToManyField(Category, blank=True)
 
 
-    class Meta:
-        ordering = ['name', 'value']
-
-    def __str__(self):
-        return '%s = %s' % (self.name.name, self.value)
-
-class Float_opt(models.Model):
-    name = models.ForeignKey(Option_name)
+class Float_opt(Opt):
     value = models.FloatField()
-    active_in = models.ManyToManyField(Category, blank=True)
-
-
-    class Meta:
-        ordering = ['name', 'value']
-
-    def __str__(self):
-        return '%s = %s' % (self.name.name, self.value)
 
 
 class Product(models.Model):
@@ -87,11 +110,11 @@ def get_code():
     except IndexError:
         return 1001
 
-
     # try:
     #     return Spec_prod.objects.all()[-1].id + 2000
     # except AssertionError:
     #     return 1001
+
 
 class Spec_prod(models.Model):
     product = models.ForeignKey(Product)
@@ -103,7 +126,7 @@ class Spec_prod(models.Model):
     price = models.FloatField()
 
     def __str__(self):
-        return '%s-%s-%s' % (self.code, self.product.name, self.product.name)
+        return '%s-%s-%s' % (self.code, self.product.category.name, self.product.name)
 
     def get_int_opts(self):
         return '; '.join([str(obj) for obj in self.int_opts.all()])
@@ -121,16 +144,16 @@ class Spec_prod(models.Model):
         opt_list.extend(list(self.float_opts.all()))
         return opt_list
 
-    def save(self, *args, **kwargs):
-        super().save()
-        if self.amount == 0:
-            for opt in self.option_list():
-                if not opt.spec_prod_set.filter(product__category=self.product.category, amount__gt=0).exists():
-                    opt.active_in.remove(self.product.category)
-        else:
-            for opt in self.option_list():
-                if self.product.category not in opt.active_in.all():
-                    opt.active_in.add(self.product.category)
+    # def save(self, *args, **kwargs):
+    #     super().save()
+    #     if self.amount == 0:
+    #         for opt in self.option_list():
+    #             if not opt.spec_prod_set.filter(product__category=self.product.category, amount__gt=0).exists():
+    #                 opt.active_in.remove(self.product.category)
+    #     else:
+    #         for opt in self.option_list():
+    #             if self.product.category not in opt.active_in.all():
+    #                 opt.active_in.add(self.product.category)
 
 
 
@@ -168,3 +191,4 @@ class Sale_card(models.Model):
 #     votes = models.IntegerField(default=0)
 #     def __str__(self):
 #         return self.choice_text
+
