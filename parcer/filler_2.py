@@ -70,15 +70,32 @@ def create_object(params):
 
 
 
+
 with open('vl_data_3.json', 'r') as f:
     data = json.load(f)
-    data = [data[0]]
-    for aq in data:
+    print(len(data))
+    data = data[80:120]
+    for num, aq in enumerate(data):
         params = list(aq.keys())
         values = [(v if isinstance(v, list) else [v]) for v in aq.values()]
         count = 0
-        for set_values in product(*values):
+
+        vars = list(product(*values))
+        if len(vars) >= 100:
+            vars = random.sample(vars, 99)
+        for set_values in vars:
             create_object(dict(zip(params, set_values)))
+        print(num, 'product created_____________________')
+
+
+
+
+
+
+
+
+
+
             # count += 1
             # for p, s in zip(params, set_values):
             #
