@@ -18,10 +18,15 @@ class Mark(models.Model):
 class Option_name(models.Model):
     name = models.CharField(max_length=100)
     usage_in_filters = models.BooleanField(default=True)
-    data_type = models.CharField(max_length=10, blank=True, choices=(
+    data_type = models.CharField(max_length=20, blank=True, choices=(
         ('int', 'Целое число'),
         ('float', 'Десятичная дробь'),
         ('text', 'Текст'),
+    ))
+    appearance_in_filters = models.CharField(max_length=70, blank=True, choices=(
+        ('1 col', 'значения в один столбец'),
+        ('2 col', 'значения в два столбца'),
+        ('interval', 'интервал от мин до макс'),
     ))
 
     class Meta:

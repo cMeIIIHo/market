@@ -68,12 +68,18 @@
             {% endif %}
             <!-- manufacturers-->
             <div class="my-filter-block">
-                <div class="my-filter-block__title">Бренды</div>
+                <div class="my-filter-block__title">Производители</div>
                 <div class="my-filter-block__filters">
                     {% for manufacturer in manufacturers %}
                     <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="cb_m_{{manufacturer.id}}">
                         <input type="checkbox" id="cb_m_{{manufacturer.id}}" class="mdl-checkbox__input">
-                        <span class="mdl-checkbox__label">{{manufacturer.producer}}</span>
+                        <span class="mdl-checkbox__label">
+                            {% if manufacturer.brand %}
+                                {{ manufacturer.brand }}
+                            {% else %}
+                                {{manufacturer.producer}}
+                            {% endif %}
+                        </span>
                     </label>
                     {% endfor %}
                 </div>
