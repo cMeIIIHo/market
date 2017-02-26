@@ -13,14 +13,16 @@ from django.utils import timezone
 
 # Create your views here.
 
+
 def index(request):
     context = {
         'sale_cards': Sale_card.objects.all()
     }
     return render_to_response("catalog/index.html", context)
 
+
 def filter(request, category_id=1):
-    given_cat = Category.objects.get(pk=category_id)
+    given_cat = get_object_or_404(Category, pk=category_id)
     cat_list = list(given_cat.get_kids_generator())
     products = Product.objects.filter(category__in=cat_list)
 

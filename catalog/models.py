@@ -22,12 +22,13 @@ class Option_name(models.Model):
         ('int', 'Целое число'),
         ('float', 'Десятичная дробь'),
         ('text', 'Текст'),
-    ))
-    appearance_in_filters = models.CharField(max_length=70, blank=True, choices=(
+    )
+                                 )
+    appearance_in_filters = models.CharField(max_length=70, choices=(
         ('1 col', 'значения в один столбец'),
         ('2 col', 'значения в два столбца'),
         ('interval', 'интервал от мин до макс'),
-    ))
+    ),                                       default='1 col')
 
     class Meta:
         ordering = ['id']

@@ -42,6 +42,10 @@
         text-align: center;
         font-size: 20px;
     }
+    .my_filter_2_col {
+        float:left;
+        width: 50%;
+    }
 
 </style>
 <div class="mdl-grid">
@@ -53,7 +57,7 @@
                 Подбор линз
             </div>
             <!-- product types-->
-            {% if cat_list|length > 1 %}
+            {% if not cat_list|length_is:'1' %}
             <div class="my-filter-block">
                 <div class="my-filter-block__title">Категории</div>
                 <div class="my-filter-block__filters">
@@ -89,12 +93,39 @@
             <div class="my-filter-block">
                 <div class="my-filter-block__title">{{filter_name.name}}</div>
                 <div class="my-filter-block__filters">
-                    {% for filter_value in filter_values %}
-                    <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="cb_{{filter_name.id}}_{{filter_value.id}}">
-                        <input type="checkbox" id="cb_{{filter_name.id}}_{{filter_value.id}}" class="mdl-checkbox__input">
-                        <span class="mdl-checkbox__label">{{filter_value.value}}</span>
-                    </label>
-                    {% endfor %}
+
+                    {% if filter_name.appearance_in_filters == '2 col' %}
+                        {% for filter_value in filter_values %}
+                            <div class="my_filter_2_col">
+                                <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="cb_{{filter_name.id}}_{{filter_value.id}}">
+                                    <input type="checkbox" id="cb_{{filter_name.id}}_{{filter_value.id}}" class="mdl-checkbox__input">
+                                    <span class="mdl-checkbox__label">{{filter_value.value}}</span>
+                                </label>
+                            </div>
+                        {% endfor %}
+                            <div style="clear:left;float:none"></div>
+                    {% elif filter_name.appearance_in_filters == '1 col' %}
+                        {% for filter_value in filter_values %}
+                            <div>
+                                <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="cb_{{filter_name.id}}_{{filter_value.id}}">
+                                    <input type="checkbox" id="cb_{{filter_name.id}}_{{filter_value.id}}" class="mdl-checkbox__input">
+                                    <span class="mdl-checkbox__label">{{filter_value.value}}</span>
+                                </label>
+                            </div>
+                        {% endfor %}
+
+                    {% elif filter_name.appearance_in_filters == 'interval' %}
+                        {% for filter_value in filter_values %}
+                            <div>
+                                <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="cb_{{filter_name.id}}_{{filter_value.id}}">
+                                    <input type="checkbox" id="cb_{{filter_name.id}}_{{filter_value.id}}" class="mdl-checkbox__input">
+                                    <span class="mdl-checkbox__label">{{filter_value.value}}</span>
+                                </label>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+
+
                 </div>
             </div>
             {% endfor %}
