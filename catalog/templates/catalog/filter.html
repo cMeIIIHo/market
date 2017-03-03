@@ -67,7 +67,7 @@
             <div class="my-filter__title">
                 Подбор линз
             </div>
-            <form action="" method="get">
+            <form action="{% url 'catalog:filter' %}" method="get">
                 <!-- product types-->
                 {% if not cat_list|length_is:'1' %}
                 <div class="my-filter-block">
@@ -126,8 +126,8 @@
                             <span>{% cycle "От" "До" %}</span>
                             <div class="my-filter-block__filters-interval">
                                   <div class="mdl-textfield mdl-js-textfield">
-                                    <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id="sample2">
-                                    <label class="mdl-textfield__label" for="sample2">{{ value }}</label>
+                                    <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id="interval_{{filter_name.id}}_{% cycle 'min' 'max' %}">
+                                    <label class="mdl-textfield__label" for="interval_{{filter_name.id}}_{% cycle 'min' 'max' %}">{{ value }}</label>
                                     <span class="mdl-textfield__error">Input is not a number!</span>
                                   </div>
                             </div>
@@ -149,6 +149,7 @@
                 {% endfor %}
                 <input type="submit" value="Найти" />
             </form>
+            {{ get_data }}
         </div>
     </div>
 
