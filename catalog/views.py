@@ -17,7 +17,8 @@ from django.utils import timezone
 
 def index(request):
     context = {
-        'sale_cards': Sale_card.objects.all()
+        'sale_cards': Sale_card.objects.all(),
+        'lens_id': Category.objects.get(name='Линзы').id,
     }
     return render_to_response("catalog/index.html", context)
 
@@ -46,6 +47,7 @@ def filter(request, category_id=1):
         'filters': filters,
         'manufacturers': manufacturers,
         'products': products,
+        'lens_id': Category.objects.get(name='Линзы').id,
     }
     return render_to_response('catalog/filter.html', context)
 
