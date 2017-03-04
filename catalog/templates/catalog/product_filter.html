@@ -67,7 +67,7 @@
             <div class="my-filter__title">
                 Подбор линз
             </div>
-            <form action="{% url 'catalog:filter' %}" method="get">
+            <form action="{% url 'catalog:product_filter' %}" method="get">
                 <!-- product types-->
                 {% if not cat_list|length_is:'1' %}
                 <div class="my-filter-block">
