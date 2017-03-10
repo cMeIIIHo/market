@@ -3,6 +3,8 @@ from catalog.models import Sale_card
 from catalog.models import *
 import collections
 from django.db.models import Max, Min
+from django.template.context_processors import csrf
+
 from django.db import connection
 from django.db.models import Q
 from django.http import HttpResponse, HttpResponseRedirect
@@ -18,7 +20,6 @@ from django.utils import timezone
 def index(request):
     context = {
         'sale_cards': Sale_card.objects.all(),
-        'lens_id': Category.objects.get(name='Линзы').id,
     }
     return render_to_response("catalog/index.html", context)
 
@@ -37,7 +38,7 @@ def product_filter(request, category_id=1):
     # product's manufacturers
     manufacturers = Mark.objects.filter(product__in=products).distinct()
 
-    # making filter-block. It use a dict, filled with {Option names: [Option values]}
+    # making filter-block. It uses a dict, filled with {Option names: [Option values]}
     filters = collections.OrderedDict()
     filter_names = Option_name.objects.filter(category__in=cat_list, usage_in_filters=True).distinct()
     for filter_name in filter_names:
@@ -48,12 +49,15 @@ def product_filter(request, category_id=1):
         else:
             filters[filter_name] = filter_name.get_values().filter(spec_prod__product__in=products,
                                                                    spec_prod__amount__gt=0).distinct()
+    post_data = None
+    if request.method == 'POST':
+        post_data = request.POST
     context = {
         'cat_list': cat_list,
         'filters': filters,
         'manufacturers': manufacturers,
         'products': products,
-        'lens_id': Category.objects.get(name='Линзы').id,
+        'post_data': post_data,
     }
     return render_to_response('catalog/product_filter.html', context)
 
