@@ -42,13 +42,28 @@ def product_filter(request, category_id=1):
     filters = collections.OrderedDict()
     filter_names = Option_name.objects.filter(category__in=cat_list, usage_in_filters=True).distinct()
     for filter_name in filter_names:
+        filter_value_objects = filter_name.get_values().filter(spec_prod__product__in=products,
+                                                               spec_prod__amount__gt=0).distinct()
         if filter_name.appearance_in_filters == 'interval':
-            min_and_max = filter_name.get_values().aggregate(min_value=Min('value'),
-                                                             max_value=Max('value'))
-            filters[filter_name] = [min_and_max['min_value'], min_and_max['max_value']]
+            min_and_max = filter_value_objects.aggregate(min=Min('value'), max=Max('value'))
+            filters[filter_name] = filter_value_objects.filter(Q(value=min_and_max['min']) |
+                                                               Q(value=min_and_max['max']))
         else:
-            filters[filter_name] = filter_name.get_values().filter(spec_prod__product__in=products,
-                                                                   spec_prod__amount__gt=0).distinct()
+            filters[filter_name] = filter_value_objects
+
+
+
+
+
+
+
+    # if filter_name.appearance_in_filters == 'interval':
+    #         min_and_max = filter_name.get_values().aggregate(min_value=Min('value'),
+    #                                                          max_value=Max('value'))
+    #         filters[filter_name] = [min_and_max['min_value'], min_and_max['max_value']]
+    #     else:
+    #         filters[filter_name] = filter_name.get_values().filter(spec_prod__product__in=products,
+    #                                                                spec_prod__amount__gt=0).distinct()
     post_data = None
     if request.method == 'POST':
         post_data = request.POST

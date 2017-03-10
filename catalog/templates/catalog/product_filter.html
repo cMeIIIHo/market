@@ -122,13 +122,13 @@
 
                         {% elif filter_name.appearance_in_filters == 'interval' %}
                         <!-- in interval -->
-                            {% for min_and_max_values in filter_values %}
+                            {% for min_then_max_value in filter_values %}
                             {% cycle 'min' 'max' as extremum silent %}
                             <span>{% cycle "От" "До" %}</span>
                             <div class="my-filter-block__filters-interval">
                                   <div class="mdl-textfield mdl-js-textfield">
                                     <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id="interval_{{filter_name.id}}_{% cycle extremum %}">
-                                    <label class="mdl-textfield__label" for="interval_{{filter_name.id}}_{% cycle extremum %}">{{ min_and_max_values }}</label>
+                                    <label class="mdl-textfield__label" for="interval_{{filter_name.id}}_{% cycle extremum %}">{{ min_then_max_value.value }}</label>
                                     <span class="mdl-textfield__error">Input is not a number!</span>
                                   </div>
                             </div>
