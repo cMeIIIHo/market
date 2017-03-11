@@ -127,7 +127,7 @@
                             <span>{% cycle "От" "До" %}</span>
                             <div class="my-filter-block__filters-interval">
                                   <div class="mdl-textfield mdl-js-textfield">
-                                    <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id="interval_{{filter_name.id}}_{% cycle extremum %}">
+                                    <input class="mdl-textfield__input" type="text" maxlength="8" pattern="-?[0-9]*(\.[0-9]+)?" id="interval_{{filter_name.id}}_{% cycle extremum %}">
                                     <label class="mdl-textfield__label" for="interval_{{filter_name.id}}_{% cycle extremum %}">{{ min_then_max_value.value }}</label>
                                     <span class="mdl-textfield__error">Input is not a number!</span>
                                   </div>

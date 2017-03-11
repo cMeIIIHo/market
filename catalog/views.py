@@ -42,14 +42,14 @@ def product_filter(request, category_id=1):
     filters = collections.OrderedDict()
     filter_names = Option_name.objects.filter(category__in=cat_list, usage_in_filters=True).distinct()
     for filter_name in filter_names:
-        filter_value_objects = filter_name.get_values().filter(spec_prod__product__in=products,
+        filters[filter_name] = filter_name.get_values().filter(spec_prod__product__in=products,
                                                                spec_prod__amount__gt=0).distinct()
+        # if filter type =='interval', we need only 2 opt values - 'max' and 'min'
         if filter_name.appearance_in_filters == 'interval':
-            min_and_max = filter_value_objects.aggregate(min=Min('value'), max=Max('value'))
-            filters[filter_name] = filter_value_objects.filter(Q(value=min_and_max['min']) |
+            min_and_max = filters[filter_name].aggregate(min=Min('value'), max=Max('value'))
+            filters[filter_name] = filters[filter_name].filter(Q(value=min_and_max['min']) |
                                                                Q(value=min_and_max['max']))
-        else:
-            filters[filter_name] = filter_value_objects
+
 
 
 
