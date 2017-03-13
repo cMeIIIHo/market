@@ -50,6 +50,11 @@ def product_filter(request, category_id=1):
             filters[filter_name] = filters[filter_name].filter(Q(value=min_and_max['min']) |
                                                                Q(value=min_and_max['max']))
 
+    # apply activated filters to products
+    for param_name, param_value in request.GET.items():
+        param_name = param_name.split('_')
+        if param_name[0] == 'cb':
+            products = products.filter(**{'spec_prod__%s_opts__id' % param_name[1]: int(param_name[2])}).distinct()
 
 
 
@@ -57,22 +62,17 @@ def product_filter(request, category_id=1):
 
 
 
-    # if filter_name.appearance_in_filters == 'interval':
-    #         min_and_max = filter_name.get_values().aggregate(min_value=Min('value'),
-    #                                                          max_value=Max('value'))
-    #         filters[filter_name] = [min_and_max['min_value'], min_and_max['max_value']]
-    #     else:
-    #         filters[filter_name] = filter_name.get_values().filter(spec_prod__product__in=products,
-    #                                                                spec_prod__amount__gt=0).distinct()
-    post_data = None
-    if request.method == 'POST':
-        post_data = request.POST
+
+
+
+    get_data = request.GET
+
     context = {
         'cat_list': cat_list,
         'filters': filters,
         'manufacturers': manufacturers,
         'products': products,
-        'post_data': post_data,
+        'get_data': get_data,
     }
     return render_to_response('catalog/product_filter.html', context)
 
