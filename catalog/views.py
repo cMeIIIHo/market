@@ -52,9 +52,54 @@ def product_filter(request, category_id=1):
 
     # apply activated filters to products
     for param_name, param_value in request.GET.items():
-        param_name = param_name.split('_')
-        if param_name[0] == 'cb':
-            products = products.filter(**{'spec_prod__%s_opts__id' % param_name[1]: int(param_name[2])}).distinct()
+        param_name = param_name.split('-')
+        if param_name[0] == 'cb' and param_name[2].isnumeric():
+            if param_name[1] == 'category':
+                products = products.filter(**{'category__id': int(param_name[2])}).distinct()
+            elif param_name[1] == 'mark':
+                products = products.filter(**{'mark__id': int(param_name[2])}).distinct()
+            elif param_name[1] in ('float_opts', 'int_opts', 'text_opts'):
+                products = products.filter(**{'spec_prod__%s__id' % param_name[1]: int(param_name[2])}).distinct()
+        elif param_name[0] == 'interval' and param_value != '' and param_name[2].isnumeric() and param_name[3] in ('gte', 'lte'):
+            if param_name[1] == 'float_opts':
+                suitable_vals = Float_opt.objects.filter(**{'name__id': param_name[2],
+                                                            'value__%s' % param_name[3]: float(param_value)}).distinct()
+                products = products.filter(**{'spec_prod__%s__in' % param_name[1]: suitable_vals}).distinct()
+            elif param_name[1] == 'int_opts':
+                suitable_vals = Int_opt.objects.filter(**{'name__id': param_name[2],
+                                                          'value__%s' % param_name[3]: int(param_value)}).distinct()
+                products = products.filter(**{'spec_prod__%s__in' % param_name[1]: suitable_vals}).distinct()
+
+
+
+
+            # try:
+            #     param_value = int(param_value)
+            # except ValueError:
+            #     param_value = float(param_value)
+            #     if param_name[1] in ('float_opt', 'int_opt', 'text_opt') and param_name[2].isnumeric() and param_name[3] in ('gt', 'lt'):
+            #         suitable_value =
+
+
+        # elif param_name[0] == 'interval' and param_value is not None:
+        #     if param_name[1] in ('float_opt', 'int_opt', 'text_opt') and param_name[2].isnumeric() and param_name[3] in ('gt', 'lt'):
+        #
+        #         products = products.filter(**{'spec_prod__%s__name__id' % param_name[1]: int(param_name[2]),
+        #                                       'spec_prod__%s__value__%s' % (param_name[1], param_name[3]): (param_value)})
+
+
+
+
+
+
+
+
+
+
+    # for param_name, param_value in request.GET.items():
+    #     param_name = param_name.split('-')
+    #     if param_name[0] == 'cb':
+    #         products = products.filter(**{'spec_prod__%s_opts__id' % param_name[1]: int(param_name[2])}).distinct()
 
 
 

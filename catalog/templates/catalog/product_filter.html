@@ -74,8 +74,8 @@
                     <div class="my-filter-block__title">Категории</div>
                     <div class="my-filter-block__filters">
                         {% for sub_cat in cat_list %}
-                        <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="category_{{sub_cat.id}}">
-                            <input type="checkbox" id="category_{{sub_cat.id}}" name="category_{{sub_cat.id}}" class="mdl-checkbox__input">
+                        <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="cb-category-{{sub_cat.id}}">
+                            <input type="checkbox" id="cb-category-{{sub_cat.id}}" name="cb-category-{{sub_cat.id}}" class="mdl-checkbox__input">
                             <span class="mdl-checkbox__label">{{sub_cat.name}}</span>
                         </label>
                         {% endfor %}
@@ -88,8 +88,8 @@
                     <div class="my-filter-block__title">Производители</div>
                     <div class="my-filter-block__filters">
                         {% for manufacturer in manufacturers %}
-                        <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="mark_{{manufacturer.id}}">
-                            <input type="checkbox" id="mark_{{manufacturer.id}}" name="mark_{{manufacturer.id}}" class="mdl-checkbox__input">
+                        <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="cb-mark-{{manufacturer.id}}">
+                            <input type="checkbox" id="cb-mark-{{manufacturer.id}}" name="cb-mark-{{manufacturer.id}}" class="mdl-checkbox__input">
                             <span class="mdl-checkbox__label">
                                 {% if manufacturer.brand %}
                                     {{ manufacturer.brand }}
@@ -113,8 +113,8 @@
                         <!-- in 2 cols -->
                             {% for filter_value in filter_values %}
                                 <div class="my-filter-block__filters-2_col">
-                                    <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="cb_{{filter_name.data_type}}_{{filter_value.id}}">
-                                        <input type="checkbox" id="cb_{{filter_name.data_type}}_{{filter_value.id}}" name="cb_{{filter_name.data_type}}_{{filter_value.id}}" class="mdl-checkbox__input">
+                                    <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="cb-{{filter_name.data_type}}_opts-{{filter_value.id}}">
+                                        <input type="checkbox" id="cb-{{filter_name.data_type}}_opts-{{filter_value.id}}" name="cb-{{filter_name.data_type}}_opts-{{filter_value.id}}" class="mdl-checkbox__input">
                                         <span class="mdl-checkbox__label">{{filter_value.value}}</span>
                                     </label>
                                 </div>
@@ -123,13 +123,13 @@
                         {% elif filter_name.appearance_in_filters == 'interval' %}
                         <!-- in interval -->
                             {% for min_then_max_value in filter_values %}
-                            {% cycle 'gt' 'lt' as extremum silent %}
+                            {% cycle 'gte' 'lte' as extremum silent %}
                             <span>{% cycle "От" "До" %}</span>
                             <div class="my-filter-block__filters-interval">
                                   <div class="mdl-textfield mdl-js-textfield">
                                     <input class="mdl-textfield__input" type="text" maxlength="8" pattern="-?[0-9]*(\.[0-9]+)?"
-                                           id="interval_{{filter_name.data_type}}_{{filter_name.id}}_{{extremum}}" name="interval_{{filter_name.data_type}}_{{filter_name.id}}_{{extremum}}">
-                                    <label class="mdl-textfield__label" for="interval_{{filter_name.data_type}}_{{filter_name.id}}_{{extremum}}">{{ min_then_max_value.value }}</label>
+                                           id="interval-{{filter_name.data_type}}_opts-{{filter_name.id}}-{{extremum}}" name="interval-{{filter_name.data_type}}_opts-{{filter_name.id}}-{{extremum}}">
+                                    <label class="mdl-textfield__label" for="interval-{{filter_name.data_type}}_opts-{{filter_name.id}}-{{extremum}}">{{ min_then_max_value.value }}</label>
                                     <span class="mdl-textfield__error">Input is not a number!</span>
                                   </div>
                             </div>
@@ -139,8 +139,8 @@
                         <!-- in 1 cols -->
                             {% for filter_value in filter_values %}
                                 <div>
-                                    <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="cb_{{filter_name.data_type}}_{{filter_value.id}}">
-                                        <input type="checkbox" id="cb_{{filter_name.data_type}}_{{filter_value.id}}" name="cb_{{filter_name.data_type}}_{{filter_value.id}}" class="mdl-checkbox__input">
+                                    <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="cb-{{filter_name.data_type}}_opts-{{filter_value.id}}">
+                                        <input type="checkbox" id="cb-{{filter_name.data_type}}_opts-{{filter_value.id}}" name="cb-{{filter_name.data_type}}_opts-{{filter_value.id}}" class="mdl-checkbox__input">
                                         <span class="mdl-checkbox__label">{{filter_value.value}}</span>
                                     </label>
                                 </div>
