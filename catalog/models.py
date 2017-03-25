@@ -162,7 +162,7 @@ class Spec_prod(models.Model):
     #                 opt.active_in.add(self.product.category)
 
 
-
+# only for index.html page
 class Sale_card(models.Model):
     picture = models.ImageField(upload_to='sale_cards/', blank=True)
     title = models.CharField(max_length=50, blank=True)
