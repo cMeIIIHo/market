@@ -16,22 +16,24 @@ admin.site.register(Float_opt)
 admin.site.register(Category)
 admin.site.register(Mark)
 
+
 class Option_name_Admin(admin.ModelAdmin):
     ordering = ['name']
 admin.site.register(Option_name, Option_name_Admin)
 admin.site.register(Product)
 
+
 class Spec_prodAdmin(admin.ModelAdmin):
 
     # specify fields to be shown on the 'list of goods' page
-    #here i use models methods (f.e. get_int_opts)
+    # here i use models methods (f.e. get_int_opts)
     list_display = ('code', 'product', 'get_int_opts', 'get_float_opts', 'get_text_opts', 'amount', 'price')
 
     # separates inform into logical blocks
     fieldsets = [
-        ('Товар', {'fields':['code', 'product']}),
-        ('Набор параметров', {'fields':['int_opts', 'text_opts', 'float_opts']}),
-        ('Цена, остаток', {'fields':['amount', 'price']}),
+        ('Товар', {'fields': ['code', 'product']}),
+        ('Набор параметров', {'fields': ['int_opts', 'text_opts', 'float_opts']}),
+        ('Цена, остаток', {'fields': ['amount', 'price']}),
     ]
 
     '''По умолчанию, поле ManyToManyField отображается как <select multiple>.
@@ -40,7 +42,7 @@ class Spec_prodAdmin(admin.ModelAdmin):
     с JavaScript фильтром для поиска. Смотрите описание filter_vertical
     про использование вертикального “виджета”.'''
 
-    #remastering of ManyToManyField widget
+    # remastering of ManyToManyField widget
     filter_horizontal = ['int_opts', 'float_opts', 'text_opts']
 
     readonly_fields = ['code']

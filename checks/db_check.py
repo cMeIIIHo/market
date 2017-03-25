@@ -74,3 +74,15 @@ from django.db.models import Q
 # o = Option_name.objects.filter(data_type='')
 # print(len(o))
 # -------------------------------------------------------------------------
+
+# o = Option_name.objects.all()
+# print(len(o))
+# o = o.values_list('name')
+# print(len(o))
+# o = set(o)
+# print(o)
+# print(len(o))
+# -------------------------------------------------------------------------
+
+
+

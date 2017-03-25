@@ -16,7 +16,7 @@ class Mark(models.Model):
 
 
 class Option_name(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
     usage_in_filters = models.BooleanField(default=True)
     data_type = models.CharField(max_length=20, blank=True, choices=(
         ('int', 'Целое число'),
