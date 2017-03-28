@@ -51,28 +51,38 @@ def product_filter(request, category_id=1):
                                                                Q(value=min_and_max['max']))
 
     for param, values in request.GET.lists():
-        if param == 'mark' or param == 'category':
-            suitable_ids = [int(i) for i in values if i.isnumeric()]
-            products = products.filter(**{'%s__id__in' % param: suitable_ids}).distinct()
+        if param in ('mark', 'category'):
+            suitable_opt_ids = [int(i) for i in values if i.isnumeric()]
+            products = products.filter(**{'%s__id__in' % param: suitable_opt_ids}).distinct()
         else:
             try:
                 border_type, opt_id, opt_type = param.split('-')
-            except ValueError:
+            except Exception:
                 pass
             else:
                 if border_type == 'equal' and opt_type in ('float', 'int', 'text'):
-                    suitable_ids = [int(i) for i in values if i.isnumeric()]
-                    filt_spec_prods = Spec_prod.objects.filter(**{'%s_opts__id__in' % opt_type: suitable_ids}).values_list('product').distinct()
-                    products = products.filter(id__in=filt_spec_prods)
+                    suitable_opt_ids = [int(i) for i in values if i.isnumeric()]
+                    suitable_spec_prod_ids = Spec_prod.objects.filter(**{'%s_opts__id__in' % opt_type: suitable_opt_ids}).values_list('product').distinct()
+                    products = products.filter(id__in=suitable_spec_prod_ids)
                 elif border_type in ('lte', 'gte') and opt_id.isnumeric():
                     if opt_type == 'float':
-                        suitable_ids = Float_opt.objects.filter(**{'name__id': opt_id, 'value__%s' % border_type: float(values[0])}).values_list('id').distinct()
-                        filt_spec_prods = Spec_prod.objects.filter(**{'float_opts__id__in': suitable_ids}).values_list('product').distinct()
-                        products = products.filter(id__in=filt_spec_prods)
+                        try:
+                            value = float(values[0])
+                        except Exception:
+                            pass
+                        else:
+                            suitable_opt_ids = Float_opt.objects.filter(**{'name__id': opt_id, 'value__%s' % border_type: value}).values_list('id').distinct()
+                            suitable_spec_prod_ids = Spec_prod.objects.filter(**{'float_opts__id__in': suitable_opt_ids}).values_list('product').distinct()
+                            products = products.filter(id__in=suitable_spec_prod_ids)
                     elif opt_type == 'int':
-                        suitable_ids = Int_opt.objects.filter(**{'name__id': opt_id, 'value__%s' % border_type: int(values[0])}).values_list('id').distinct()
-                        filt_spec_prods = Spec_prod.objects.filter(**{'int_opts__id__in': suitable_ids}).values_list('product').distinct()
-                        products = products.filter(id__in=filt_spec_prods)
+                        try:
+                            value = int(values[0])
+                        except Exception:
+                            pass
+                        else:
+                            suitable_opt_ids = Int_opt.objects.filter(**{'name__id': opt_id, 'value__%s' % border_type: value}).values_list('id').distinct()
+                            suitable_spec_prod_ids = Spec_prod.objects.filter(**{'int_opts__id__in': suitable_opt_ids}).values_list('product').distinct()
+                            products = products.filter(id__in=suitable_spec_prod_ids)
 
     get_data = request.GET
     results = len(products)
