@@ -161,10 +161,6 @@
 
     <!-- product grid in the right sade of the screen -->
     <div class="mdl-cell mdl-cell--9-col">
-        {% for input_name, input_value in get_data.lists %}
-        <div>{{ input_name }}: {{ input_value }}</div>
-        {% endfor %}
-        {{results}}
         <div class="mdl-grid">
                 {% for product in products %}
             <div class="mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet">

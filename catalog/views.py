@@ -84,16 +84,11 @@ def product_filter(request, category_id=1):
                             suitable_spec_prod_ids = Spec_prod.objects.filter(**{'int_opts__id__in': suitable_opt_ids}).values_list('product').distinct()
                             products = products.filter(id__in=suitable_spec_prod_ids)
 
-    get_data = request.GET
-    results = len(products)
-
     context = {
         'cat_list': cat_list,
         'filters': filters,
         'marks': marks,
         'products': products,
-        'get_data': get_data,
-        'results': results,
     }
     return render_to_response('catalog/product_filter.html', context)
 
