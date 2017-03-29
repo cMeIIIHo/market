@@ -33,7 +33,7 @@ def product_filter(request, category_id=1):
     cat_list = list(given_cat.get_kids_generator())
 
     # get all the children's products
-    products = Product.objects.filter(category__in=cat_list)
+    products = Product.objects.filter(category__in=cat_list, spec_prod__amount__gt=0).distinct()
 
     # product's marks
     marks = Mark.objects.filter(product__in=products).distinct()
