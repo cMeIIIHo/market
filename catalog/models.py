@@ -70,17 +70,6 @@ class Opt(models.Model):
     def __str__(self):
         return '%s = %s' % (self.name.name, self.value)
 
-    def save(self, *args, **kwargs):
-        super().save()
-        if self.name.data_type == '':
-            if isinstance(self.value, float):
-                self.name.data_type = 'float'
-            elif isinstance(self.value, int):
-                self.name.data_type = 'int'
-            elif isinstance(self.value, str):
-                self.name.data_type = 'text'
-            self.name.save()
-
     class Meta:
         ordering = ['name', 'value']
         abstract = True

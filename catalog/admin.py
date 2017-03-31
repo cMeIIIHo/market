@@ -4,23 +4,36 @@ from catalog.models import *
 # Register your models here.
 
 admin.site.register(Sale_card)
-class Int_optAdmin(admin.ModelAdmin):
+
+
+class OptAdmin(admin.ModelAdmin):
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == 'name':
+            class_name = self.__class__.__name__
+            opt_type = class_name.split('_')[0].lower()
+            kwargs['queryset'] = Option_name.objects.filter(data_type=opt_type)
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
+class Int_optAdmin(OptAdmin):
     pass
-    # ordering = ['name']
 
+class Float_optAdmin(OptAdmin):
+    pass
 
+class Text_optAdmin(OptAdmin):
+    pass
 
 admin.site.register(Int_opt, Int_optAdmin)
-admin.site.register(Text_opt)
-admin.site.register(Float_opt)
+admin.site.register(Text_opt, Text_optAdmin)
+admin.site.register(Float_opt, Float_optAdmin)
 admin.site.register(Category)
 admin.site.register(Mark)
+admin.site.register(Product)
 
 
 class Option_nameAdmin(admin.ModelAdmin):
     ordering = ['name']
 admin.site.register(Option_name, Option_nameAdmin)
-admin.site.register(Product)
 
 
 class Spec_prodAdmin(admin.ModelAdmin):
