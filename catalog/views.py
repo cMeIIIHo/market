@@ -46,9 +46,7 @@ def product_filter(request, category_id=1):
                                                                spec_prod__amount__gt=0).distinct()
         # if filter type =='interval', we need only 2 opt values - 'max' and 'min'
         if filter_name.appearance_in_filters == 'interval':
-            min_and_max = filters[filter_name].aggregate(min=Min('value'), max=Max('value'))
-            filters[filter_name] = filters[filter_name].filter(Q(value=min_and_max['min']) |
-                                                               Q(value=min_and_max['max']))
+            filters[filter_name] = filters[filter_name].aggregate(gte=Min('value'), lte=Max('value'))
 
     for param, values in request.GET.lists():
         if param in ('mark', 'category'):
@@ -84,11 +82,14 @@ def product_filter(request, category_id=1):
                             suitable_spec_prod_ids = Spec_prod.objects.filter(**{'int_opts__id__in': suitable_opt_ids}).values_list('product').distinct()
                             products = products.filter(id__in=suitable_spec_prod_ids)
 
+    get_data = request.GET
+
     context = {
         'cat_list': cat_list,
         'filters': filters,
         'marks': marks,
         'products': products,
+        'data': get_data,
     }
     return render_to_response('catalog/product_filter.html', context)
 

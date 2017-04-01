@@ -115,3 +115,5 @@ from django.db.models import Q
 # print(len(p))
 # --------------------------------------------------------------
 
+# print(Product.objects.exclude(spec_prod__float_opts__name__name='Радиус кривизны'))
+# print(Product.objects.exclude(spec_prod__float_opts__name__name='Диаметр'))
