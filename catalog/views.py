@@ -18,13 +18,12 @@ from django.utils import timezone
 
 
 def index(request):
-    context = {
-        'sale_cards': Sale_card.objects.all(),
-    }
+    context = {'sale_cards': Sale_card.objects.all()}
     return render_to_response("catalog/index.html", context)
 
 
 def product_filter(request, category_id=1):
+    data_type = {'float': float, 'int': int, 'text': str}
 
     # get main category
     given_cat = get_object_or_404(Category, pk=category_id)
@@ -44,17 +43,21 @@ def product_filter(request, category_id=1):
     for filter_name in filter_names:
         filters[filter_name] = filter_name.get_values().filter(spec_prod__product__in=products,
                                                                spec_prod__amount__gt=0).distinct()
+
         # if filter type =='interval', we need only 2 opt values - 'max' and 'min'
         if filter_name.appearance_in_filters == 'interval':
-            filters[filter_name] = filters[filter_name].aggregate(gte=Min('value'), lte=Max('value'))
+            min_and_max = filters[filter_name].aggregate(min=Min('value'), max=Max('value'))
+            filters[filter_name] = (('gte', min_and_max['min']), ('lte', min_and_max['max']))
 
+    population_data = dict()
     for param, values in request.GET.lists():
         if param in ('mark', 'category'):
             suitable_opt_ids = [int(i) for i in values if i.isnumeric()]
             products = products.filter(**{'%s__id__in' % param: suitable_opt_ids}).distinct()
+            population_data[param] = values
         else:
             try:
-                border_type, opt_id, opt_type = param.split('-')
+                opt_id, border_type, opt_type = param.split('-')
             except Exception:
                 pass
             else:
@@ -89,7 +92,8 @@ def product_filter(request, category_id=1):
         'filters': filters,
         'marks': marks,
         'products': products,
-        'data': get_data,
+        'get_data': get_data,
+        'population_data': population_data,
     }
     return render_to_response('catalog/product_filter.html', context)
 

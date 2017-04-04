@@ -117,7 +117,7 @@
                                 <div class="my-filter-block__filters-2_col">
                                     <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="equal-{{filter_name.id}}-{{filter_name.data_type}}-{{filter_value.id}}">
                                         <input class="mdl-checkbox__input" type="checkbox" id="equal-{{filter_name.id}}-{{filter_name.data_type}}-{{filter_value.id}}"
-                                               name="equal-{{filter_name.id}}-{{filter_name.data_type}}" value="{{filter_value.id}}">
+                                               name="{{filter_name.id}}-equal-{{filter_name.data_type}}" value="{{filter_value.id}}">
                                         <span class="mdl-checkbox__label">{{filter_value.value}}</span>
                                     </label>
                                 </div>
@@ -125,13 +125,13 @@
 
                         {% elif filter_name.appearance_in_filters == 'interval' %}
                         <!-- in interval -->
-                            {% for border_type, value in filter_values.items %}
+                            {% for border_type, value in filter_values %}
                             <span>{% cycle "От" "До" %}</span>
                             <div class="my-filter-block__filters-interval">
                                   <div class="mdl-textfield mdl-js-textfield">
                                     <input class="mdl-textfield__input" type="text" maxlength="8"
                                            pattern="-?[0-9]*(\.[0-9]+)?" id="{{border_type}}-{{filter_name.id}}-{{filter_name.data_type}}"
-                                           name="{{border_type}}-{{filter_name.id}}-{{filter_name.data_type}}" value="">
+                                           name="{{filter_name.id}}-{{border_type}}-{{filter_name.data_type}}" value="">
                                     <label class="mdl-textfield__label" for="{{border_type}}-{{filter_name.id}}-{{filter_name.data_type}}">{{ value }}</label>
                                     <span class="mdl-textfield__error">Input is not a number!</span>
                                   </div>
@@ -144,7 +144,7 @@
                                 <div>
                                     <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="equal-{{filter_name.id}}-{{filter_name.data_type}}-{{filter_value.id}}">
                                         <input class="mdl-checkbox__input" type="checkbox" id="equal-{{filter_name.id}}-{{filter_name.data_type}}-{{filter_value.id}}"
-                                               name="equal-{{filter_name.id}}-{{filter_name.data_type}}" value="{{filter_value.id}}">
+                                               name="{{filter_name.id}}-equal-{{filter_name.data_type}}" value="{{filter_value.id}}">
                                         <span class="mdl-checkbox__label">{{filter_value.value}}</span>
                                     </label>
                                 </div>
@@ -160,9 +160,10 @@
 
     <!-- product grid in the right sade of the screen -->
     <div class="mdl-cell mdl-cell--9-col">
-        {% for x, y in data.lists %}
+        {% for x, y in get_data.lists %}
         <div>{{x}}: {{y}}</div>
         {% endfor %}
+        {{population_data}}
         <div class="mdl-grid">
                 {% for product in products %}
             <div class="mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet">
