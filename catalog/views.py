@@ -40,14 +40,20 @@ def product_filter(request, category_id=1):
     # making filter-block. It uses a dict, filled with {Option names: [Option values]}
     filters = collections.OrderedDict()
     filter_names = Option_name.objects.filter(category__in=cat_list, usage_in_filters=True).distinct()
-    for filter_name in filter_names:
-        filters[filter_name] = filter_name.get_values().filter(spec_prod__product__in=products,
-                                                               spec_prod__amount__gt=0).distinct()
 
-        # if filter type =='interval', we need only 2 opt values - 'max' and 'min'
-        if filter_name.appearance_in_filters == 'interval':
-            min_and_max = filters[filter_name].aggregate(min=Min('value'), max=Max('value'))
-            filters[filter_name] = (('gte', min_and_max['min']), ('lte', min_and_max['max']))
+    # fill a dict
+    for filter_name in filter_names:
+        filter_values = filter_name.get_values().filter(spec_prod__product__in=products, spec_prod__amount__gt=0).distinct()
+
+        if filter_name.appearance_in_filters in ('1 col', '2 col'):
+            filters[filter_name] = filter_values
+
+        # if filter type =='interval', we need only 2 values - min and max ( first and last )
+        elif filter_name.appearance_in_filters == 'interval':
+            last_index = filter_values.count() - 1
+            filters[filter_name] = [filter_values[0], filter_values[last_index]]
+
+
 
     population_data = dict()
     for param, values in request.GET.lists():
