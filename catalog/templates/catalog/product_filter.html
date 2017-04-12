@@ -162,11 +162,8 @@
 
     <!-- product grid in the right sade of the screen -->
     <div class="mdl-cell mdl-cell--9-col">
-        {% for x, y, z in get_data %}
+        {% for x, y in get_data %}
         <div>{{x}}: {{y}}</div>
-        {% endfor %}
-        {% for a in par %}
-        <div>{{a}}</div>
         {% endfor %}
         <div class="mdl-grid">
                 {% for product in products %}

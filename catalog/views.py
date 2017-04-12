@@ -22,6 +22,66 @@ def index(request):
     return render_to_response("catalog/index.html", context)
 
 
+def fill_filter_dict(filter_dict, option_names, products):
+    for option_name in option_names:
+        option_values = option_name.get_values().filter(spec_prod__product__in=products, spec_prod__amount__gt=0).distinct()
+        if option_name.appearance_in_filters in ('1 col', '2 col'):
+            filter_dict[option_name] = option_values
+        elif option_name.appearance_in_filters == 'interval':
+            last_index = option_values.count() - 1
+            filter_dict[option_name] = [option_values[0], option_values[last_index]]
+    return filter_dict
+
+
+def validate_filter_request_data(querydict, option_names):
+    filter_data = {}
+    keys = querydict.keys()
+    if 'category' in keys:
+        filter_data['category'] = [int(i) for i in querydict['category'] if i.isnumeric()]
+    if 'mark' in keys:
+        filter_data['mark'] = [int(i) for i in querydict['mark'] if i.isnumeric()]
+    for name in option_names:
+        if str(name.id) in keys:
+            if name.appearance_in_filters in ('1 col', '2col'):
+                filter_data[name.id] = [int(i) for i in querydict[str(name.id)] if i.isnumeric()]
+            elif name.appearance_in_filters == 'interval' and querydict[str(name.id)] != ['', '']:
+                type_func = {'float': float, 'int': int, 'text': str}[name.data_type]
+                filter_data[name.id] = {border: type_func(i)
+                                        for border in ('gte', 'lte')
+                                        for i in querydict[str(name.id)]}
+
+
+
+
+
+
+
+
+
+    # filter_data = {}
+    # for option_name in option_names:
+    #     if str(option_name.id) in querydict.keys():
+    #         if option_name.appearance_in_filters in ('1 col', '2 col'):
+    #             filter_data[option_name.id] = [int(i) for i in querydict[str(option_name.id)] if i.isnumeric()]
+    #         elif option_name.appearance_in_filters == 'interval' and querydict[str(option_name.id)] != ['', '']:
+    #             data_type = {'float': float, 'int': int, 'text': str}
+    #             borders = ('min', 'max')
+    #             try:
+    #                 filter_data[option_name.id] = {border: data_type[option_name.data_type](value)
+    #                                            for border in borders
+    #                                            for value in querydict[str(option_name.id)]}
+    #             except ValueError:
+    #                 pass
+    #     for filt in ('category', 'mark'):
+    #         if filt in
+
+
+
+
+
+
+
+
 def product_filter(request, category_id=1):
     data_type = {'float': float, 'int': int, 'text': str}
 
@@ -41,57 +101,52 @@ def product_filter(request, category_id=1):
     filters = collections.OrderedDict()
     filter_names = Option_name.objects.filter(category__in=cat_list, usage_in_filters=True).distinct()
 
-    # fill a dict
-    for filter_name in filter_names:
-        filter_values = filter_name.get_values().filter(spec_prod__product__in=products, spec_prod__amount__gt=0).distinct()
+    # fill a dict {Option_names: [Option_values]}
+    filters = fill_filter_dict(filters, filter_names, products)
 
-        if filter_name.appearance_in_filters in ('1 col', '2 col'):
-            filters[filter_name] = filter_values
-
-        # if filter type =='interval', we need only 2 values - min and max ( first and last )
-        elif filter_name.appearance_in_filters == 'interval':
-            last_index = filter_values.count() - 1
-            filters[filter_name] = [filter_values[0], filter_values[last_index]]
+    # validate and change(easier to use in future) incoming filter(request=GET) data
 
 
 
-    population_data = dict()
-    for param, values in request.GET.lists():
-        if param in ('mark', 'category'):
-            suitable_opt_ids = [int(i) for i in values if i.isnumeric()]
-            products = products.filter(**{'%s__id__in' % param: suitable_opt_ids}).distinct()
-            population_data[param] = values
-        else:
-            try:
-                opt_id, border_type, opt_type = param.split('-')
-            except Exception:
-                pass
-            else:
-                if border_type == 'equal' and opt_type in ('float', 'int', 'text'):
-                    suitable_opt_ids = [int(i) for i in values if i.isnumeric()]
-                    suitable_spec_prod_ids = Spec_prod.objects.filter(**{'%s_opts__id__in' % opt_type: suitable_opt_ids}).values_list('product').distinct()
-                    products = products.filter(id__in=suitable_spec_prod_ids)
-                elif border_type in ('lte', 'gte') and opt_id.isnumeric():
-                    if opt_type == 'float':
-                        try:
-                            value = float(values[0])
-                        except Exception:
-                            pass
-                        else:
-                            suitable_opt_ids = Float_opt.objects.filter(**{'name__id': opt_id, 'value__%s' % border_type: value}).values_list('id').distinct()
-                            suitable_spec_prod_ids = Spec_prod.objects.filter(**{'float_opts__id__in': suitable_opt_ids}).values_list('product').distinct()
-                            products = products.filter(id__in=suitable_spec_prod_ids)
-                    elif opt_type == 'int':
-                        try:
-                            value = int(values[0])
-                        except Exception:
-                            pass
-                        else:
-                            suitable_opt_ids = Int_opt.objects.filter(**{'name__id': opt_id, 'value__%s' % border_type: value}).values_list('id').distinct()
-                            suitable_spec_prod_ids = Spec_prod.objects.filter(**{'int_opts__id__in': suitable_opt_ids}).values_list('product').distinct()
-                            products = products.filter(id__in=suitable_spec_prod_ids)
 
-    get_data = request.GET
+
+
+
+    # for param, values in request.GET.lists():
+    #     if param in ('mark', 'category'):
+    #         suitable_opt_ids = [int(i) for i in values if i.isnumeric()]
+    #         products = products.filter(**{'%s__id__in' % param: suitable_opt_ids}).distinct()
+    #     else:
+    #         try:
+    #             opt_id, border_type, opt_type = param.split('-')
+    #         except Exception:
+    #             pass
+    #         else:
+    #             if border_type == 'equal' and opt_type in ('float', 'int', 'text'):
+    #                 suitable_opt_ids = [int(i) for i in values if i.isnumeric()]
+    #                 suitable_spec_prod_ids = Spec_prod.objects.filter(**{'%s_opts__id__in' % opt_type: suitable_opt_ids}).values_list('product').distinct()
+    #                 products = products.filter(id__in=suitable_spec_prod_ids)
+    #             elif border_type in ('lte', 'gte') and opt_id.isnumeric():
+    #                 if opt_type == 'float':
+    #                     try:
+    #                         value = float(values[0])
+    #                     except Exception:
+    #                         pass
+    #                     else:
+    #                         suitable_opt_ids = Float_opt.objects.filter(**{'name__id': opt_id, 'value__%s' % border_type: value}).values_list('id').distinct()
+    #                         suitable_spec_prod_ids = Spec_prod.objects.filter(**{'float_opts__id__in': suitable_opt_ids}).values_list('product').distinct()
+    #                         products = products.filter(id__in=suitable_spec_prod_ids)
+    #                 elif opt_type == 'int':
+    #                     try:
+    #                         value = int(values[0])
+    #                     except Exception:
+    #                         pass
+    #                     else:
+    #                         suitable_opt_ids = Int_opt.objects.filter(**{'name__id': opt_id, 'value__%s' % border_type: value}).values_list('id').distinct()
+    #                         suitable_spec_prod_ids = Spec_prod.objects.filter(**{'int_opts__id__in': suitable_opt_ids}).values_list('product').distinct()
+    #                         products = products.filter(id__in=suitable_spec_prod_ids)
+
+    get_data = request.GET.lists()
 
     context = {
         'cat_list': cat_list,
@@ -99,7 +154,6 @@ def product_filter(request, category_id=1):
         'marks': marks,
         'products': products,
         'get_data': get_data,
-        'population_data': population_data,
     }
     return render_to_response('catalog/product_filter.html', context)
 
