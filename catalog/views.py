@@ -33,23 +33,43 @@ def fill_filter_dict(filter_dict, option_names, products):
     return filter_dict
 
 
-def validate_filter_request_data(querydict, option_names):
+def validate_filter_request_data(data, option_names):
     filter_data = {}
-    keys = querydict.keys()
+    keys = data.keys()
     if 'category' in keys:
-        filter_data['category'] = [int(i) for i in querydict['category'] if i.isnumeric()]
+        filter_data['category'] = [int(i) for i in data.getlist('category') if i.isnumeric()]
     if 'mark' in keys:
-        filter_data['mark'] = [int(i) for i in querydict['mark'] if i.isnumeric()]
+        filter_data['mark'] = [int(i) for i in data.getlist('mark') if i.isnumeric()]
     for name in option_names:
         if str(name.id) in keys:
-            if name.appearance_in_filters in ('1 col', '2col'):
-                filter_data[name.id] = [int(i) for i in querydict[str(name.id)] if i.isnumeric()]
-            elif name.appearance_in_filters == 'interval' and querydict[str(name.id)] != ['', '']:
+            if name.appearance_in_filters in ('1 col', '2 col'):
+                filter_data[name.id] = [int(i) for i in data.getlist(str(name.id)) if i.isnumeric()]
+            elif name.appearance_in_filters == 'interval' and data.getlist(str(name.id)) != ['', '']:
                 type_func = {'float': float, 'int': int, 'text': str}[name.data_type]
                 filter_data[name.id] = {border: type_func(i)
                                         for border in ('gte', 'lte')
-                                        for i in querydict[str(name.id)]}
+                                        for i in data.getlist(str(name.id))}
+    print('filter_data', filter_data)
     return filter_data
+
+
+def update_filter_dict_with_get_data(filter_dict, data):
+    keys = data.keys()
+    for name, values in filter_dict.items():
+        if name.id in keys:
+            if name.appearance_in_filters in ('1 col', '2 col'):
+                for value in values:
+                    if value.id in data[name.id]:
+                        setattr(value, 'checked', 'checked')
+                    else:
+                        setattr(value, 'checked', '')
+            elif name.appearance_in_filters == 'interval':
+                setattr(values[0], 'checked', data['gte]'])
+                setattr(values[1], 'checked', data['lte]'])
+        else:
+            for value in values:
+                setattr(value, 'checked', '')
+
 
 
 
@@ -107,6 +127,9 @@ def product_filter(request, category_id=1):
 
     # validate and change(easier to use in future) incoming filter(request=GET) data
     get_data = validate_filter_request_data(request.GET, filter_names)
+
+    # use valid get_data to update filters
+    update_filter_dict_with_get_data(filters, get_data)
 
 
 
