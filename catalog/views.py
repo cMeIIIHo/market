@@ -49,6 +49,7 @@ def validate_filter_request_data(querydict, option_names):
                 filter_data[name.id] = {border: type_func(i)
                                         for border in ('gte', 'lte')
                                         for i in querydict[str(name.id)]}
+    return filter_data
 
 
 
@@ -105,6 +106,7 @@ def product_filter(request, category_id=1):
     filters = fill_filter_dict(filters, filter_names, products)
 
     # validate and change(easier to use in future) incoming filter(request=GET) data
+    get_data = validate_filter_request_data(request.GET, filter_names)
 
 
 
@@ -145,8 +147,6 @@ def product_filter(request, category_id=1):
     #                         suitable_opt_ids = Int_opt.objects.filter(**{'name__id': opt_id, 'value__%s' % border_type: value}).values_list('id').distinct()
     #                         suitable_spec_prod_ids = Spec_prod.objects.filter(**{'int_opts__id__in': suitable_opt_ids}).values_list('product').distinct()
     #                         products = products.filter(id__in=suitable_spec_prod_ids)
-
-    get_data = request.GET.lists()
 
     context = {
         'cat_list': cat_list,
