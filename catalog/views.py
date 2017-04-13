@@ -23,34 +23,39 @@ def index(request):
 
 
 def fill_filter_dict(filter_dict, option_names, products):
-    for option_name in option_names:
-        option_values = option_name.get_values().filter(spec_prod__product__in=products, spec_prod__amount__gt=0).distinct()
-        if option_name.appearance_in_filters in ('1 col', '2 col'):
-            filter_dict[option_name] = option_values
-        elif option_name.appearance_in_filters == 'interval':
+    for name in option_names:
+        option_values = name.get_values().filter(spec_prod__product__in=products, spec_prod__amount__gt=0).distinct()
+        if name.appearance_in_filters in ('1 col', '2 col'):
+            filter_dict[name] = option_values
+        elif name.appearance_in_filters == 'interval':
             last_index = option_values.count() - 1
-            filter_dict[option_name] = [option_values[0], option_values[last_index]]
+            filter_dict[name] = [option_values[0], option_values[last_index]]
     return filter_dict
 
 
 def validate_filter_request_data(data, option_names):
-    filter_data = {}
+    valid_data = {}
     keys = data.keys()
     if 'category' in keys:
-        filter_data['category'] = [int(i) for i in data.getlist('category') if i.isnumeric()]
+        valid_data['category'] = [int(i) for i in data.getlist('category') if i.isnumeric()]
     if 'mark' in keys:
-        filter_data['mark'] = [int(i) for i in data.getlist('mark') if i.isnumeric()]
+        valid_data['mark'] = [int(i) for i in data.getlist('mark') if i.isnumeric()]
     for name in option_names:
         if str(name.id) in keys:
             if name.appearance_in_filters in ('1 col', '2 col'):
-                filter_data[name.id] = [int(i) for i in data.getlist(str(name.id)) if i.isnumeric()]
+                valid_data[name.id] = [int(i) for i in data.getlist(str(name.id)) if i.isnumeric()]
             elif name.appearance_in_filters == 'interval' and data.getlist(str(name.id)) != ['', '']:
                 type_func = {'float': float, 'int': int, 'text': str}[name.data_type]
-                filter_data[name.id] = {border: type_func(i)
-                                        for border in ('gte', 'lte')
-                                        for i in data.getlist(str(name.id))}
-    print('filter_data', filter_data)
-    return filter_data
+                valid_data[name.id] = {}
+                for i in range(2):
+                    value = data.getlist(str(name.id))[i]
+                    try:
+                        value = type_func(value)
+                    except ValueError:
+                        pass
+                    else:
+                        valid_data[name.id][('gte', 'lte')[i]] = value
+    return valid_data
 
 
 def update_filter_dict_with_get_data(filter_dict, data):
@@ -64,11 +69,53 @@ def update_filter_dict_with_get_data(filter_dict, data):
                     else:
                         setattr(value, 'checked', '')
             elif name.appearance_in_filters == 'interval':
-                setattr(values[0], 'checked', data['gte]'])
-                setattr(values[1], 'checked', data['lte]'])
+                setattr(values[0], 'checked', data[name.id].get('gte', ''))
+                setattr(values[1], 'checked', data[name.id].get('lte', ''))
         else:
             for value in values:
                 setattr(value, 'checked', '')
+
+def update_marks_and_cat_list_with_get_data(cats, marks, data):
+    keys = data.keys()
+    c_and_m = {'category': cats, 'mark': marks}
+    for key, values in c_and_m.items():
+        if key in keys:
+            for value in values:
+                if value.id in data[key]:
+                    setattr(value, 'checked', 'checked')
+                else:
+                    setattr(value, 'checked', '')
+        else:
+            for value in values:
+                setattr(value, 'checked', '')
+
+
+
+
+
+def filter_products_with_get_data(data, products, filter_names):
+    keys = data.keys()
+    if 'category' in keys:
+        products = products.filter(**{'%s__id__in' % 'category': data['category']}).distinct()
+    if 'mark' in keys:
+        products = products.filter(**{'%s__id__in' % 'mark': data['mark']}).distinct()
+    for name in filter_names:
+        if name.id in keys:
+            if name.appearance_in_filters in ('1 col', '2 col'):
+                suitable_spec_prod_ids = Spec_prod.objects.filter(**{'%s_opts__id__in' % name.data_type: data[name.id]}).values_list('product').distinct()
+                products = products.filter(id__in=suitable_spec_prod_ids)
+            if name.appearance_in_filters == 'interval':
+                if name.data_type == 'float':
+                    for border, value in data[name.id].items():
+                        suitable_opt_ids = Float_opt.objects.filter(**{'name__id': name.id, 'value__%s' % border: value}).values_list('id').distinct()
+                        suitable_spec_prod_ids = Spec_prod.objects.filter(**{'float_opts__id__in': suitable_opt_ids}).values_list('product').distinct()
+                        products = products.filter(id__in=suitable_spec_prod_ids)
+                elif name.data_type == 'int':
+                    for border, value in data[name.id].items():
+                        suitable_opt_ids = Int_opt.objects.filter(**{'name__id': name.id, 'value__%s' % border: value}).values_list('id').distinct()
+                        suitable_spec_prod_ids = Spec_prod.objects.filter(**{'int_opts__id__in': suitable_opt_ids}).values_list('product').distinct()
+                        products = products.filter(id__in=suitable_spec_prod_ids)
+    return products
 
 
 
@@ -130,6 +177,12 @@ def product_filter(request, category_id=1):
 
     # use valid get_data to update filters
     update_filter_dict_with_get_data(filters, get_data)
+
+    #
+    update_marks_and_cat_list_with_get_data(cat_list, marks, get_data)
+
+    # apply filters from get_data to products
+    products = filter_products_with_get_data(get_data, products, filter_names)
 
 
 

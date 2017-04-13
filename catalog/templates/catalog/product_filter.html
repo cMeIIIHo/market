@@ -76,7 +76,7 @@
                         {% for sub_cat in cat_list %}
                         <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="category-{{sub_cat.id}}">
                             <input class="mdl-checkbox__input" type="checkbox" id="category-{{sub_cat.id}}"
-                                   name="category" value="{{sub_cat.id}}">
+                                   name="category" value="{{sub_cat.id}}" {{sub_cat.checked}}>
                             <span class="mdl-checkbox__label">{{sub_cat.name}}</span>
                         </label>
                         {% endfor %}
@@ -91,7 +91,7 @@
                         {% for mark in marks %}
                         <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="mark-{{mark.id}}">
                             <input class="mdl-checkbox__input" type="checkbox" id="mark-{{mark.id}}"
-                                   name="mark" value="{{mark.id}}">
+                                   name="mark" value="{{mark.id}}" {{mark.checked}}>
                             <span class="mdl-checkbox__label">
                                 {% if mark.brand %}
                                     {{ mark.brand }}
