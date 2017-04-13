@@ -175,10 +175,10 @@ def product_filter(request, category_id=1):
     # validate and change(easier to use in future) incoming filter(request=GET) data
     get_data = validate_filter_request_data(request.GET, filter_names)
 
-    # use valid get_data to update filters
+    # use valid get_data to update filters(add attribute .checked to all filter_value objects)
     update_filter_dict_with_get_data(filters, get_data)
 
-    #
+    # use valid get_data to update categories and marks(add attribute .checked to all objects)
     update_marks_and_cat_list_with_get_data(cat_list, marks, get_data)
 
     # apply filters from get_data to products
