@@ -2,6 +2,8 @@ from django.shortcuts import get_object_or_404, render, render_to_response
 from catalog.models import Sale_card
 from catalog.models import *
 import collections
+from utils import MyPaginator
+from django.core.paginator import InvalidPage
 from django.db.models import Max, Min
 from django.template.context_processors import csrf
 
@@ -18,7 +20,8 @@ from django.utils import timezone
 
 
 def index(request):
-    context = {'sale_cards': Sale_card.objects.all()}
+    context = {'sale_cards': Sale_card.objects.all(),
+               'lens_category_id': Category.objects.get(name='Линзы').id}
     return render_to_response("catalog/index.html", context)
 
 
@@ -150,7 +153,7 @@ def filter_products_with_get_data(data, products, filter_names):
 
 
 
-def product_filter(request, category_id=1):
+def product_filter(request, category_id=1, page_number=1):
     data_type = {'float': float, 'int': int, 'text': str}
 
     # get main category
@@ -183,6 +186,16 @@ def product_filter(request, category_id=1):
 
     # apply filters from get_data to products
     products = filter_products_with_get_data(get_data, products, filter_names)
+
+    # paginaition
+    paginator = MyPaginator(products, 18)
+    try:
+        page = paginator.page(page_number)
+    except InvalidPage:
+        page = paginator.page(1)
+
+
+
 
 
 
@@ -230,6 +243,9 @@ def product_filter(request, category_id=1):
         'marks': marks,
         'products': products,
         'get_data': get_data,
+        'page': page,
+        'category_id': category_id,
+        'lens_category_id': Category.objects.get(name='Линзы').id,
     }
     return render_to_response('catalog/product_filter.html', context)
 

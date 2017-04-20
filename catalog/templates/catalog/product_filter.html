@@ -59,15 +59,15 @@
         border-bottom: 1px solid #263238;
     }
 </style>
-<div class="mdl-grid">
 
+<div class="mdl-grid">
     <!-- filters block -->
     <div class="mdl-cell mdl-cell--3-col">
         <div class="my-filter">
             <div class="my-filter__title">
                 Подбор линз
             </div>
-            <form action="{% url 'catalog:product_filter' %}" method="get">
+            <form action="{% url 'catalog:product_filter' category_id %}" method="get">
                 <!-- categories -->
                 {% if not cat_list|length_is:'1' %}
                 <div class="my-filter-block">
@@ -166,7 +166,7 @@
         <div>{{x}}: {{y}}</div>
         {% endfor %}
         <div class="mdl-grid">
-                {% for product in products %}
+                {% for product in page.object_list %}
             <div class="mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet">
                 <div class="mdl-card mdl-shadow--4dp">
                     <a class="my-link" href="">
@@ -186,5 +186,39 @@
     </div>
 
 </div>
+{% endblock %}
+
+
+
+
+{% block pagination %}
+    <style>
+    .my-pagination {
+    text-align: center;
+    }
+    .my-pagination li {
+    display: inline;
+    background: #263238;
+    padding: 7px 11px;
+    }
+    .my-pagination a {
+    color: #8dc351;
+    font-size: 16px
+    }
+    </style>
+
+    <div class="my-pagination">
+        <ul>
+            <li class="my-pagination__sides"><a href="{% url 'catalog:product_filter' category_id 1 %}">«First</a></li>
+            {% for page_number in page.get_page_area %}
+            {% if page_number == page.number %}
+            <li class="active"><a href="{% url 'catalog:product_filter' category_id page_number %}">{{page_number}}</a></li>
+            {% else %}
+            <li><a href="{% url 'catalog:product_filter' category_id page_number %}">{{page_number}}</a></li>
+            {% endif %}
+            {% endfor %}
+            <li class="my-pagination__sides"><a href="{% url 'catalog:product_filter' category_id page.paginator.num_pages %}">Last»</a></li>
+        </ul>
+    </div>
 {% endblock %}
 
