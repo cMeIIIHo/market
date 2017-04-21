@@ -196,6 +196,9 @@
     .my-pagination {
     text-align: center;
     }
+    .my-pagination__active_page {
+    background: #8dc351;
+    }
     .my-pagination li {
     display: inline;
     background: #263238;
@@ -203,21 +206,24 @@
     }
     .my-pagination a {
     color: #8dc351;
-    font-size: 16px
+    font-size: 16px;
+    }
+    .my-pagination__active_page a{
+    color: white;
     }
     </style>
 
     <div class="my-pagination">
         <ul>
-            <li class="my-pagination__sides"><a href="{% url 'catalog:product_filter' category_id 1 %}">«First</a></li>
+            <li><a href="{% url 'catalog:product_filter' category_id 1 %}{{params}}">«First</a></li>
             {% for page_number in page.get_page_area %}
             {% if page_number == page.number %}
-            <li class="active"><a href="{% url 'catalog:product_filter' category_id page_number %}">{{page_number}}</a></li>
+            <li class="my-pagination__active_page"><a href="{% url 'catalog:product_filter' category_id page_number %}{{params}}">{{page_number}}</a></li>
             {% else %}
-            <li><a href="{% url 'catalog:product_filter' category_id page_number %}">{{page_number}}</a></li>
+            <li><a href="{% url 'catalog:product_filter' category_id page_number %}{{params}}">{{page_number}}</a></li>
             {% endif %}
             {% endfor %}
-            <li class="my-pagination__sides"><a href="{% url 'catalog:product_filter' category_id page.paginator.num_pages %}">Last»</a></li>
+            <li><a href="{% url 'catalog:product_filter' category_id page.paginator.num_pages %}{{params}}">Last»</a></li>
         </ul>
     </div>
 {% endblock %}

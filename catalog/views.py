@@ -154,8 +154,6 @@ def filter_products_with_get_data(data, products, filter_names):
 
 
 def product_filter(request, category_id=1, page_number=1):
-    data_type = {'float': float, 'int': int, 'text': str}
-
     # get main category
     given_cat = get_object_or_404(Category, pk=category_id)
 
@@ -237,12 +235,14 @@ def product_filter(request, category_id=1, page_number=1):
     #                         suitable_spec_prod_ids = Spec_prod.objects.filter(**{'int_opts__id__in': suitable_opt_ids}).values_list('product').distinct()
     #                         products = products.filter(id__in=suitable_spec_prod_ids)
 
+    params = '?' + request.GET.urlencode()
+
     context = {
         'cat_list': cat_list,
         'filters': filters,
         'marks': marks,
         'products': products,
-        'get_data': get_data,
+        'params': params,
         'page': page,
         'category_id': category_id,
         'lens_category_id': Category.objects.get(name='Линзы').id,
