@@ -9,7 +9,7 @@
     {% for sale_card in sale_cards %}
     <div class="mdl-cell mdl-cell--3-col mdl-cell--4-col-tablet">
         <div class="mdl-card mdl-shadow--4dp">
-            <a class="my-link" href="">
+            <a href="{% url 'catalog:product_filter' sale_card.category_id %}?{{sale_card.params}}">
                 <div class="mdl-card__media my-sale_card__media"><img src="{{ sale_card.picture.url }}" border="0"
                                                   alt="">
                 </div>

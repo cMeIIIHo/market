@@ -139,51 +139,14 @@ class Spec_prod(models.Model):
         opt_list.extend(list(self.float_opts.all()))
         return opt_list
 
-    # def save(self, *args, **kwargs):
-    #     super().save()
-    #     if self.amount == 0:
-    #         for opt in self.option_list():
-    #             if not opt.spec_prod_set.filter(product__category=self.product.category, amount__gt=0).exists():
-    #                 opt.active_in.remove(self.product.category)
-    #     else:
-    #         for opt in self.option_list():
-    #             if self.product.category not in opt.active_in.all():
-    #                 opt.active_in.add(self.product.category)
-
 
 # only for index.html page
 class Sale_card(models.Model):
     picture = models.ImageField(upload_to='sale_cards/', blank=True)
     title = models.CharField(max_length=50, blank=True)
     text = models.CharField(max_length=300, blank=True)
-    link = models.CharField(max_length=300, blank=True)
+    category = models.ForeignKey(Category, blank=True)
+    params = models.CharField(max_length=100, blank=True)
 
     def __str__(self):
         return self.title
-
-
-
-
-
-# class Question(models.Model):
-#     question_text = models.CharField(max_length=200)
-#     pub_date = models.DateTimeField("date published")
-#
-#     def __str__(self):
-#         return self.question_text
-#
-#     def was_published_recently(self):
-#         now = timezone.now()
-#         return now - datetime.timedelta(days=1) <= self.pub_date <= now
-#
-#     was_published_recently.admin_order_field = 'pub_date'
-#     was_published_recently.boolean = True
-#     was_published_recently.short_description = 'Published recently?'
-#
-# class Choice(models.Model):
-#     question = models.ForeignKey(Question, on_delete=models.CASCADE)
-#     choice_text = models.CharField(max_length=200)
-#     votes = models.IntegerField(default=0)
-#     def __str__(self):
-#         return self.choice_text
-
