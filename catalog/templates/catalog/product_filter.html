@@ -162,14 +162,16 @@
 
     <!-- product grid in the right sade of the screen -->
     <div class="mdl-cell mdl-cell--9-col">
+        <!-- debug data
         {% for x, y in get_data.items %}
         <div>{{x}}: {{y}}</div>
         {% endfor %}
+        -->
         <div class="mdl-grid">
                 {% for product in page.object_list %}
             <div class="mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet">
                 <div class="mdl-card mdl-shadow--4dp">
-                    <a class="my-link" href="">
+                    <a href="{% url 'catalog:product_page' product.id %}">
                         <div class="mdl-card__media my-product_card__media"><img src="{{ product.picture.url }}" border="0" alt=""></div>
                         <div class="mdl-card__title my-product_card__title">
                             <h2 class="mdl-card__title-text">{{ product.name }}</h2>
@@ -215,15 +217,15 @@
 
     <div class="my-pagination">
         <ul>
-            <li><a href="{% url 'catalog:product_filter' category_id 1 %}{{params}}">«First</a></li>
+            <li><a href="{% url 'catalog:product_filter' category_id 1 %}?{{page.params}}">«First</a></li>
             {% for page_number in page.get_page_area %}
             {% if page_number == page.number %}
-            <li class="my-pagination__active_page"><a href="{% url 'catalog:product_filter' category_id page_number %}{{params}}">{{page_number}}</a></li>
+            <li class="my-pagination__active_page"><a href="{% url 'catalog:product_filter' category_id page_number %}?{{page.params}}">{{page_number}}</a></li>
             {% else %}
-            <li><a href="{% url 'catalog:product_filter' category_id page_number %}{{params}}">{{page_number}}</a></li>
+            <li><a href="{% url 'catalog:product_filter' category_id page_number %}?{{page.params}}">{{page_number}}</a></li>
             {% endif %}
             {% endfor %}
-            <li><a href="{% url 'catalog:product_filter' category_id page.paginator.num_pages %}{{params}}">Last»</a></li>
+            <li><a href="{% url 'catalog:product_filter' category_id page.paginator.num_pages %}?{{page.params}}">Last»</a></li>
         </ul>
     </div>
 {% endblock %}

@@ -11,9 +11,6 @@
         .mdl-layout a {
         text-decoration: none;
         }
-        .page-content {
-            background-color: #f5f5f5;
-        }
         .mdl-layout__drawer{
             background-color: #263238;
             color: #f5f5f5;
@@ -29,11 +26,9 @@
             flex-grow: 1;
             color: rgba(255, 255, 255, 0.56);
         }
-         .mdl-grid {
-            max-width: 1080px;
-        }
         .mdl-cell {
             box-sizing: border-box;
+            background: grey;
         }
         .mdl-card {
             width: 100%;
@@ -56,6 +51,13 @@
         .mdl-layout__drawer .mdl-navigation .mdl-navigation__link:hover {
             background: #8dc351;
             color: rgb(66,66,66);
+        }
+        .mdl-grid {
+        max-width: 1080px;
+        }
+        .page-content {
+        background-color: #f5f5f5;
+        }
     </style>
 </head>
 <body>
@@ -83,7 +85,7 @@
     <div class="mdl-layout__drawer">
         <span class="mdl-layout-title">Меню</span>
         <nav class="mdl-navigation">
-            <a class="mdl-navigation__link" href="{% url 'catalog:product_filter' lens_category_id %}">Подбор линз</a>
+            <a class="mdl-navigation__link" href="{% url 'catalog:product_filter' 1 %}">Подбор линз</a>
             <a class="mdl-navigation__link" href="">Доставка и оплата</a>
             <a class="mdl-navigation__link" href="">Пункты выдачи</a>
             <a class="mdl-navigation__link" href="">Акции</a>

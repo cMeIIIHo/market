@@ -159,16 +159,22 @@ def product_filter(request, category_id=1, page_number=1):
     except InvalidPage:
         page = paginator.page(1)
 
-    params = '?' + request.GET.urlencode()
+    page.params = request.GET.urlencode()
 
     context = {
         'cat_list': cat_list,
         'filters': filters,
         'marks': marks,
-        'products': products,
-        'params': params,
         'page': page,
         'category_id': category_id,
         'lens_category_id': Category.objects.get(name='Линзы').id,
     }
     return render_to_response('catalog/product_filter.html', context)
+
+
+def product_page(request, product_id):
+    product = get_object_or_404(Product, pk=product_id)
+    context = {
+        'product': product,
+    }
+    return render_to_response('catalog/product_page.html', context)

@@ -7,7 +7,8 @@ app_name = 'catalog'
 urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^product_filter/(?P<category_id>[0-9]+)/$', views.product_filter, name='product_filter'),
-    url(r'^product_filter/(?P<category_id>[0-9]+)/(?P<page_number>[0-9]+)$', views.product_filter, name='product_filter'),
+    url(r'^product_filter/(?P<category_id>[0-9]+)/(?P<page_number>[0-9]+)/$', views.product_filter, name='product_filter'),
+    url(r'^product_page/(?P<product_id>[0-9]+)/$', views.product_page, name='product_page'),
 ]
 
 # urlpatterns = [
