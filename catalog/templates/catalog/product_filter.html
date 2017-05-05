@@ -33,13 +33,7 @@
                         <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="mark-{{mark.id}}">
                             <input class="mdl-checkbox__input" type="checkbox" id="mark-{{mark.id}}"
                                    name="mark" value="{{mark.id}}" {{mark.checked}}>
-                            <span class="mdl-checkbox__label">
-                                {% if mark.brand %}
-                                    {{ mark.brand }}
-                                {% else %}
-                                    {{mark.producer}}
-                                {% endif %}
-                            </span>
+                            <span class="mdl-checkbox__label">{{ mark }}</span>
                         </label>
                         {% endfor %}
                     </div>

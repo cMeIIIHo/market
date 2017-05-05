@@ -77,6 +77,7 @@ def update_filter_dict_with_get_data(filter_dict, data):
             for value in values:
                 setattr(value, 'checked', '')
 
+
 def update_marks_and_cat_list_with_get_data(cats, marks, data):
     keys = data.keys()
     c_and_m = {'category': cats, 'mark': marks}
@@ -90,9 +91,6 @@ def update_marks_and_cat_list_with_get_data(cats, marks, data):
         else:
             for value in values:
                 setattr(value, 'checked', '')
-
-
-
 
 
 def filter_products_with_get_data(data, products, filter_names):

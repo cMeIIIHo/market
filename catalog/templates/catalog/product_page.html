@@ -1,26 +1,114 @@
 {% extends "base.html" %}
 
+{% load staticfiles %}
+{% load catalog_extras %}
+
 {% block content %}
-<div class="mdl-grid">
+<style>
+    .my-product_options-block {
+    background: white;
+    border-radius: 2px;
+    }
+    .my-product_options-block select {
+    margin: 4px;
+    }
+    .my-product_options-block button {
+    background: url("{% static 'catalog/imgs/cart.png' %}");
+    width: 171px;
+    height: 173px;
+    border: 0;
+    }
+    .my-product_options-block button:hover {
+    background: url("{% static 'catalog/imgs/cart_hover.png' %}");
+    }
+    .my-product_description-block {
+    background: white;
+    padding: 5px;
+    border-radius: 2px;
+    }
+    .even_option {
+    background: honeydew;
+    }
+    .my-product_banner-block {
+    text-align: center;
+    }
+</style>
+
+<div class="mdl-grid my-product_data">
+
+    <!-- product picture, title, price -->
     <div class="mdl-cell mdl-cell--3-col">
-                <div class="mdl-card mdl-shadow--4dp">
-                    <a href="{% url 'catalog:product_page' product.id %}">
-                        <div class="mdl-card__media my-product_card__media"><img src="{{ product.picture.url }}" border="0" alt=""></div>
-                        <div class="mdl-card__title my-product_card__title">
-                            <h2 class="mdl-card__title-text">{{ product.name }}</h2>
-                        </div>
-                    </a>
-                    <div class="mdl-card__supporting-text">
-                        а цена то только в спек_прод =)
+        <div class="mdl-card mdl-shadow--4dp">
+            <a href="{% url 'catalog:product_page' product.id %}">
+                <div class="mdl-card__media my-product_card__media">
+                    <img src="{{ product.picture.url }}" border="0" alt="">
+                </div>
+                <div class="mdl-card__title my-product_card__title">
+                    <h2 class="mdl-card__title-text">{{ product.name }}</h2>
+                </div>
+            </a>
+            <div class="mdl-card__supporting-text">
+                а цена то только в спек_прод =)
+            </div>
+        </div>
+    </div>
+
+    <!-- product options -->
+    <div class="mdl-cell mdl-cell--9-col">
+        <form action="" method="post">
+            <div class="mdl-grid my-product_options-block mdl-shadow--4dp">
+                <!-- choosable options -->
+                <div class="mdl-cell mdl-cell--5-col">
+                    {% for opt_name, opt_vals in product.get_choosable_options.items %}
+                    <div>
+                        <label for="{{opt_name.id}}">{{opt_name.name}}</label>
+                        <select id="{{opt_name.id}}" name="{{opt_name.id}}">
+                            {% for opt_val in opt_vals %}
+                            <option value="{{opt_val.id}}">{{opt_val.value}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    {% endfor %}
+                    <div>
+                        <label for="amount">Количество</label>
+                        <select id="amount" name="amount">
+                            {% for amount in 10|get_range %}
+                            <option value="{{amount}}">{{amount}}</option>
+                            {% endfor %}
+                        </select>
                     </div>
                 </div>
+                <!-- price info, cart button -->
+                <div class="mdl-cell mdl-cell--7-col">
+                    <button type="submit">
+                        <!--
+                        <img src="{% static 'catalog/imgs/cart.png' %}" />
+                        -->
+                    </button>
+                </div>
+                <!-- static options -->
+                <div class="mdl-cell mdl-cell--12-col">
+                    {% for opt_name, opt_val in product.get_static_options.items %}
+                    <div class="{% cycle 'even_option' '' %}">{{opt_name.name}}: {{opt_val.value}}</div>
+                    {% endfor %}
+                </div>
+            </div>
+        </form>
     </div>
-    <div class="mdl-cell mdl-cell--9-col">
-        hi
+
+    <!-- product description -->
+    {% if product.description %}
+    <div class="mdl-cell mdl-cell--12-col my-product_description-block mdl-shadow--4dp">
+        {{product.description}}
     </div>
-    <div class="mdl-cell mdl-cell--12-col">
-        hi
+    {% endif %}
+
+    <!-- product banner -->
+    {% if product.banner %}
+    <div class="mdl-cell mdl-cell--12-col my-product_banner-block">
+        <img src="{{product.banner.url}}"/>
     </div>
+    {% endif %}
 </div>
 
 

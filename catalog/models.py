@@ -41,10 +41,8 @@ class Option_name(models.Model):
             return self.float_opt_set.all()
         elif self.int_opt_set.exists():
             return self.int_opt_set.all()
-        elif self.text_opt_set.exists():
-            return self.text_opt_set.all()
         else:
-            return []
+            return self.text_opt_set.all()
 
 
 class Category(models.Model):
@@ -98,17 +96,39 @@ class Product(models.Model):
     def __str__(self):
         return self.name
 
+    def get_options(self):
+        options = {}
+        spec_prods = self.spec_prod_set.filter(amount__gt=0)
+        opt_names = self.category.opt_list.all()
+        for opt_name in opt_names:
+            opt_vals = opt_name.get_values().filter(spec_prod__in=spec_prods).distinct()
+            if opt_vals.exists():
+                options[opt_name] = opt_vals
+        return options
+
+    def get_choosable_options(self):
+        choosable_options = {}
+        for opt_name, opt_vals in self.get_options().items():
+            if opt_vals.count() > 1:
+                choosable_options[opt_name] = opt_vals
+        return choosable_options
+
+    def get_static_options(self):
+        static_options = {}
+        for opt_name, opt_vals in self.get_options().items():
+            if opt_vals.count() == 1:
+                static_options[opt_name] = opt_vals[0]
+        return static_options
+
+
+
+
 
 def get_code():
     try:
-        return Spec_prod.objects.all().order_by('-id')[0].code+1
+        return Spec_prod.objects.all().order_by('-id')[0].code + 1
     except IndexError:
         return 1001
-
-    # try:
-    #     return Spec_prod.objects.all()[-1].id + 2000
-    # except AssertionError:
-    #     return 1001
 
 
 class Spec_prod(models.Model):
