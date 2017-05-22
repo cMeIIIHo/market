@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% load staticfiles %}
+{% load static %}
 {% load catalog_extras %}
 
 {% block content %}
@@ -31,6 +31,9 @@
     }
     .my-product_banner-block {
     text-align: center;
+    }
+    #total_price {
+    color:green;
     }
 </style>
 
@@ -78,13 +81,12 @@
                         </select>
                     </div>
                 </div>
-                <!-- price info, cart button -->
+                <!-- price, cart button -->
                 <div class="mdl-cell mdl-cell--7-col">
-                    <button type="submit">
-                        <!--
-                        <img src="{% static 'catalog/imgs/cart.png' %}" />
-                        -->
-                    </button>
+                    <button type="submit"></button>
+
+                    <span id="price">100</span>
+
                 </div>
                 <!-- static options -->
                 <div class="mdl-cell mdl-cell--12-col">

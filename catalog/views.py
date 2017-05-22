@@ -151,7 +151,7 @@ def product_filter(request, category_id=1, page_number=1):
     products = filter_products_with_get_data(get_data, products, filter_names)
 
     # paginaition
-    paginator = MyPaginator(products, 18)
+    paginator = MyPaginator(products, 9)
     try:
         page = paginator.page(page_number)
     except InvalidPage:

@@ -121,9 +121,6 @@ class Product(models.Model):
         return static_options
 
 
-
-
-
 def get_code():
     try:
         return Spec_prod.objects.all().order_by('-id')[0].code + 1
