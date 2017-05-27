@@ -3,6 +3,7 @@ from catalog.models import *
 import collections
 from utils import MyPaginator
 from django.core.paginator import InvalidPage
+from django.http import JsonResponse
 from django.db.models import Max, Min
 from django.template.context_processors import csrf
 
@@ -175,4 +176,13 @@ def product_page(request, product_id):
     context = {
         'product': product,
     }
-    return render_to_response('catalog/product_page.html', context)
+    return render(request, 'catalog/product_page.html', context)
+
+
+def product_page_price(request):
+    ajax_data = request.GET
+    print('ajax_data: ', ajax_data)
+    data = {
+        'price': 625
+    }
+    return JsonResponse(data)

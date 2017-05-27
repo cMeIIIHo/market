@@ -59,13 +59,15 @@
     <!-- product options -->
     <div class="mdl-cell mdl-cell--9-col">
         <form action="" method="post">
+            {% csrf_token %}
             <div class="mdl-grid my-product_options-block mdl-shadow--4dp">
+
                 <!-- choosable options -->
                 <div class="mdl-cell mdl-cell--5-col">
                     {% for opt_name, opt_vals in product.get_choosable_options.items %}
                     <div>
                         <label for="{{opt_name.id}}">{{opt_name.name}}</label>
-                        <select id="{{opt_name.id}}" name="{{opt_name.id}}">
+                        <select class="choosable" id="{{opt_name.id}}" name="{{opt_name.id}}">
                             {% for opt_val in opt_vals %}
                             <option value="{{opt_val.id}}">{{opt_val.value}}</option>
                             {% endfor %}
@@ -74,20 +76,20 @@
                     {% endfor %}
                     <div>
                         <label for="amount">Количество</label>
-                        <select id="amount" name="amount">
+                        <select class="choosable" id="amount" name="amount">
                             {% for amount in 10|get_range %}
                             <option value="{{amount}}">{{amount}}</option>
                             {% endfor %}
                         </select>
                     </div>
                 </div>
+
                 <!-- price, cart button -->
                 <div class="mdl-cell mdl-cell--7-col">
                     <button type="submit"></button>
-
                     <span id="price">100</span>
-
                 </div>
+
                 <!-- static options -->
                 <div class="mdl-cell mdl-cell--12-col">
                     {% for opt_name, opt_val in product.get_static_options.items %}
