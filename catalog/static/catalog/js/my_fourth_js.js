@@ -35,13 +35,14 @@ $( document ).ready(function() {
     // event for choosable options
     $('.js-choosable').change(function(){
         var foo = {};
+        var form = $(this).closest("form");
         $('.js-choosable').each(function(i, l){
             foo[i]=$(l).val();
             console.log(foo[i]);
         });
         // ajax request (post)
         $.ajax({
-            url: '/ajax/product_page_price/',
+            url: form.attr("product_page_price-url"),
             type: 'post',
             data: foo,
             dataType: 'json',

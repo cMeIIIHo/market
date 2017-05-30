@@ -180,8 +180,9 @@ def product_page(request, product_id):
 
 
 def product_page_price(request):
-    ajax_data = request.GET
-    print('ajax_data: ', ajax_data)
+    ajax_data = request.POST
+    for key, value in ajax_data.lists():
+        print(key, value)
     data = {
         'price': 625
     }
