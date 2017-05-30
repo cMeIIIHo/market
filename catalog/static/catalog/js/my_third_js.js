@@ -1,8 +1,8 @@
 $( document ).ready(function() {
-    $('.choosable').change(function(){
+    $('.js-choosable').change(function(){
         console.log( $(this).val() );
         var foo = [];
-        $('.choosable').each(function(i, l){
+        $('.js-choosable').each(function(i, l){
             foo[i]=$(l).val()
         });
         console.log(foo);
