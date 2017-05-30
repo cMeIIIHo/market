@@ -18,7 +18,7 @@ class Mark(models.Model):
 class Option_name(models.Model):
     name = models.CharField(max_length=100, unique=True)
     usage_in_filters = models.BooleanField(default=True)
-    data_type = models.CharField(max_length=20, blank=True, choices=(
+    data_type = models.CharField(max_length=20, choices=(
         ('int', 'Целое число'),
         ('float', 'Десятичная дробь'),
         ('text', 'Текст'),
