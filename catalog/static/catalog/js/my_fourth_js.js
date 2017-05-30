@@ -33,7 +33,7 @@ $( document ).ready(function() {
     });
 
     // event for choosable options
-    $('.choosable').change(function(){
+    $('.js-choosable').change(function(){
         var foo = {};
         $('.js-choosable').each(function(i, l){
             foo[i]=$(l).val();
