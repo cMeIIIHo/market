@@ -58,7 +58,8 @@
 
     <!-- product options -->
     <div class="mdl-cell mdl-cell--9-col">
-        <form action="" method="post" product_page_price-url="{% url 'catalog:product_page_price' %}">
+        <form action="" method="post" product_page_price-url="{% url 'catalog:product_page_price' %}"
+              product_id="{{product.id}}">
             {% csrf_token %}
             <div class="mdl-grid my-product_options-block mdl-shadow--4dp">
 

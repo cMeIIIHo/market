@@ -180,10 +180,22 @@ def product_page(request, product_id):
 
 
 def product_page_price(request):
+    # todo: does that input data has to be checked ?
+    data = {}
     ajax_data = request.POST
-    for key, value in ajax_data.lists():
-        print(key, value)
-    data = {
-        'price': 625
-    }
+    product_id = ajax_data.get('product_id')
+    product = get_object_or_404(Product, pk=product_id)
+    spec_prods = product.spec_prod_set.filter(amount__gt=0)
+    for key, value in ajax_data.items():
+        if key.isdigit() and value.isdigit():
+            option_name = get_object_or_404(Option_name, pk=int(key))
+            # type_func = {'float': float, 'int': int, 'text': str}[option_name.data_type]
+            spec_prods = spec_prods.filter(**{'%s_opts__id' % option_name.data_type: int(value)})
+    if spec_prods.count() == 1:
+        amount = int(ajax_data.get('amount'))
+        data['price'] = spec_prods[0].price * amount
+    elif spec_prods.count() == 0:
+        data['error_message'] = 'SORRY... out of stock'
+    elif spec_prods.count() > 1:
+        raise Http404('too many spec_prods... there is a mistake in database ( same spec_prod in different lines - doubleing )')
     return JsonResponse(data)
