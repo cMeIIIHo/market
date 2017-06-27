@@ -186,11 +186,11 @@ def product_page_price(request):
     product_id = ajax_data.get('product_id')
     product = get_object_or_404(Product, pk=product_id)
     spec_prods = product.spec_prod_set.filter(amount__gt=0)
-    for key, value in ajax_data.items():
-        if key.isdigit() and value.isdigit():
-            option_name = get_object_or_404(Option_name, pk=int(key))
+    for option_name_id, type_opt_id in ajax_data.items():
+        if option_name_id.isdigit() and type_opt_id.isdigit():
+            option_name = get_object_or_404(Option_name, pk=int(option_name_id))
             # type_func = {'float': float, 'int': int, 'text': str}[option_name.data_type]
-            spec_prods = spec_prods.filter(**{'%s_opts__id' % option_name.data_type: int(value)})
+            spec_prods = spec_prods.filter(**{'%s_opts__id' % option_name.data_type: int(type_opt_id)})
     if spec_prods.count() == 1:
         amount = int(ajax_data.get('amount'))
         data['price'] = spec_prods[0].price * amount
