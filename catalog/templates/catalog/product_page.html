@@ -32,8 +32,11 @@
     .my-product_banner-block {
     text-align: center;
     }
-    #total_price {
-    color:green;
+    .my-price_info {
+    margin: auto;
+    }
+    .flexblock {
+    display: flex;
     }
 </style>
 
@@ -86,9 +89,14 @@
                 </div>
 
                 <!-- price, cart button -->
-                <div class="mdl-cell mdl-cell--7-col">
-                    <button type="submit"></button>
-                    <span id="price">100</span>
+                <div class="mdl-cell mdl-cell--7-col flexblock">
+                    <div class="my-price_info">
+                        Цена:
+                        <div id="price">100</div>р.
+                    </div>
+                    <div id="button">
+                        <button type="submit"></button>
+                    </div>
                 </div>
 
                 <!-- static options -->

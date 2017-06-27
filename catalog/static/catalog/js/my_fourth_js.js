@@ -34,28 +34,23 @@ $( document ).ready(function() {
 
     // page loaded - ajax been sent
     var foo = {};
-        var form = $('.js-choosable').closest("form");
-        foo['product_id'] = form.attr('product_id');
-        $('.js-choosable').each(function(i, l){
-            foo[$(l).attr('name')]=$(l).val();
-            console.log(foo[i]);
-        });
-        // ajax request (post)
-        $.ajax({
-            url: form.attr("product_page_price-url"),
-            type: 'post',
-            data: foo,
-            dataType: 'json',
-            success: function(data){
-                if (data.price) $("#price").text(data.price);
-                if (data.error_message) $("#price").text(data.error_message);
-            }
-        })
-
-
-
-
-
+    var form = $('.js-choosable').closest("form");
+    foo['product_id'] = form.attr('product_id');
+    $('.js-choosable').each(function(i, l){
+        foo[$(l).attr('name')]=$(l).val();
+        console.log(foo[i]);
+    });
+    // ajax request (post)
+    $.ajax({
+        url: form.attr("product_page_price-url"),
+        type: 'post',
+        data: foo,
+        dataType: 'json',
+        success: function(data){
+            if (data.price) $("#price").text(data.price);
+            if (data.error_message) $("#price").text(data.error_message);
+        }
+    })
 
     // event for choosable options
     $('.js-choosable').change(function(){
