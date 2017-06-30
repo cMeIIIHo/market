@@ -34,9 +34,15 @@
     }
     .my-price_info {
     margin: auto;
+    font-size: 20px;
+    color: #8dc351;
     }
     .flexblock {
     display: flex;
+    }
+    .with_currency {}
+    .with_currency:after {
+    content: ' р';
     }
 </style>
 
@@ -92,7 +98,7 @@
                 <div class="mdl-cell mdl-cell--7-col flexblock">
                     <div class="my-price_info">
                         Цена:
-                        <div id="price">100</div>р.
+                        <div id="price">100</div>
                     </div>
                     <div id="button">
                         <button type="submit"></button>

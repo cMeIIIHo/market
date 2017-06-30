@@ -47,9 +47,15 @@ $( document ).ready(function() {
         data: foo,
         dataType: 'json',
         success: function(data){
-            if (data.price) $("#price").text(data.price);
-            if (data.error_message) $("#price").text(data.error_message);
-        }
+                if (data.price) {
+                    $("#price").text(data.price);
+                    $("#price").addClass('with_currency');
+                    }
+                if (data.error_message) {
+                    $("#price").text(data.error_message);
+                    $("#price").removeClass('with_currency');
+                    }
+            }
     })
 
     // event for choosable options
@@ -68,8 +74,14 @@ $( document ).ready(function() {
             data: foo,
             dataType: 'json',
             success: function(data){
-                if (data.price) $("#price").text(data.price);
-                if (data.error_message) $("#price").text(data.error_message);
+                if (data.price) {
+                    $("#price").text(data.price);
+                    $("#price").addClass('with_currency');
+                    }
+                if (data.error_message) {
+                    $("#price").text(data.error_message);
+                    $("#price").removeClass('with_currency');
+                    }
             }
         })
     });
