@@ -118,25 +118,35 @@ from django.db.models import Q
 # print(Product.objects.exclude(spec_prod__float_opts__name__name='Радиус кривизны'))
 # print(Product.objects.exclude(spec_prod__float_opts__name__name='Диаметр'))
 
-p = Product.objects.all()
-p = p.filter(category__id__in=[2,4,6]).distinct()
-p = p.filter(mark__id__in=[1, 20, 6, 8, 10, 12, 14, 16, 18, 21, 23, 25, 27, 29, 31]).distinct()
+# p = Product.objects.all()
+# p = p.filter(category__id__in=[2,4,6]).distinct()
+# p = p.filter(mark__id__in=[1, 20, 6, 8, 10, 12, 14, 16, 18, 21, 23, 25, 27, 29, 31]).distinct()
+#
+# io1 = Int_opt.objects.filter(name__id=4, value__gte=11,value__lte=166).distinct()
+# fo1 = Float_opt.objects.filter(id__in=(138,8,206,202)).distinct()
+# io2 = Int_opt.objects.filter(name__id=3, value__gte=33,value__lte=77).distinct()
+# to1 = Text_opt.objects.filter(id__in=(8,11,45)).distinct()
+# fo2 = Float_opt.objects.filter(id__in=(188,1,9,2,135)).distinct()
+#
+# sp = Spec_prod.objects.filter(int_opts__in=io1,
+#                               float_opts__in=fo1,
+#                               text_opts__in=to1).filter(int_opts__in=io2, float_opts__in=fo2).values_list('product').distinct()
+# p = p.filter(id__in=sp).distinct()
+#
+# print(len(p))
+# ____________________________________________________
+#
+# product = Product.objects.get(name='Acuvue Oasys 6')
+# sps = product.spec_prod_set.all()
+# f_o = Float_opt.objects.get(name__name='Радиус кривизны', value=8.8)
+# sps = sps.filter(float_opts=f_o)
+# sp = sps.get(float_opts__name__name='Оптическая сила', float_opts__value=-5.75)
+#
+# print(product)
+# print(f_o)
+# print(sps)
+# print(sps.count())
+#
+# print(sp)
+# ___________________________________________________
 
-io1 = Int_opt.objects.filter(name__id=4, value__gte=11,value__lte=166).distinct()
-fo1 = Float_opt.objects.filter(id__in=(138,8,206,202)).distinct()
-io2 = Int_opt.objects.filter(name__id=3, value__gte=33,value__lte=77).distinct()
-to1 = Text_opt.objects.filter(id__in=(8,11,45)).distinct()
-fo2 = Float_opt.objects.filter(id__in=(188,1,9,2,135)).distinct()
-
-sp = Spec_prod.objects.filter(int_opts__in=io1,
-                              float_opts__in=fo1,
-                              text_opts__in=to1).filter(int_opts__in=io2, float_opts__in=fo2).values_list('product').distinct()
-p = p.filter(id__in=sp).distinct()
-
-
-
-
-
-
-
-print(len(p))
