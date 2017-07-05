@@ -37,6 +37,7 @@ class Option_name(models.Model):
         return self.name
 
     def get_values(self):
+        # if option_name has NO value - it returns empty QS
         if self.float_opt_set.exists():
             return self.float_opt_set.all()
         elif self.int_opt_set.exists():

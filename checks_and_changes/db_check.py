@@ -150,3 +150,7 @@ from django.db.models import Q
 # print(sp)
 # ___________________________________________________
 
+# o = Option_name.objects.get(name='Радиус кривизны')
+# print(o.text_opt_set.all())
+# print(o)
+#__________________________________________________
