@@ -192,8 +192,9 @@ def product_page_price(request):
             # type_func = {'float': float, 'int': int, 'text': str}[option_name.data_type]
             spec_prods = spec_prods.filter(**{'%s_opts__id' % option_name.data_type: int(type_opt_id)})
     if spec_prods.count() == 1:
+        chosen_sp = spec_prods[0]
         amount = int(ajax_data.get('amount'))
-        data['price'] = spec_prods[0].price * amount
+        data['price'] = chosen_sp.price * amount
     elif spec_prods.count() == 0:
         data['error_message'] = 'SORRY... out of stock'
     elif spec_prods.count() > 1:
