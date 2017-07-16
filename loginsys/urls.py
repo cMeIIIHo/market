@@ -1,7 +1,7 @@
 from django.conf.urls import url
 from loginsys import views
 
-app_name = 'catalog'
+app_name = 'loginsys'
 
 
 urlpatterns = [
