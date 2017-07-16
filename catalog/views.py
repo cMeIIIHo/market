@@ -22,7 +22,7 @@ from django.utils import timezone
 def index(request):
     context = {'sale_cards': Sale_card.objects.all(),
                'lens_category_id': Category.objects.get(name='Линзы').id}
-    return render_to_response("catalog/index.html", context)
+    return render(request, "catalog/index.html", context)
 
 
 def fill_filter_dict(filter_dict, option_names, products):
@@ -168,7 +168,7 @@ def product_filter(request, category_id=1, page_number=1):
         'category_id': category_id,
         'lens_category_id': Category.objects.get(name='Линзы').id,
     }
-    return render_to_response('catalog/product_filter.html', context)
+    return render(request, 'catalog/product_filter.html', context)
 
 
 def product_page(request, product_id):
