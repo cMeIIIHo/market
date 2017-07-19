@@ -180,7 +180,7 @@ def product_page(request, product_id):
 
 
 def product_page_price(request):
-    # todo: does that input data has to be checked ?
+    # todo: does that input data has to be checked ? amount may be negative
     data = {}
     ajax_data = request.POST
     product_id = ajax_data.get('product_id')

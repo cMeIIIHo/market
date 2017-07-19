@@ -7,6 +7,7 @@ app_name = 'loginsys'
 urlpatterns = [
     url(r'^user_registration/$', views.user_registration, name='user_registration'),
     url(r'^user_login/$', views.user_login, name='user_login'),
+    url(r'^user_logout/$', views.user_logout, name='user_logout'),
 ]
 
 # urlpatterns = [
