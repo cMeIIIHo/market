@@ -1,10 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <form action="{% url 'loginsys:user_registration' %}" method="post">
-    {% csrf_token %}
-    {{form}}
-    <input type="submit" value="Продолжить" />
-    </form>
-bla bla bla
+
+{% include 'loginsys/auth_form.html' %}
+
 {% endblock %}
