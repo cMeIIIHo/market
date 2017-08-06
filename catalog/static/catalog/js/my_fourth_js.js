@@ -32,6 +32,10 @@ $( document ).ready(function() {
         }
     });
 
+    // product_page price uploading ajax function
+
+
+
     // page loaded - ajax been sent
     var foo = {};
     var form = $('.js-choosable').closest("form");

@@ -179,7 +179,7 @@ def product_page(request, product_id):
     return render(request, 'catalog/product_page.html', context)
 
 
-def product_page_price(request):
+def get_price(request):
     # todo: does that input data has to be checked ? amount may be negative
     data = {}
     ajax_data = request.POST

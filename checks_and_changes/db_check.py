@@ -1,4 +1,5 @@
 import os
+import json
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'market.settings')
 
@@ -154,3 +155,8 @@ from django.db.models import Q
 # print(o.text_opt_set.all())
 # print(o)
 #__________________________________________________
+
+# a = json.loads('[1,2]')
+# print(a)
+#__________________
+
