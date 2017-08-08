@@ -12,13 +12,13 @@
     .my-product_options-block select {
     margin: 4px;
     }
-    .my-product_options-block button {
+    #cart_button {
     background: url("{% static 'catalog/imgs/cart.png' %}");
     width: 171px;
     height: 173px;
     border: 0;
     }
-    .my-product_options-block button:hover {
+    #cart_button:hover {
     background: url("{% static 'catalog/imgs/cart_hover.png' %}");
     }
     .my-product_description-block {
@@ -41,6 +41,30 @@
     .with_currency:after {
     content: ' р';
     }
+    .blocker{
+    position:fixed;
+    top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	display: none;
+	background: grey;
+	z-index: 1;
+	opacity: 0.8;
+	}
+	.modal_window {
+	border: 1px solid black;
+	position: fixed;
+	top: 20%;
+	left: 45%;
+	width: 20%;
+	height: 20%;
+	min-width: 300px;
+	min-height: 30px;
+	background: #eff7ff;
+	z-index: 3;
+	display: none;
+	}
 </style>
 
 <div class="mdl-grid my-product_data">
@@ -62,7 +86,7 @@
 
     <!-- product options -->
     <div class="mdl-cell mdl-cell--9-col">
-        <form action="" method="post" product_page_price-url="{% url 'catalog:get_price' %}"
+        <form action="#" method="post" product_page_price-url="{% url 'catalog:get_price' %}"
               product_id="{{product.id}}">
             {% csrf_token %}
             <div class="mdl-grid my-product_options-block mdl-shadow--4dp">
@@ -95,8 +119,9 @@
                         Цена:
                         <div id="price">100</div>
                     </div>
-                    <div id="button">
-                        <button type="submit"></button>
+                    <!--cart button-->
+                    <div>
+                        <button id="cart_button" type="button"></button>
                     </div>
                 </div>
 
@@ -125,6 +150,8 @@
     {% endif %}
 </div>
 
+<div class="modal_window"></div>
+<div class="blocker"></div>
 
 {% endblock %}
 

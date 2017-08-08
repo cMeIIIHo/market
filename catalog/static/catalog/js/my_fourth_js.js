@@ -62,8 +62,28 @@ function get_price() {
 
 // page loaded - get price
 
-get_price()
+get_price();
 
 // event for changing choosable options
 $('.js-choosable').change(get_price);
+
+//// show modal window function
+//
+//function go_to_cart_or_proceed() {
+//    $('.blocker').css('display', 'block');
+//    $('.modal_window').css('display', 'block');
+//}
+
+
+// show modal window if u click cart button on product page
+
+$('#cart_button').click(function() {
+    $('.blocker').css('display', 'block');
+    $('.modal_window').css('display', 'block')
+});
+
+//// hide modal window
+
+
+
 });
