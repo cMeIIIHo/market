@@ -26,7 +26,7 @@
     padding: 5px;
     border-radius: 2px;
     }
-    .even_option {
+    .odd_option {
     background: honeydew;
     }
     .my-product_banner-block {
@@ -103,7 +103,7 @@
                 <!-- static options -->
                 <div class="mdl-cell mdl-cell--12-col">
                     {% for opt_name, opt_val in product.get_static_options.items %}
-                    <div class="{% cycle 'even_option' '' %}">{{opt_name.name}}: {{opt_val.value}}</div>
+                    <div class="{% cycle 'odd_option' '' %}">{{opt_name.name}}: {{opt_val.value}}</div>
                     {% endfor %}
                 </div>
             </div>
