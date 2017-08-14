@@ -79,11 +79,18 @@ $('.js-choosable').change(get_price);
 
 $('#cart_button').click(function() {
     $('.blocker').css('display', 'block');
-    $('.modal_window').css('display', 'block')
+    $('.modal_window').css('display', 'flex')
 });
 
-//// hide modal window
+// product page hiding modal window function
 
+function hide_modal_window() {
+    $('.blocker').css('display', 'none');
+    $('.modal_window').css('display', 'none')
+}
 
+//
+
+$('.modal_window button').click(hide_modal_window);
 
 });

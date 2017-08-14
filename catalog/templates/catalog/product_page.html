@@ -32,6 +32,9 @@
     .my-product_banner-block {
     text-align: center;
     }
+    .my-product_banner-block img {
+    width: 100%;
+    }
     .my-price_info {
     margin: auto;
     font-size: 20px;
@@ -56,14 +59,28 @@
 	border: 1px solid black;
 	position: fixed;
 	top: 20%;
-	left: 45%;
+	margin-top: 100px;
+	left: 50%;
+	margin-left: -175px;
 	width: 20%;
-	height: 20%;
-	min-width: 300px;
-	min-height: 30px;
-	background: #eff7ff;
+	height: 10%;
+	min-width: 350px;
+	min-height: 40px;
+	background: #f5f5f5;
 	z-index: 3;
 	display: none;
+	justify-content: space-around;
+	align-items: center;
+	}
+	.modal_window button {
+	background: #263238;
+	color: #8dc351;
+	height: 50%;
+	min-height: 30px;
+	border-radius: 10px;
+	font-size: 14px;
+	font-weight: bold;
+	cursor: pointer;
 	}
 </style>
 
@@ -150,7 +167,10 @@
     {% endif %}
 </div>
 
-<div class="modal_window"></div>
+<div class="modal_window">
+    <button id="keep_shopping">Продолжить покупки</button>
+    <button id="go_to_the_cart">Перейти в корзину</button>
+</div>
 <div class="blocker"></div>
 
 {% endblock %}
