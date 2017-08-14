@@ -51,10 +51,12 @@ function get_price() {
                 if (data.price) {
                     $("#price").text(data.price);
                     $("#price").addClass('with_currency');
+                    $('#cart_button').removeAttr('disabled')
                     }
                 if (data.error_message) {
                     $("#price").text(data.error_message);
                     $("#price").removeClass('with_currency');
+                    $('#cart_button').attr('disabled', 'disabled')
                     }
             }
     })
