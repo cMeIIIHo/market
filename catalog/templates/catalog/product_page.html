@@ -103,8 +103,8 @@
 
     <!-- product options -->
     <div class="mdl-cell mdl-cell--9-col">
-        <form action="#" method="post" product_page_price-url="{% url 'catalog:get_price' %}"
-              product_id="{{product.id}}">
+        <form id="sp_selection_form" action="#" method="post" data-product_page_price-url="{% url 'catalog:get_price' %}"
+              data-product_id="{{product.id}}">
             {% csrf_token %}
             <div class="mdl-grid my-product_options-block mdl-shadow--4dp">
 
@@ -138,7 +138,9 @@
                     </div>
                     <!--cart button-->
                     <div>
-                        <button id="cart_button" type="button"></button>
+                        <button id="cart_button" type="button"
+                                data-url-add_sp_to_cart="{% url 'catalog:ajax-add_sp_to_cart' %}">
+                        </button>
                     </div>
                 </div>
 

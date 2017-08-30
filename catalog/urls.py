@@ -10,6 +10,7 @@ urlpatterns = [
     url(r'^product_filter/(?P<category_id>[0-9]+)/(?P<page_number>[0-9]+)/$', views.product_filter, name='product_filter'),
     url(r'^product_page/(?P<product_id>[0-9]+)/$', views.product_page, name='product_page'),
     url(r'^ajax/get_price/$', views.get_price, name='get_price'),
+    url(r'^ajax/add_sp_to_cart/$', views.add_sp_to_cart, name='ajax-add_sp_to_cart'),
 ]
 
 # urlpatterns = [

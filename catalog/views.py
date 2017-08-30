@@ -195,8 +195,21 @@ def get_price(request):
         chosen_sp = spec_prods[0]
         amount = int(ajax_data.get('amount'))
         data['price'] = chosen_sp.price * amount
+        data['spec_prod_id'] = chosen_sp.id
     elif spec_prods.count() == 0:
         data['error_message'] = 'SORRY... out of stock'
     elif spec_prods.count() > 1:
         raise Http404('too many spec_prods... there is a mistake in database ( same spec_prod in different lines - doubleing )')
     return JsonResponse(data)
+
+
+def add_sp_to_cart(request):
+    # users_cart =
+
+
+
+    sp_id = request.POST.get('sp_id')
+    amount = request.POST.get('sp_amount')
+    print('\n', 'sp_id: ', sp_id, '\n', 'amount: ', amount, '\n')
+    print(request.session.items(), '\n')
+    return HttpResponse()
