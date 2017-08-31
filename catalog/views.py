@@ -203,14 +203,4 @@ def get_price(request):
         raise Http404('too many spec_prods... there is a mistake in database ( same spec_prod in different lines - doubleing )')
     return JsonResponse(data)
 
-# product_page, ajax function
-def add_sp_to_cart(request):
-    # users_cart =
 
-
-
-    sp_id = request.POST.get('sp_id')
-    amount = request.POST.get('sp_amount')
-    print('\n', 'sp_id: ', sp_id, '\n', 'amount: ', amount, '\n')
-    print(request.session.items(), '\n')
-    return HttpResponse()
