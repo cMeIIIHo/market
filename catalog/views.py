@@ -179,6 +179,7 @@ def product_page(request, product_id):
     return render(request, 'catalog/product_page.html', context)
 
 
+# product_page, ajax function
 def get_price(request):
     # todo: does that input data has to be checked ? amount may be negative
     data = {}
@@ -202,7 +203,7 @@ def get_price(request):
         raise Http404('too many spec_prods... there is a mistake in database ( same spec_prod in different lines - doubleing )')
     return JsonResponse(data)
 
-
+# product_page, ajax function
 def add_sp_to_cart(request):
     # users_cart =
 
