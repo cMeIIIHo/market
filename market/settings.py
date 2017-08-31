@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'ordersys',
     'catalog',
     'loginsys',
     'django.contrib.admin',
