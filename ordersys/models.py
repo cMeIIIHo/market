@@ -8,6 +8,11 @@ class PickupPoint(models.Model):
     address = models.TextField()
     opening_hours = models.CharField(max_length=200)
     is_active = models.BooleanField(default=True)
+    closest_subway = models.CharField(max_length=50, blank=True)
+
+    def __str__(self):
+        return '%s - %s' % (self.closest_subway, self.address)
+
 
 
 class Order(models.Model):
