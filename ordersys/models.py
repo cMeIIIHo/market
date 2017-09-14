@@ -31,9 +31,15 @@ class Order(models.Model):
     def close(self):
         self.closed = timezone.now()
 
+    def __str__(self):
+        return self.pk
+
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
     spec_prod = models.ForeignKey(Spec_prod)
     quantity = models.PositiveSmallIntegerField()
     confirmed_by_price = models.FloatField()
+
+    def __str__(self):
+        return self.spec_prod
