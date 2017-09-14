@@ -14,7 +14,6 @@ class PickupPoint(models.Model):
         return '%s - %s' % (self.closest_subway, self.address)
 
 
-
 class Order(models.Model):
     customer = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
     name = models.CharField(max_length=50)
