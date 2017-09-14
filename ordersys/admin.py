@@ -1,3 +1,8 @@
 from django.contrib import admin
+from ordersys.models import *
 
-# Register your models here.
+admin.site.register(PickupPoint)
+admin.site.register(OrderItem)
+admin.site.register(Order)
+
+
