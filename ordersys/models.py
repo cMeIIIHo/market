@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, AnonymousUser
 from catalog.models import Spec_prod
 from django.utils import timezone
 
@@ -16,8 +16,8 @@ class PickupPoint(models.Model):
 
 class Order(models.Model):
     customer = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
-    name = models.CharField(max_length=50)
-    phone = models.CharField(max_length=50)
+    name = models.CharField(max_length=50, blank=True)
+    phone = models.CharField(max_length=50, blank=True)
     express_delivery = models.BooleanField(default=True)
     address = models.TextField(blank=True)
     pickup_point = models.ForeignKey(PickupPoint, on_delete=models.PROTECT, blank=True, null=True)
@@ -43,3 +43,24 @@ class OrderItem(models.Model):
 
     def __str__(self):
         return self.spec_prod
+
+
+class ProxyUser(User):
+    class Meta:
+        proxy = True
+
+    def has_cart(self, request):
+        return 'cart' in request.session
+
+    # def create_cart(self, request, sp, amount):
+
+
+
+
+
+
+
+class ProxyAnonymousUser(AnonymousUser):
+    class Meta:
+        proxy = True
+
