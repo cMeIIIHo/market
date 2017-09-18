@@ -91,7 +91,7 @@ function add_sp_to_cart() {
         url: $('#cart_button').attr('data-url-add_sp_to_cart'),
         type: 'post',
         data: {'sp_id': $('#sp_selection_form').attr('data-spec_prod_id'),
-               'sp_amount': $('#amount').val()},
+               'sp_quantity': $('#amount').val()},
         dataType: 'json',
     })
 }

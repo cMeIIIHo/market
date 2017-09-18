@@ -98,11 +98,11 @@ class Product(models.Model):
         return self.name
 
     def get_options(self):
-        '''
+        """
         a dict with
         keys: Option_name objects
         values: Queryset of Int_opt or Float_opt or Text_opt objects
-        '''
+        """
         options = {}
         spec_prods = self.spec_prod_set.filter(amount__gt=0)
         opt_names = self.category.opt_list.all()
@@ -144,7 +144,8 @@ class Spec_prod(models.Model):
     price = models.FloatField()
 
     def __str__(self):
-        return '%s-%s-%s' % (self.code, self.product.category.name, self.product.name)
+        return str(self.code)
+        # return '%s-%s-%s' % (self.code, self.product.category.name, self.product.name)
 
     def get_int_opts(self):
         return '; '.join([str(obj) for obj in self.int_opts.all()])

@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User, AnonymousUser
 from catalog.models import Spec_prod
 from django.utils import timezone
+from django.shortcuts import get_object_or_404
 
 
 class PickupPoint(models.Model):
@@ -32,35 +33,54 @@ class Order(models.Model):
         self.closed = timezone.now()
 
     def __str__(self):
-        return self.pk
+        return str(self.pk)
 
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
     spec_prod = models.ForeignKey(Spec_prod)
     quantity = models.PositiveSmallIntegerField()
-    confirmed_by_price = models.FloatField()
+    confirmed_by_price = models.FloatField(blank=True, null=True)
 
     def __str__(self):
-        return self.spec_prod
+        return str(self.spec_prod)
 
 
 class ProxyUser(User):
     class Meta:
         proxy = True
 
-    def has_cart(self, request):
+    @staticmethod
+    def has_cart(request):
         return 'cart' in request.session
 
-    # def create_cart(self, request, sp, amount):
+    def create_cart(self, request, sp, quantity):
+        order = Order.objects.create(customer=self)
+        OrderItem.objects.create(order=order, spec_prod=sp, quantity=quantity)
+        request.session['cart'] = order.id
 
-
-
-
-
+    @staticmethod
+    def add_sp_to_cart(request, sp, quantity):
+        order_id = request.session['cart']
+        OrderItem.objects.create(order_id=order_id, spec_prod=sp, quantity=quantity)
 
 
 class ProxyAnonymousUser(AnonymousUser):
     class Meta:
         proxy = True
+
+    @staticmethod
+    def has_cart(request):
+        return 'cart' in request.session
+
+    @staticmethod
+    def create_cart(request, sp, quantity):
+        order = Order.objects.create()
+        OrderItem.objects.create(order=order, spec_prod=sp, quantity=quantity)
+        request.session['cart'] = order.id
+
+    @staticmethod
+    def add_sp_to_cart(request, sp, quantity):
+        order_id = request.session['cart']
+        OrderItem.objects.create(order_id=order_id, spec_prod=sp, quantity=quantity)
 
