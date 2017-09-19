@@ -35,10 +35,15 @@ def user_login(request):
         if filled_form.is_valid():
             user = authenticate(username=filled_form.cleaned_data['username'],
                                 password=filled_form.cleaned_data['password'])
-            # todo: if user is None
-            login(request, user)
-            return redirect(redirect_url)
+            if user is not None:
+                login(request, user)
+                return redirect(redirect_url)
+            else:
+                filled_form.add_error(field='username', error='Incorrect login and password combination')
+                form = filled_form
+                print('OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO')
         else:
+            print('AAAAAAAAAAAAAAAAAAAAAAAAAAA')
             form = filled_form
     else:
         form = CustomerAuthenticationForm(request)
