@@ -3,9 +3,6 @@ from django.contrib.auth import authenticate, login, logout
 from loginsys.forms import CustomerAuthenticationForm, CustomerUserCreationForm
 
 
-# Create your views here.
-
-
 def user_registration(request):
 
     # redirect_url tries to take value from POST dictionary, if not - it uses url where user came from.
@@ -35,24 +32,18 @@ def user_login(request):
         if filled_form.is_valid():
             user = authenticate(username=filled_form.cleaned_data['username'],
                                 password=filled_form.cleaned_data['password'])
-            if user is not None:
-                login(request, user)
-                return redirect(redirect_url)
-            else:
-                filled_form.add_error(field='username', error='Incorrect login and password combination')
-                form = filled_form
-                print('OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO')
+            login(request, user)
+            return redirect(redirect_url)
         else:
-            print('AAAAAAAAAAAAAAAAAAAAAAAAAAA')
             form = filled_form
     else:
         form = CustomerAuthenticationForm(request)
-
     template = 'loginsys/user_login.html'
     context = {'form': form, 'redirect_url': redirect_url}
     return render(request, template, context)
 
 
 def user_logout(request):
+
     logout(request)
     return redirect('/')

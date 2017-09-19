@@ -1,15 +1,18 @@
 <div class="auth_form">
     <form action="{{ form.url }}" method="post">
         {% csrf_token %}
+        {% for error in form.non_field_errors %}
+            {{error}}
+        {% endfor %}
         {% for field in form %}
-        <div>
-            {{ field.errors }}
-            {{ field.label_tag }}
-            {{ field }}
-        </div>
+            <div>
+                {{ field.errors }}
+                {{ field.label_tag }}
+                {{ field }}
+            </div>
         {% endfor %}
         {% if redirect_url %}
-        <input type="hidden" name="redirect_url" value="{{redirect_url}}"/>
+            <input type="hidden" name="redirect_url" value="{{redirect_url}}"/>
         {% endif %}
         <div class="flexblock">
             <button type="submit" class="my-form-submit_button mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
