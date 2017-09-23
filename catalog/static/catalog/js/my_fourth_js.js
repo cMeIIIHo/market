@@ -96,11 +96,18 @@ function add_sp_to_cart() {
     })
 }
 
+
+// changes text and adds animation of CART_LINK if u add goods to the cart
+function change_cart_link_appearance() {
+    $('#empty_cart_link').addClass('my-cart_link-animated').text('В корзину')
+}
+
 // show modal window if u click cart button on product page + add spec_prod_id to user's session
 
 $('#cart_button').click(function() {
     add_sp_to_cart();
     show_modal_window();
+    change_cart_link_appearance();
 });
 
 

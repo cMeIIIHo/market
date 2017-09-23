@@ -32,6 +32,7 @@ def user_login(request):
         if filled_form.is_valid():
             user = authenticate(username=filled_form.cleaned_data['username'],
                                 password=filled_form.cleaned_data['password'])
+            # if user is None ( wrong combination of username and password ) - is handled by 'is_valid' function above
             login(request, user)
             return redirect(redirect_url)
         else:
