@@ -3,6 +3,7 @@ from django.contrib.auth.models import User, AnonymousUser
 from catalog.models import Spec_prod
 from django.utils import timezone
 from django.shortcuts import get_object_or_404
+from funcs import clean_data
 
 
 class PickupPoint(models.Model):
@@ -51,18 +52,46 @@ class ProxyUser(User):
         proxy = True
 
     @staticmethod
-    def has_cart(request):
-        return 'cart' in request.session
+    def tied_cart(request):
+        return request.session.get('cart', False)
 
     def create_cart(self, request, sp, quantity):
         order = Order.objects.create(customer=self)
         OrderItem.objects.create(order=order, spec_prod=sp, quantity=quantity)
         request.session['cart'] = order.id
 
+    def has_cart(self):
+        return self.order_set.filter(closed=None).exists()
+
+    @property
+    def cart(self):
+        return self.order_set.filter(closed=None).last()
+
     @staticmethod
     def add_sp_to_cart(request, sp, quantity):
         order_id = request.session['cart']
         OrderItem.objects.create(order_id=order_id, spec_prod=sp, quantity=quantity)
+
+    def sign_tied_cart(self, order_id):
+        cart = Order.objects.get(id=order_id)
+        cart.customer = self
+        cart.save()
+
+    def synchronize_cart(self, request):
+        if self.tied_cart(request):
+            if self.has_cart():
+                self.cart.delete()                                      # deleting an 'old' cart from previous session
+            self.sign_tied_cart(clean_data(self.tied_cart(request), int))    # defines cart's 'customer' attribute
+        elif self.has_cart():
+            request.session['cart'] = self.cart.id
+
+
+
+
+
+
+
+
 
 
 class ProxyAnonymousUser(AnonymousUser):
@@ -70,7 +99,7 @@ class ProxyAnonymousUser(AnonymousUser):
         proxy = True
 
     @staticmethod
-    def has_cart(request):
+    def tied_cart(request):
         return 'cart' in request.session
 
     @staticmethod

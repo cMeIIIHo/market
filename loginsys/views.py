@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from loginsys.forms import CustomerAuthenticationForm, CustomerUserCreationForm
+from market.settings import INSTALLED_APPS
+from ordersys.models import *
 
 
 def user_registration(request):
@@ -14,6 +16,7 @@ def user_registration(request):
             new_user = authenticate(username=filled_form.cleaned_data['username'],
                                     password=filled_form.cleaned_data['password1'])
             login(request, new_user)
+
             return redirect(redirect_url)
         else:
             form = filled_form
@@ -34,6 +37,9 @@ def user_login(request):
                                 password=filled_form.cleaned_data['password'])
             # if user is None ( wrong combination of username and password ) - is handled by 'is_valid' function above
             login(request, user)
+            if 'ordersys' in INSTALLED_APPS:
+                user = ProxyUser.objects.get(pk=user.id)
+                user.synchronize_cart(request)
             return redirect(redirect_url)
         else:
             form = filled_form
