@@ -22,3 +22,6 @@ def add_sp_to_cart(request):
     else:
         user.create_cart(request, sp, quantity)                # and this
     return HttpResponse()
+
+
+def show_cart(request):

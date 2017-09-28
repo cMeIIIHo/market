@@ -79,9 +79,10 @@ class ProxyUser(User):
 
     def synchronize_cart(self, request):
         if self.tied_cart(request):
+            order_id = clean_data(self.tied_cart(request), int)
             if self.has_cart():
                 self.cart.delete()                                      # deleting an 'old' cart from previous session
-            self.sign_tied_cart(clean_data(self.tied_cart(request), int))    # defines cart's 'customer' attribute
+            self.sign_tied_cart(order_id)    # defines cart's 'customer' attribute
         elif self.has_cart():
             request.session['cart'] = self.cart.id
 
