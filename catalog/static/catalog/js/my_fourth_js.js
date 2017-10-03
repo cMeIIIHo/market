@@ -110,9 +110,7 @@ $('#cart_button').click(function() {
     change_cart_link_appearance();
 });
 
-
-
-$('.modal_window button').click(hide_modal_window);
+$('#keep_shopping').click(hide_modal_window);
 
 
 
