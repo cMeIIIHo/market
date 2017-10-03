@@ -69,8 +69,17 @@ class ProxyUser(User):
 
     @staticmethod
     def add_sp_to_cart(request, sp, quantity):
+        print('\n', '1', '\n')
         order_id = request.session['cart']
-        OrderItem.objects.create(order_id=order_id, spec_prod=sp, quantity=quantity)
+        order = get_object_or_404(Order, pk=order_id)
+        order_item, created = order.orderitem_set.get_or_create(spec_prod=sp, defaults={'quantity': quantity})
+        if not created:
+            print('\n', '2', '\n')
+            order_item.quantity += quantity
+            order_item.save()
+
+        # order_id = request.session['cart']
+        # OrderItem.objects.create(order_id=order_id, spec_prod=sp, quantity=quantity)
 
     def sign_tied_cart(self, order_id):
         cart = Order.objects.get(id=order_id)
@@ -79,20 +88,12 @@ class ProxyUser(User):
 
     def synchronize_cart(self, request):
         if self.tied_cart(request):
-            order_id = clean_data(self.tied_cart(request), int)
+            order_id = self.tied_cart(request)
             if self.has_cart():
                 self.cart.delete()                                      # deleting an 'old' cart from previous session
             self.sign_tied_cart(order_id)    # defines cart's 'customer' attribute
         elif self.has_cart():
             request.session['cart'] = self.cart.id
-
-
-
-
-
-
-
-
 
 
 class ProxyAnonymousUser(AnonymousUser):
@@ -112,5 +113,12 @@ class ProxyAnonymousUser(AnonymousUser):
     @staticmethod
     def add_sp_to_cart(request, sp, quantity):
         order_id = request.session['cart']
-        OrderItem.objects.create(order_id=order_id, spec_prod=sp, quantity=quantity)
+        order = get_object_or_404(Order, pk=order_id)
+        order_item, created = order.orderitem_set.get_or_create(spec_prod=sp, defaults={'quantity': quantity})
+        if not created:
+            order_item.quantity += quantity
+            order_item.save()
+
+        # order_id = request.session['cart']
+        # OrderItem.objects.create(order_id=order_id, spec_prod=sp, quantity=quantity)
 

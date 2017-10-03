@@ -3,6 +3,8 @@ from django.http import HttpResponse
 from ordersys.models import ProxyUser, ProxyAnonymousUser
 from catalog.models import Spec_prod
 from funcs import clean_data
+from market.settings import USER_FRIENDLY_404
+from funcs import clean_data
 
 
 def add_sp_to_cart(request):
@@ -25,3 +27,10 @@ def add_sp_to_cart(request):
 
 
 def show_cart(request):
+    if 'cart' not in request.session:
+        context = {'error_header': 'Your cart is empty',
+                   'error_message': 'Before coming here,please, add something in your cart'}
+        return render(request, USER_FRIENDLY_404, context)
+    else:
+        order_id = request.session['cart']
+        return render(request, USER_FRIENDLY_404, {'error_header': 'works'})

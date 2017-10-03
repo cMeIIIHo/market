@@ -84,6 +84,7 @@
 	font-weight: bold;
 	cursor: pointer;
 	}
+
 </style>
 
 <div class="mdl-grid my-product_data">
@@ -91,12 +92,12 @@
     <!-- product picture, title, price -->
     <div class="mdl-cell mdl-cell--3-col">
         <div class="mdl-card mdl-shadow--4dp">
-                <div class="mdl-card__media my-product_card__media">
-                    <img src="{{ product.picture.url }}" border="0" alt="">
-                </div>
-                <div class="mdl-card__title my-product_card__title">
-                    <h2 class="mdl-card__title-text">{{ product.name }}</h2>
-                </div>
+            <div class="mdl-card__media my-product_card__media">
+                <img src="{{ product.picture.url }}" border="0" alt="">
+            </div>
+            <div class="mdl-card__title my-product_card__title">
+                <h2 class="mdl-card__title-text">{{ product.name }}</h2>
+            </div>
             <div class="mdl-card__supporting-text">
                 а цена то только в спек_прод =)
             </div>
@@ -105,7 +106,8 @@
 
     <!-- product options -->
     <div class="mdl-cell mdl-cell--9-col">
-        <form id="sp_selection_form" action="#" method="post" data-product_page_price-url="{% url 'catalog:get_price' %}"
+        <form id="sp_selection_form" action="#" method="post"
+              data-product_page_price-url="{% url 'catalog:get_price' %}"
               data-product_id="{{product.id}}">
             {% csrf_token %}
             <div class="mdl-grid my-product_options-block mdl-shadow--4dp">
@@ -174,7 +176,7 @@
 <!--modal window-->
 <div class="modal_window">
     <button id="keep_shopping">Продолжить покупки</button>
-    <button id="go_to_the_cart">Перейти в корзину</button>
+    <button onclick="location.href={% url 'ordersys:show_cart' %}" id="go_to_the_cart">Перейти в корзину</button>
 </div>
 
 <!--blocker-->
