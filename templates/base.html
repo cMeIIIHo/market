@@ -179,7 +179,7 @@
                 {% if not 'cart' in request.session %}
                 <a id="empty_cart_link" class="mdl-navigation__link" href="">Корзина пуста</a>
                 {% else %}
-                <a class="mdl-navigation__link my-cart_link-animated" href="">В корзину</a>
+                <a class="mdl-navigation__link my-cart_link-animated" href="{% url 'ordersys:show_cart' %}">В корзину</a>
                 {% endif %}
                 {% if user.is_authenticated %}
                 <a class="mdl-navigation__link" href="">Личный кабинет</a>

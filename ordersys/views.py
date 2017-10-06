@@ -2,9 +2,11 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from ordersys.models import ProxyUser, ProxyAnonymousUser
 from catalog.models import Spec_prod
+from ordersys.models import Order
 from funcs import clean_data
 from market.settings import USER_FRIENDLY_404
 from funcs import clean_data
+from ordersys.forms import CartForm
 
 
 def add_sp_to_cart(request):
@@ -27,10 +29,22 @@ def add_sp_to_cart(request):
 
 
 def show_cart(request):
-    if 'cart' not in request.session:
-        context = {'error_header': 'Your cart is empty',
-                   'error_message': 'Before coming here,please, add something in your cart'}
-        return render(request, USER_FRIENDLY_404, context)
-    else:
+    if 'cart' in request.session:
         order_id = request.session['cart']
-        return render(request, USER_FRIENDLY_404, {'error_header': 'works'})
+        cart = Order.objects.get(pk=order_id)
+        cart_form = CartForm(instance=cart)
+        context = {'cart_form': cart_form}
+        return render(request, 'ordersys/cart.html', context)
+    else:
+        pass
+
+
+
+
+    # if 'cart' not in request.session:
+    #     context = {'error_header': 'Your cart is empty',
+    #                'error_message': 'Before coming here,please, add something in your cart'}
+    #     return render(request, USER_FRIENDLY_404, context)
+    # else:
+    #     order_id = request.session['cart']
+    #     return render(request, USER_FRIENDLY_404, {'error_header': 'works'})

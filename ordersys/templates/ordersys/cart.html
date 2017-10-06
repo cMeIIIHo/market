@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<form>
+    {% for error in cart_form.non_field_errors %}
+        {{error}}
+    {% endfor %}
+    {% for field in cart_form %}
+        <div>
+            {{ field.errors }}
+            {{ field.label_tag }}
+            {{ field }}
+        </div>
+    {% endfor %}
+</form>
+{% endblock %}
