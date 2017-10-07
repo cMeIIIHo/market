@@ -17,8 +17,7 @@ def user_registration(request):
                                     password=filled_form.cleaned_data['password1'])
             login(request, new_user)
             if 'ordersys' in INSTALLED_APPS:
-                user = ProxyUser.objects.get(pk=new_user.id)
-                user.synchronize_cart(request)
+                Order.synchronize(new_user, request.session)
             return redirect(redirect_url)
         else:
             form = filled_form
@@ -40,8 +39,7 @@ def user_login(request):
             # if user is None ( wrong combination of username and password ) - is handled by 'is_valid' function above
             login(request, user)
             if 'ordersys' in INSTALLED_APPS:
-                user = ProxyUser.objects.get(pk=user.id)
-                user.synchronize_cart(request)
+                Order.synchronize(user, request.session)
             return redirect(redirect_url)
         else:
             form = filled_form

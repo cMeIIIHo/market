@@ -176,7 +176,7 @@
             <div class="mdl-layout-spacer"></div>
             <!-- Navigation. We hide it in small screens. -->
             <nav class="mdl-navigation mdl-layout--large-screen-only">
-                {% if not 'cart' in request.session %}
+                {% if not 'order' in request.session %}
                 <a id="empty_cart_link" class="mdl-navigation__link" href="">Корзина пуста</a>
                 {% else %}
                 <a class="mdl-navigation__link my-cart_link-animated" href="{% url 'ordersys:show_cart' %}">В корзину</a>

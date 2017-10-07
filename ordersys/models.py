@@ -4,6 +4,7 @@ from catalog.models import Spec_prod
 from django.utils import timezone
 from django.shortcuts import get_object_or_404
 from funcs import clean_data
+from django.core.exceptions import ObjectDoesNotExist
 
 
 class PickupPoint(models.Model):
@@ -36,6 +37,42 @@ class Order(models.Model):
     def __str__(self):
         return str(self.pk)
 
+    def add_sp(self, sp, quantity):
+        order_item, created = self.orderitem_set.get_or_create(spec_prod=sp, defaults={'quantity': quantity})
+        if not created:
+            order_item.quantity += quantity
+            order_item.save()
+
+    def tie(self, session):
+        session['order'] = self.id
+
+    @staticmethod
+    def is_tied_to(session):
+        return 'order' in session
+
+    @classmethod
+    def synchronize(cls, user, session):
+        """
+        when user is registering or is logging in,
+        we should check and synchronize order's data, stored in session and database:
+        """
+        if cls.is_tied_to(session):                             # if there is order data (id) in session
+            order_id = session['order']                         # get it
+            if cls.objects.filter(customer=user).exists():    # and if user has order data in DB
+                cls.objects.filter(customer=user).delete()    # delete it
+            try:
+                order = cls.objects.get(pk=order_id)            # get order object depending on data from session
+            except ObjectDoesNotExist:                          # in case it exists
+                del session['order']                            # otherwise delete order data (id) from session
+            else:                                               # if we got order object
+                order.customer = user                           # set that order object's customer attr as current user
+                order.save()
+        elif cls.objects.filter(customer=user).exists():      # if ther eis NO order data (id) in session, but in DB
+            order = cls.objects.filter(customer=user).last()  # get and order object
+            order.tie(session)                                  # and store its data (id) into the session
+
+
+
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
@@ -47,78 +84,78 @@ class OrderItem(models.Model):
         return str(self.spec_prod)
 
 
-class ProxyUser(User):
-    class Meta:
-        proxy = True
-
-    @staticmethod
-    def tied_cart(request):
-        return request.session.get('cart', False)
-
-    def create_cart(self, request, sp, quantity):
-        order = Order.objects.create(customer=self)
-        OrderItem.objects.create(order=order, spec_prod=sp, quantity=quantity)
-        request.session['cart'] = order.id
-
-    def has_cart(self):
-        return self.order_set.filter(closed=None).exists()
-
-    @property
-    def cart(self):
-        return self.order_set.filter(closed=None).last()
-
-    @staticmethod
-    def add_sp_to_cart(request, sp, quantity):
-        print('\n', '1', '\n')
-        order_id = request.session['cart']
-        order = get_object_or_404(Order, pk=order_id)
-        order_item, created = order.orderitem_set.get_or_create(spec_prod=sp, defaults={'quantity': quantity})
-        if not created:
-            print('\n', '2', '\n')
-            order_item.quantity += quantity
-            order_item.save()
-
-        # order_id = request.session['cart']
-        # OrderItem.objects.create(order_id=order_id, spec_prod=sp, quantity=quantity)
-
-    def sign_tied_cart(self, order_id):
-        cart = Order.objects.get(id=order_id)
-        cart.customer = self
-        cart.save()
-
-    def synchronize_cart(self, request):
-        if self.tied_cart(request):
-            order_id = self.tied_cart(request)
-            if self.has_cart():
-                self.cart.delete()                                      # deleting an 'old' cart from previous session
-            self.sign_tied_cart(order_id)                               # defines cart object's 'customer' attribute
-        elif self.has_cart():
-            request.session['cart'] = self.cart.id
-
-
-class ProxyAnonymousUser(AnonymousUser):
-    class Meta:
-        proxy = True
-
-    @staticmethod
-    def tied_cart(request):
-        return 'cart' in request.session
-
-    @staticmethod
-    def create_cart(request, sp, quantity):
-        order = Order.objects.create()
-        OrderItem.objects.create(order=order, spec_prod=sp, quantity=quantity)
-        request.session['cart'] = order.id
-
-    @staticmethod
-    def add_sp_to_cart(request, sp, quantity):
-        order_id = request.session['cart']
-        order = get_object_or_404(Order, pk=order_id)
-        order_item, created = order.orderitem_set.get_or_create(spec_prod=sp, defaults={'quantity': quantity})
-        if not created:
-            order_item.quantity += quantity
-            order_item.save()
-
-        # order_id = request.session['cart']
-        # OrderItem.objects.create(order_id=order_id, spec_prod=sp, quantity=quantity)
+# class ProxyUser(User):
+#     class Meta:
+#         proxy = True
+#
+#     @staticmethod
+#     def tied_cart(request):
+#         return request.session.get('cart', False)
+#
+#     def create_cart(self, request, sp, quantity):
+#         order = Order.objects.create(customer=self)
+#         OrderItem.objects.create(order=order, spec_prod=sp, quantity=quantity)
+#         request.session['cart'] = order.id
+#
+#     def has_cart(self):
+#         return self.order_set.filter(closed=None).exists()
+#
+#     @property
+#     def cart(self):
+#         return self.order_set.filter(closed=None).last()
+#
+#     @staticmethod
+#     def add_sp_to_cart(request, sp, quantity):
+#         print('\n', '1', '\n')
+#         order_id = request.session['cart']
+#         order = get_object_or_404(Order, pk=order_id)
+#         order_item, created = order.orderitem_set.get_or_create(spec_prod=sp, defaults={'quantity': quantity})
+#         if not created:
+#             print('\n', '2', '\n')
+#             order_item.quantity += quantity
+#             order_item.save()
+#
+#         # order_id = request.session['cart']
+#         # OrderItem.objects.create(order_id=order_id, spec_prod=sp, quantity=quantity)
+#
+#     def sign_tied_cart(self, order_id):
+#         cart = Order.objects.get(id=order_id)
+#         cart.customer = self
+#         cart.save()
+#
+#     def synchronize_cart(self, request):
+#         if self.tied_cart(request):
+#             order_id = self.tied_cart(request)
+#             if self.has_cart():
+#                 self.cart.delete()                                      # deleting an 'old' cart from previous session
+#             self.sign_tied_cart(order_id)                               # defines cart object's 'customer' attribute
+#         elif self.has_cart():
+#             request.session['cart'] = self.cart.id
+#
+#
+# class ProxyAnonymousUser(AnonymousUser):
+#     class Meta:
+#         proxy = True
+#
+#     @staticmethod
+#     def tied_cart(request):
+#         return 'cart' in request.session
+#
+#     @staticmethod
+#     def create_cart(request, sp, quantity):
+#         order = Order.objects.create()
+#         OrderItem.objects.create(order=order, spec_prod=sp, quantity=quantity)
+#         request.session['cart'] = order.id
+#
+#     @staticmethod
+#     def add_sp_to_cart(request, sp, quantity):
+#         order_id = request.session['cart']
+#         order = get_object_or_404(Order, pk=order_id)
+#         order_item, created = order.orderitem_set.get_or_create(spec_prod=sp, defaults={'quantity': quantity})
+#         if not created:
+#             order_item.quantity += quantity
+#             order_item.save()
+#
+#         # order_id = request.session['cart']
+#         # OrderItem.objects.create(order_id=order_id, spec_prod=sp, quantity=quantity)
 

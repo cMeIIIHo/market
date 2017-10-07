@@ -1,6 +1,5 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
-from ordersys.models import ProxyUser, ProxyAnonymousUser
 from catalog.models import Spec_prod
 from ordersys.models import Order
 from funcs import clean_data
@@ -15,11 +14,18 @@ def add_sp_to_cart(request):
     sp = get_object_or_404(Spec_prod, pk=sp_id)
     quantity = clean_data(request.POST.get('sp_quantity'), int)
     user = request.user
-    if 'cart' in request.session:
-        pass
+    if Order.is_tied_to(request.session):
+        order_id = request.session['order']
+        order = get_object_or_404(Order, pk=order_id)
+        order.add_sp(sp, quantity)
     else:
-        cart = Order().create_cart(user, sp, quantity)
-        cart.tie(request.session)
+        order = Order.objects.create()
+        if user.is_authenticated():
+            order.customer = user
+            order.save()
+        order.add_sp(sp, quantity)
+        order.tie(request.session)
+    return HttpResponse()
 
 
 # def add_sp_to_cart(request):
@@ -41,15 +47,15 @@ def add_sp_to_cart(request):
 #     return HttpResponse()
 #
 #
-# def show_cart(request):
-#     if 'cart' in request.session:
-#         order_id = request.session['cart']
-#         cart = Order.objects.get(pk=order_id)
-#         cart_form = CartForm(instance=cart)
-#         context = {'cart_form': cart_form}
-#         return render(request, 'ordersys/cart.html', context)
-#     else:
-#         pass
+def show_cart(request):
+    if 'cart' in request.session:
+        order_id = request.session['cart']
+        cart = Order.objects.get(pk=order_id)
+        cart_form = CartForm(instance=cart)
+        context = {'cart_form': cart_form}
+        return render(request, 'ordersys/cart.html', context)
+    else:
+        pass
 
 
 
