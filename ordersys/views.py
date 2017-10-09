@@ -3,11 +3,8 @@ from django.http import HttpResponse
 from catalog.models import Spec_prod
 from ordersys.models import Order
 from funcs import clean_data
-from market.settings import USER_FRIENDLY_404
-from funcs import clean_data
 from ordersys.forms import CartForm
 from django.core.exceptions import ObjectDoesNotExist
-
 
 
 def add_sp_to_cart(request):
