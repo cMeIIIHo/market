@@ -2,10 +2,10 @@
 
 {% block content %}
 <form>
-    {% for error in cart_form.non_field_errors %}
+    {% for error in order_form.non_field_errors %}
         {{error}}
     {% endfor %}
-    {% for field in cart_form %}
+    {% for field in order_form %}
         <div>
             {{ field.errors }}
             {{ field.label_tag }}

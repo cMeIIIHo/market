@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from catalog.models import Spec_prod
 from ordersys.models import Order
 from funcs import clean_data
-from ordersys.forms import CartForm
+from ordersys.forms import OrderForm
 from django.core.exceptions import ObjectDoesNotExist
 
 
@@ -31,6 +31,17 @@ def add_sp_to_cart(request):
     return HttpResponse()
 
 
+def show_cart(request):
+    if 'order' in request.session:
+        order_id = request.session['order']
+        order = Order.objects.get(pk=order_id)
+        order_form = OrderForm(instance=order)
+        context = {'order_form': order_form}
+        return render(request, 'ordersys/cart.html', context)
+    else:
+        pass
+
+
 # def add_sp_to_cart(request):
 #     """
 #     product_page ajax function
@@ -50,15 +61,7 @@ def add_sp_to_cart(request):
 #     return HttpResponse()
 #
 #
-def show_cart(request):
-    if 'cart' in request.session:
-        order_id = request.session['cart']
-        cart = Order.objects.get(pk=order_id)
-        cart_form = CartForm(instance=cart)
-        context = {'cart_form': cart_form}
-        return render(request, 'ordersys/cart.html', context)
-    else:
-        pass
+
 
 
 

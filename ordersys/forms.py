@@ -2,7 +2,7 @@ from django.forms import ModelForm
 from ordersys.models import Order
 
 
-class CartForm(ModelForm):
+class OrderForm(ModelForm):
     class Meta:
         model = Order
         fields = ['name', 'phone', 'express_delivery', 'address', 'pickup_point', 'comment']
