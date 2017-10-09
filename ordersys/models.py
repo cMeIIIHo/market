@@ -58,17 +58,17 @@ class Order(models.Model):
         """
         if cls.is_tied_to(session):                             # if there is order data (id) in session
             order_id = session['order']                         # get it
-            if cls.objects.filter(customer=user).exists():    # and if user has order data in DB
-                cls.objects.filter(customer=user).delete()    # delete it
+            if cls.objects.filter(customer=user).exists():      # and if user has order data in DB
+                cls.objects.filter(customer=user).delete()      # delete it
             try:
                 order = cls.objects.get(pk=order_id)            # get order object depending on data from session
             except ObjectDoesNotExist:                          # in case it exists
-                del session['order']                            # otherwise delete order data (id) from session
+                session.pop('order')                      # otherwise delete order data (id) from session
             else:                                               # if we got order object
                 order.customer = user                           # set that order object's customer attr as current user
                 order.save()
-        elif cls.objects.filter(customer=user).exists():      # if ther eis NO order data (id) in session, but in DB
-            order = cls.objects.filter(customer=user).last()  # get and order object
+        elif cls.objects.filter(customer=user).exists():        # if ther eis NO order data (id) in session, but in DB
+            order = cls.objects.filter(customer=user).last()    # get and order object
             order.tie(session)                                  # and store its data (id) into the session
 
 

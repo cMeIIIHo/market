@@ -6,6 +6,8 @@ from funcs import clean_data
 from market.settings import USER_FRIENDLY_404
 from funcs import clean_data
 from ordersys.forms import CartForm
+from django.core.exceptions import ObjectDoesNotExist
+
 
 
 def add_sp_to_cart(request):
@@ -16,8 +18,12 @@ def add_sp_to_cart(request):
     user = request.user
     if Order.is_tied_to(request.session):
         order_id = request.session['order']
-        order = get_object_or_404(Order, pk=order_id)
-        order.add_sp(sp, quantity)
+        try:
+            order = Order.objects.get(pk=order_id)
+        except ObjectDoesNotExist:
+            request.session.pop('order')
+        else:
+            order.add_sp(sp, quantity)
     else:
         order = Order.objects.create()
         if user.is_authenticated():
