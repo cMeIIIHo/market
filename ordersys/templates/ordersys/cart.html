@@ -1,10 +1,9 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<form>
-    {% for error in order_form.non_field_errors %}
-        {{error}}
-    {% endfor %}
+<form  action="" method="post">
+    {% csrf_token %}
+    {{ order_form.non_field_errors }}
     {% for field in order_form %}
         <div>
             {{ field.errors }}
