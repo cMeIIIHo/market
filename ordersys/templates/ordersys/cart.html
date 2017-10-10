@@ -1,15 +1,51 @@
 {% extends 'base.html' %}
 
 {% block content %}
+
+<style>
+
+</style>
+
 <form  action="" method="post">
     {% csrf_token %}
-    {{ order_form.non_field_errors }}
-    {% for field in order_form %}
+    <div>
+        <div>Контактная информация покупателя</div>
         <div>
-            {{ field.errors }}
-            {{ field.label_tag }}
-            {{ field }}
+            <a href="{% url 'loginsys:user_login' %}">Войдите</a>
+            , если вы зарегистрированы у нас
         </div>
-    {% endfor %}
+    </div>
+
+
+
+
+
+
+
+
+
+    <!--{{ order_form.non_field_errors }}-->
+    <!--{% for field in order_form %}-->
+        <!--<div>-->
+            <!--{{ field.errors }}-->
+            <!--{{ field.label_tag }}-->
+            <!--{{ field }}-->
+        <!--</div>-->
+    <!--{% endfor %}-->
 </form>
+
 {% endblock %}
+
+
+
+
+<!--class Order(models.Model):-->
+    <!--customer = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)-->
+    <!--name = models.CharField(max_length=50, blank=True)-->
+    <!--phone = models.CharField(max_length=50, blank=True)-->
+    <!--express_delivery = models.BooleanField(default=True)-->
+    <!--address = models.TextField(blank=True)-->
+    <!--pickup_point = models.ForeignKey(PickupPoint, on_delete=models.PROTECT, blank=True, null=True)-->
+    <!--comment = models.TextField(blank=True)-->
+    <!--confirmed = models.DateField(blank=True, null=True)-->
+    <!--closed = models.DateField(blank=True, null=True)-->
