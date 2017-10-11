@@ -2,12 +2,10 @@
 .my-form-submit_button {
 background-color: #8dc351;
 font-size: 15px;
-margin: 0 auto;
+margin: 10px auto;
 }
 .auth_form {
-display: flex;
-height: 100%;
-justify-content: center;
+text-align: center;
 padding-top: 5%;
 }
 .auth_form div {
@@ -31,11 +29,9 @@ margin-top: 20px;
         {% if redirect_url %}
         <input type="hidden" name="redirect_url" value="{{redirect_url}}"/>
         {% endif %}
-        <div class="flexblock">
-            <button type="submit"
-                    class="my-form-submit_button mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
-                {{ form.button_text }}
-            </button>
-        </div>
+        <button type="submit"
+                class="my-form-submit_button mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
+            {{ form.button_text }}
+        </button>
     </form>
 </div>
