@@ -1,0 +1,6 @@
+.my-link_in_the_text {
+color: #8dc351;
+}
+.my-disabled_link {
+pointer-events:none;
+}

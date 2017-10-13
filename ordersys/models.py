@@ -22,7 +22,7 @@ class Order(models.Model):
     name = models.CharField(max_length=50, blank=True)
     phone = models.CharField(max_length=50, blank=True)
     express_delivery = models.BooleanField(default=True)
-    address = models.TextField(blank=True)
+    address = models.CharField(max_length=100, blank=True)
     pickup_point = models.ForeignKey(PickupPoint, on_delete=models.PROTECT, blank=True, null=True)
     comment = models.TextField(blank=True)
     confirmed = models.DateField(blank=True, null=True)

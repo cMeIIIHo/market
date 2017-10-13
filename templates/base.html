@@ -7,6 +7,7 @@
     <title>Title</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.light_green-yellow.min.css">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
     <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <style>
@@ -143,7 +144,6 @@
         .flexblock {
         display: flex;
         }
-
     </style>
 </head>
 <body>
@@ -162,7 +162,7 @@
             <!-- Navigation. We hide it in small screens. -->
             <nav class="mdl-navigation mdl-layout--large-screen-only">
                 {% if not 'order' in request.session %}
-                <a id="empty_cart_link" class="mdl-navigation__link" href="">Корзина пуста</a>
+                <a id="empty_cart_link" class="my-disabled_link mdl-navigation__link" href="{% url 'ordersys:show_cart' %}">Корзина пуста</a>
                 {% else %}
                 <a class="mdl-navigation__link my-cart_link-animated" href="{% url 'ordersys:show_cart' %}">В корзину</a>
                 {% endif %}
