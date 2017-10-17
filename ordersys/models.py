@@ -19,12 +19,12 @@ class PickupPoint(models.Model):
 
 class Order(models.Model):
     customer = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
-    name = models.CharField(max_length=50, blank=True)
-    phone = models.CharField(max_length=50, blank=True)
-    express_delivery = models.BooleanField(default=True)
-    address = models.CharField(max_length=100, blank=True)
-    pickup_point = models.ForeignKey(PickupPoint, on_delete=models.PROTECT, blank=True, null=True)
-    comment = models.TextField(blank=True)
+    name = models.CharField(max_length=50, blank=True, verbose_name='имя, Фамилия')
+    phone = models.CharField(max_length=50, blank=True, verbose_name="телефон")
+    express_delivery = models.BooleanField(default=True, verbose_name="курьерская доставка")
+    address = models.CharField(max_length=100, blank=True, verbose_name="адрес доставки")
+    pickup_point = models.ForeignKey(PickupPoint, on_delete=models.PROTECT, blank=True, null=True, verbose_name="пункты самовывоза")
+    comment = models.TextField(blank=True, verbose_name="комментарии к заказу")
     confirmed = models.DateField(blank=True, null=True)
     closed = models.DateField(blank=True, null=True)
 
