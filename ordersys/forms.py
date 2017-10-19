@@ -1,4 +1,4 @@
-from django.forms import ModelForm
+from django.forms import ModelForm, RadioSelect
 from ordersys.models import Order
 
 
@@ -6,6 +6,7 @@ class OrderForm(ModelForm):
     class Meta:
         model = Order
         fields = ['name', 'phone', 'express_delivery', 'address', 'pickup_point', 'comment']
+        widgets = {'pickup_point': RadioSelect()}
 
 
 # class Order(models.Model):
