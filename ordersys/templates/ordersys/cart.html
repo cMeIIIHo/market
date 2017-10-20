@@ -1,8 +1,6 @@
 {% extends 'base.html' %}
 
-
 {% block content %}
-
 <style>
 .order_form {
 margin-top: 5%;
@@ -20,10 +18,15 @@ padding-bottom: 10px;
 padding-left: 20px;
 }
 .my-order_form-text {
-
 }
 .my-order_form-label {
 font-size: 16px;
+}
+.my-order_form-field input {
+width: 100%
+}
+.my-order_form-field textarea {
+width: 100%
 }
 </style>
 
@@ -38,46 +41,50 @@ font-size: 16px;
             <a class="my-link_in_the_text" href="{% url 'loginsys:user_login' %}">Войдите</a>, если вы зарегистрированы у нас
         </div>
         {% endif %}
-        <div class="my-order_form-element my-order_form-label mdl-cell mdl-cell--2-col">
+        <div class="my-order_form-element my-order_form-label mdl-cell mdl-cell--2-col mdl-cell--1-col-phone">
             {{ form.name.label_tag }}
         </div>
-        <div class="my-order_form-element my-order_form-field mdl-cell mdl-cell--10-col">
+        <div class="my-order_form-element my-order_form-field mdl-cell mdl-cell--10-col mdl-cell--6-col-tablet mdl-cell--3-col-phone">
             {{ form.name }}
         </div>
-        <div class="my-order_form-element my-order_form-label mdl-cell mdl-cell--2-col">
+        <div class="my-order_form-element my-order_form-label mdl-cell mdl-cell--2-col  mdl-cell--1-col-phone">
             {{ form.phone.label_tag }}
         </div>
-        <div class="my-order_form-element my-order_form-field mdl-cell mdl-cell--10-col">
+        <div class="my-order_form-element my-order_form-field mdl-cell mdl-cell--10-col mdl-cell--6-col-tablet  mdl-cell--3-col-phone">
             {{ form.phone }}
         </div>
         <div class="my-order_form-element my-order_form-title  mdl-cell mdl-cell--12-col">
             Условия доставки
         </div>
-        <div class="my-order_form-element my-order_form-field mdl-cell mdl-cell--1-col">
+        <div class="my-order_form-element my-order_form-field mdl-cell mdl-cell--1-col mdl-cell--1-col-phone">
             {{ form.express_delivery }}
         </div>
-        <div class="my-order_form-element my-order_form-label mdl-cell mdl-cell--11-col">
+        <div class="my-order_form-element my-order_form-label mdl-cell mdl-cell--11-col mdl-cell--6-col-tablet mdl-cell--3-col-phone">
             {{ form.express_delivery.label_tag }}
         </div>
-        <div class="my-order_form-element my-order_form-label mdl-cell mdl-cell--2-col">
+        <div class="my-order_form-element my-order_form-label mdl-cell mdl-cell--2-col  mdl-cell--1-col-phone">
             {{ form.address.label_tag }}
         </div>
-        <div class="my-order_form-element my-order_form-field mdl-cell mdl-cell--10-col">
+        <div class="my-order_form-element my-order_form-field mdl-cell mdl-cell--10-col mdl-cell--6-col-tablet mdl-cell--11-col-phone">
             {{ form.address }}
         </div>
         <div class="my-order_form-element my-order_form-text mdl-cell mdl-cell--12-col">
-            Или выберите один из пунктов самовывоза
+            Или выберите один из пунктов самовывоза:
         </div>
-        <div class="my-order_form-element my-order_form-label mdl-cell mdl-cell--2-col">
-            {{ form.pickup_point.label_tag }}
+
+        {% for radio in form.pickup_point %}
+        <div class="my-order_form-element my-order_form-field mdl-cell mdl-cell--1-col mdl-cell--1-col-phone">
+            {{ radio.tag }}
         </div>
-        <div class="my-order_form-element my-order_form-field mdl-cell mdl-cell--10-col">
-            {{ form.pickup_point }}
+        <div class="my-order_form-element my-order_form-field mdl-cell mdl-cell--11-col mdl-cell--7-col-tablet  mdl-cell--3-col-phone">
+            <label for="{{ radio.id_for_label }}">{{ radio.choice_label }}</label>
         </div>
+        {% endfor %}
+
         <div class="my-order_form-element my-order_form-label mdl-cell mdl-cell--2-col">
             {{ form.comment.label_tag }}
         </div>
-        <div class="my-order_form-element my-order_form-field mdl-cell mdl-cell--10-col">
+        <div class="my-order_form-element my-order_form-field mdl-cell mdl-cell--10-col mdl-cell--6-col-tablet">
             {{ form.comment }}
         </div>
 
@@ -104,7 +111,6 @@ font-size: 16px;
     <!--{% endfor %}-->
 </form>
 
-{% endblock %}
 
 
 
@@ -119,3 +125,11 @@ font-size: 16px;
     <!--comment = models.TextField(blank=True)-->
     <!--confirmed = models.DateField(blank=True, null=True)-->
     <!--closed = models.DateField(blank=True, null=True)-->
+{% endblock %}
+
+
+
+
+
+
+
