@@ -66,7 +66,7 @@ font-size: 16px;
         <div class="mdl-cell mdl-cell--1-col mdl-cell--1-col-phone">
             {{ form.express_delivery }}
         </div>
-        <div class="my-order_form-label mdl-cell mdl-cell--11-col mdl-cell--6-col-tablet mdl-cell--3-col-phone">
+        <div class="my-order_form-label mdl-cell mdl-cell--11-col mdl-cell--6-col-tablet mdl-cell--3-col-phone" onclick="turn_off_pickup_point_radio();">
             {{ form.express_delivery.label_tag }}
         </div>
 
@@ -89,12 +89,6 @@ font-size: 16px;
                 <span class="mdl-radio__label">{{ radio.choice_label }}</span>
             </label>
         </div>
-        <!--<div class="my-order_form-element my-order_form-field mdl-cell mdl-cell&#45;&#45;1-col mdl-cell&#45;&#45;1-col-phone">-->
-        <!--{{ radio.tag }}-->
-        <!--</div>-->
-        <!--<div class="my-order_form-element my-order_form-field mdl-cell mdl-cell&#45;&#45;11-col mdl-cell&#45;&#45;7-col-tablet  mdl-cell&#45;&#45;3-col-phone">-->
-        <!--<label for="{{ radio.id_for_label }}">{{ radio.choice_label }}</label>-->
-        <!--</div>-->
         {% endfor %}
 
         <div class="my-order_form-label mdl-cell mdl-cell--2-col">
