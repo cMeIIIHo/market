@@ -3,7 +3,7 @@ from ordersys.models import Order, PickupPoint
 
 
 class OrderForm(ModelForm):
-    pickup_point = ModelChoiceField(queryset=PickupPoint.objects.all(), empty_label=None, widget=RadioSelect)
+    pickup_point = ModelChoiceField(queryset=PickupPoint.objects.all(), empty_label=None, widget=RadioSelect(attrs={'class': 'mdl-radio__button'}))
 
     class Meta:
         model = Order

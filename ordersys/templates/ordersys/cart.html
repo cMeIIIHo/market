@@ -1,11 +1,24 @@
 {% extends 'base.html' %}
 
+{% load static %}
 {% block content %}
+
+<script type="text/javascript" src="{% static 'ordersys/js/ordersys.js' %}"></script>
 <style>
-.order_form {
+.my-order_form {
 margin-top: 5%;
+margin-bottom: 5%;
 background: white;
 color: rgba(0,0,0,.54);
+}
+.my-order_form input[type = 'text'] {
+width: 100%
+}
+.my-order_form textarea {
+width: 100%
+}
+.my-order_form div > div {
+padding-left: 20px;
 }
 .my-order_form-title {
 background: #263238;
@@ -14,77 +27,80 @@ font-size: 20px;
 padding-top: 10px;
 padding-bottom: 10px;
 }
-.my-order_form-element{
-padding-left: 20px;
-}
 .my-order_form-text {
 }
 .my-order_form-label {
 font-size: 16px;
 }
-.my-order_form-field input {
-width: 100%
-}
-.my-order_form-field textarea {
-width: 100%
-}
+
+
 </style>
 
-<form class="order_form" action="" method="post">
+<form class="my-order_form" action="" method="post">
     {% csrf_token %}
     <div class="mdl-grid">
-        <div class="my-order_form-element my-order_form-title  mdl-cell mdl-cell--12-col">
+        <div class="my-order_form-title  mdl-cell mdl-cell--12-col">
             Контактная информация покупателя
         </div>
         {% if not user.is_authenticated %}
-        <div class="my-order_form-element my-order_form-text mdl-cell mdl-cell--12-col">
-            <a class="my-link_in_the_text" href="{% url 'loginsys:user_login' %}">Войдите</a>, если вы зарегистрированы у нас
+        <div class="my-order_form-text mdl-cell mdl-cell--12-col">
+            <a class="my-link_in_the_text" href="{% url 'loginsys:user_login' %}">Войдите</a>, если вы зарегистрированы
+            у нас
         </div>
         {% endif %}
-        <div class="my-order_form-element my-order_form-label mdl-cell mdl-cell--2-col mdl-cell--1-col-phone">
+        <div class="my-order_form-label mdl-cell mdl-cell--2-col mdl-cell--1-col-phone">
             {{ form.name.label_tag }}
         </div>
-        <div class="my-order_form-element my-order_form-field mdl-cell mdl-cell--10-col mdl-cell--6-col-tablet mdl-cell--3-col-phone">
+        <div class="mdl-cell mdl-cell--10-col mdl-cell--6-col-tablet mdl-cell--3-col-phone">
             {{ form.name }}
         </div>
-        <div class="my-order_form-element my-order_form-label mdl-cell mdl-cell--2-col  mdl-cell--1-col-phone">
+        <div class="my-order_form-label mdl-cell mdl-cell--2-col  mdl-cell--1-col-phone">
             {{ form.phone.label_tag }}
         </div>
-        <div class="my-order_form-element my-order_form-field mdl-cell mdl-cell--10-col mdl-cell--6-col-tablet  mdl-cell--3-col-phone">
+        <div class="mdl-cell mdl-cell--10-col mdl-cell--6-col-tablet  mdl-cell--3-col-phone">
             {{ form.phone }}
         </div>
-        <div class="my-order_form-element my-order_form-title  mdl-cell mdl-cell--12-col">
+        <div class="my-order_form-title  mdl-cell mdl-cell--12-col">
             Условия доставки
         </div>
-        <div class="my-order_form-element my-order_form-field mdl-cell mdl-cell--1-col mdl-cell--1-col-phone">
+        <div class="mdl-cell mdl-cell--1-col mdl-cell--1-col-phone">
             {{ form.express_delivery }}
         </div>
-        <div class="my-order_form-element my-order_form-label mdl-cell mdl-cell--11-col mdl-cell--6-col-tablet mdl-cell--3-col-phone">
+        <div class="my-order_form-label mdl-cell mdl-cell--11-col mdl-cell--6-col-tablet mdl-cell--3-col-phone">
             {{ form.express_delivery.label_tag }}
         </div>
-        <div class="my-order_form-element my-order_form-label mdl-cell mdl-cell--2-col  mdl-cell--1-col-phone">
+
+
+        <div class="my-order_form-label mdl-cell mdl-cell--2-col  mdl-cell--1-col-phone">
             {{ form.address.label_tag }}
         </div>
-        <div class="my-order_form-element my-order_form-field mdl-cell mdl-cell--10-col mdl-cell--6-col-tablet mdl-cell--11-col-phone">
+        <div class="mdl-cell mdl-cell--10-col mdl-cell--6-col-tablet mdl-cell--11-col-phone">
             {{ form.address }}
         </div>
-        <div class="my-order_form-element my-order_form-text mdl-cell mdl-cell--12-col">
-            Или выберите один из пунктов самовывоза:
+        <div class="my-order_form-text mdl-cell mdl-cell--12-col">
+            <b>Или выберите один из пунктов самовывоза:</b>
         </div>
 
         {% for radio in form.pickup_point %}
-        <div class="my-order_form-element my-order_form-field mdl-cell mdl-cell--1-col mdl-cell--1-col-phone">
-            {{ radio.tag }}
+
+        <div class="mdl-cell mdl-cell--12-col">
+            <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" onclick="turn_off_express_delivery_checkbox();" for="{{ radio.id_for_label }}">
+                {{ radio.tag }}
+                <span class="mdl-radio__label">{{ radio.choice_label }}</span>
+            </label>
         </div>
-        <div class="my-order_form-element my-order_form-field mdl-cell mdl-cell--11-col mdl-cell--7-col-tablet  mdl-cell--3-col-phone">
-            <label for="{{ radio.id_for_label }}">{{ radio.choice_label }}</label>
-        </div>
+        <!--<div class="my-order_form-element my-order_form-field mdl-cell mdl-cell&#45;&#45;1-col mdl-cell&#45;&#45;1-col-phone">-->
+        <!--{{ radio.tag }}-->
+        <!--</div>-->
+        <!--<div class="my-order_form-element my-order_form-field mdl-cell mdl-cell&#45;&#45;11-col mdl-cell&#45;&#45;7-col-tablet  mdl-cell&#45;&#45;3-col-phone">-->
+        <!--<label for="{{ radio.id_for_label }}">{{ radio.choice_label }}</label>-->
+        <!--</div>-->
         {% endfor %}
 
-        <div class="my-order_form-element my-order_form-label mdl-cell mdl-cell--2-col">
+        <div class="my-order_form-label mdl-cell mdl-cell--2-col">
             {{ form.comment.label_tag }}
         </div>
-        <div class="my-order_form-element my-order_form-field mdl-cell mdl-cell--10-col mdl-cell--6-col-tablet">
+        <div class="mdl-cell mdl-cell--10-col mdl-cell--6-col-tablet">
             {{ form.comment }}
         </div>
 
@@ -92,39 +108,32 @@ width: 100%
     </div>
 
 
-
-
-
-
     <!--add non-field errors-->
     <!--add field errors-->
 
 
-
     <!--{{ order_form.non_field_errors }}-->
     <!--{% for field in order_form %}-->
-        <!--<div>-->
-            <!--{{ field.errors }}-->
-            <!--{{ field.label_tag }}-->
-            <!--{{ field }}-->
-        <!--</div>-->
+    <!--<div>-->
+    <!--{{ field.errors }}-->
+    <!--{{ field.label_tag }}-->
+    <!--{{ field }}-->
+    <!--</div>-->
     <!--{% endfor %}-->
 </form>
 
 
-
-
-
 <!--class Order(models.Model):-->
-    <!--customer = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)-->
-    <!--name = models.CharField(max_length=50, blank=True)-->
-    <!--phone = models.CharField(max_length=50, blank=True)-->
-    <!--express_delivery = models.BooleanField(default=True)-->
-    <!--address = models.TextField(blank=True)-->
-    <!--pickup_point = models.ForeignKey(PickupPoint, on_delete=models.PROTECT, blank=True, null=True)-->
-    <!--comment = models.TextField(blank=True)-->
-    <!--confirmed = models.DateField(blank=True, null=True)-->
-    <!--closed = models.DateField(blank=True, null=True)-->
+<!--customer = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)-->
+<!--name = models.CharField(max_length=50, blank=True)-->
+<!--phone = models.CharField(max_length=50, blank=True)-->
+<!--express_delivery = models.BooleanField(default=True)-->
+<!--address = models.TextField(blank=True)-->
+<!--pickup_point = models.ForeignKey(PickupPoint, on_delete=models.PROTECT, blank=True, null=True)-->
+<!--comment = models.TextField(blank=True)-->
+<!--confirmed = models.DateField(blank=True, null=True)-->
+<!--closed = models.DateField(blank=True, null=True)-->
+
 {% endblock %}
 
 
