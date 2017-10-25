@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 
 {% load static %}
+{% load ordersys_extras %}
+
 {% block content %}
 
 <script type="text/javascript" src="{% static 'ordersys/js/ordersys.js' %}"></script>
@@ -32,6 +34,12 @@ padding-bottom: 10px;
 .my-order_form-label {
 font-size: 16px;
 }
+.mdl-checkbox {
+width: auto;
+}
+
+
+
 
 
 </style>
@@ -63,13 +71,14 @@ font-size: 16px;
         <div class="my-order_form-title  mdl-cell mdl-cell--12-col">
             Условия доставки
         </div>
-        <div class="mdl-cell mdl-cell--1-col mdl-cell--1-col-phone">
-            {{ form.express_delivery }}
-        </div>
-        <div class="my-order_form-label mdl-cell mdl-cell--11-col mdl-cell--6-col-tablet mdl-cell--3-col-phone" onclick="turn_off_pickup_point_radio();">
-            {{ form.express_delivery.label_tag }}
-        </div>
 
+        <div class="mdl-cell mdl-cell--12-col">
+            <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" onclick="turn_off_pickup_point_radio();"
+                   for="{{ form.express_delivery.id_for_label }}">
+                {{ form.express_delivery|add_class:'mdl-checkbox__input' }}
+                <span class="mdl-checkbox__label">{{ form.express_delivery.label }}</span>
+            </label>
+        </div>
 
         <div class="my-order_form-label mdl-cell mdl-cell--2-col  mdl-cell--1-col-phone">
             {{ form.address.label_tag }}
@@ -82,9 +91,9 @@ font-size: 16px;
         </div>
 
         {% for radio in form.pickup_point %}
-
         <div class="mdl-cell mdl-cell--12-col">
-            <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" onclick="turn_off_express_delivery_checkbox();" for="{{ radio.id_for_label }}">
+            <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" onclick="turn_off_express_delivery_checkbox();"
+                   for="{{ radio.id_for_label }}">
                 {{ radio.tag }}
                 <span class="mdl-radio__label">{{ radio.choice_label }}</span>
             </label>
