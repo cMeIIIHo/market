@@ -1,4 +1,4 @@
 # market
 
 Здесь я учусь делать коммерческий сайт
-![] screenshots/cart.jpg
+![] https://github.com/cMeIIIHo/market/blob/master/screenshots/cart.jpg?raw=true
