@@ -1,4 +1,4 @@
 # market
 
 Здесь я учусь делать коммерческий сайт
-![] (screenshots/cart.jpg?raw=true)
+![](/screenshots/cart.jpg?raw=true)
