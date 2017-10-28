@@ -5,6 +5,7 @@ from ordersys.models import Order
 from funcs import clean_data
 from ordersys.forms import OrderForm
 from django.core.exceptions import ObjectDoesNotExist
+from django.http import Http404
 
 
 def add_sp_to_cart(request):
@@ -32,14 +33,32 @@ def add_sp_to_cart(request):
 
 
 def show_cart(request):
-    if 'order' in request.session:
-        order_id = request.session['order']
-        order = Order.objects.get(pk=order_id)
-        order_form = OrderForm(instance=order)
-        context = {'form': order_form}
-        return render(request, 'ordersys/cart.html', context)
+    session = request.session
+    if Order.is_tied_to(session):
+        order_id = session['order']
+        try:
+            order = Order.objects.get(pk=order_id)
+        except ObjectDoesNotExist:
+            session.pop('order')
+            raise Http404('This order does not exist')
+        else:
+            order_form = OrderForm(instance=order)
+            context = {'form': order_form}
+            return render(request, 'ordersys/cart.html', context)
     else:
-        pass
+        raise Http404('Your cart is empty')
+
+
+
+
+    # if 'order' in request.session:
+    #     order_id = request.session['order']
+    #     order = Order.objects.get(pk=order_id)
+    #     order_form = OrderForm(instance=order)
+    #     context = {'form': order_form}
+    #     return render(request, 'ordersys/cart.html', context)
+    # else:
+    #     pass
 
 
 # def add_sp_to_cart(request):
