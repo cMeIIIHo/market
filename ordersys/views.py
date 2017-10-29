@@ -34,19 +34,32 @@ def add_sp_to_cart(request):
 
 def show_cart(request):
     session = request.session
-    if Order.is_tied_to(session):
+    if Order.is_tied_to(session):                                       # getting Order object
         order_id = session['order']
         try:
             order = Order.objects.get(pk=order_id)
         except ObjectDoesNotExist:
             session.pop('order')
             raise Http404('This order does not exist')
-        else:
-            order_form = OrderForm(instance=order)
-            context = {'form': order_form}
-            return render(request, 'ordersys/cart.html', context)
     else:
         raise Http404('Your cart is empty')
+    if request.method == 'GET':                                         # GET method logic
+        order_form = OrderForm(instance=order)
+        context = {'form': order_form}
+        return render(request, 'ordersys/cart.html', context)
+    elif request.method == 'POST':                                       # POST method logic
+        filled_form = OrderForm(request.POST, instance=order)
+        if filled_form.is_valid():
+            order = filled_form.save(commit=False)
+            order.confirm()
+            order.save()
+            return render(request, 'catalog/index.html')
+
+
+
+
+
+
 
 
 

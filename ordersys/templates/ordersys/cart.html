@@ -42,6 +42,8 @@ width: auto;
 
 
 
+
+
 </style>
 
 <form class="my-order_form" action="" method="post">
@@ -55,6 +57,8 @@ width: auto;
             <a class="my-link_in_the_text" href="{% url 'loginsys:user_login' %}">Войдите</a>, если вы зарегистрированы
             у нас
         </div>
+        {% else %}
+        {{ form.customer }}
         {% endif %}
         <div class="my-order_form-label mdl-cell mdl-cell--2-col mdl-cell--1-col-phone">
             {{ form.name.label_tag }}
@@ -106,8 +110,9 @@ width: auto;
         <div class="mdl-cell mdl-cell--10-col mdl-cell--6-col-tablet">
             {{ form.comment }}
         </div>
-
-
+        <div class="mdl-cell mdl-cell--12-col mdl-cell--8-col-tablet mdl-cell--4-col-phone">
+            <button>Подтвердить заказ</button>
+        </div>
     </div>
 
 
