@@ -7,7 +7,7 @@ class OrderForm(forms.ModelForm):
 
     class Meta:
         model = Order
-        fields = ['customer', 'name', 'phone', 'express_delivery', 'address', 'comment']
+        fields = ['customer', 'name', 'phone', 'express_delivery', 'address', 'comment', 'pickup_point']
         widgets = {'customer': forms.HiddenInput()}
 
 

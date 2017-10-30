@@ -46,16 +46,20 @@ def show_cart(request):
     if request.method == 'GET':                                         # GET method logic
         order_form = OrderForm(instance=order)
         context = {'form': order_form}
-        return render(request, 'ordersys/cart.html', context)
-    elif request.method == 'POST':                                      # POST method logic
+    else:                                                               # POST method logic
         filled_form = OrderForm(request.POST, instance=order)
         if filled_form.is_valid():
-            order = filled_form.save(commit=False)
+            order = filled_form.save()
             order.confirm()
             order.save()
             print('form cleaned data: ', filled_form.cleaned_data['pickup_point'])
             print('pickup_point: ', order.pickup_point)
             return redirect('catalog:index')
+        else:
+            context = {'form': filled_form}
+    return render(request, 'ordersys/cart.html', context)
+
+
 
 
 
