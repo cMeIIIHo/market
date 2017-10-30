@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
 from catalog.models import Spec_prod
 from ordersys.models import Order
@@ -47,13 +47,15 @@ def show_cart(request):
         order_form = OrderForm(instance=order)
         context = {'form': order_form}
         return render(request, 'ordersys/cart.html', context)
-    elif request.method == 'POST':                                       # POST method logic
+    elif request.method == 'POST':                                      # POST method logic
         filled_form = OrderForm(request.POST, instance=order)
         if filled_form.is_valid():
             order = filled_form.save(commit=False)
             order.confirm()
             order.save()
-            return render(request, 'catalog/index.html')
+            print('form cleaned data: ', filled_form.cleaned_data['pickup_point'])
+            print('pickup_point: ', order.pickup_point)
+            return redirect('catalog:index')
 
 
 
