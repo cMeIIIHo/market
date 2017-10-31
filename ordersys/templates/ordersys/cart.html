@@ -56,12 +56,14 @@ width: auto;
         </div>
         <div class="mdl-cell mdl-cell--10-col mdl-cell--6-col-tablet mdl-cell--3-col-phone">
             {{ form.name }}
+            {{ form.name.errors }}
         </div>
         <div class="my-order_form-label mdl-cell mdl-cell--2-col  mdl-cell--1-col-phone">
             {{ form.phone.label_tag }}
         </div>
         <div class="mdl-cell mdl-cell--10-col mdl-cell--6-col-tablet  mdl-cell--3-col-phone">
             {{ form.phone }}
+            {{ form.phone.errors }}
         </div>
         <div class="my-order_form-title  mdl-cell mdl-cell--12-col">
             Условия доставки
@@ -80,6 +82,7 @@ width: auto;
         </div>
         <div class="mdl-cell mdl-cell--10-col mdl-cell--6-col-tablet mdl-cell--11-col-phone">
             {{ form.address }}
+            {{ form.address.errors }}
         </div>
         <div class="my-order_form-text mdl-cell mdl-cell--12-col">
             <b>Или выберите один из пунктов самовывоза:</b>
@@ -100,8 +103,10 @@ width: auto;
         </div>
         <div class="mdl-cell mdl-cell--10-col mdl-cell--6-col-tablet">
             {{ form.comment }}
+            {{ form.comment.errors }}
         </div>
         <div class="mdl-cell mdl-cell--12-col mdl-cell--8-col-tablet mdl-cell--4-col-phone">
+            {{ form.non_field_errors }}
             <button class="my-form-submit_button mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Подтвердить заказ</button>
         </div>
     </div>
