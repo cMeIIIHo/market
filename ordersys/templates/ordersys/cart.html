@@ -14,10 +14,10 @@ background: white;
 color: rgba(0,0,0,.54);
 }
 .my-order_form input[type = 'text'] {
-width: 100%
+width: 100%;
 }
 .my-order_form textarea {
-width: 100%
+width: 100%;
 }
 .my-order_form div > div {
 padding-left: 20px;
@@ -37,13 +37,6 @@ font-size: 16px;
 .mdl-checkbox {
 width: auto;
 }
-
-
-
-
-
-
-
 </style>
 
 <form class="my-order_form" action="" method="post">
@@ -57,8 +50,6 @@ width: auto;
             <a class="my-link_in_the_text" href="{% url 'loginsys:user_login' %}">Войдите</a>, если вы зарегистрированы
             у нас
         </div>
-        {% else %}
-        {{ form.customer }}
         {% endif %}
         <div class="my-order_form-label mdl-cell mdl-cell--2-col mdl-cell--1-col-phone">
             {{ form.name.label_tag }}
@@ -111,7 +102,7 @@ width: auto;
             {{ form.comment }}
         </div>
         <div class="mdl-cell mdl-cell--12-col mdl-cell--8-col-tablet mdl-cell--4-col-phone">
-            <button>Подтвердить заказ</button>
+            <button class="my-form-submit_button mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Подтвердить заказ</button>
         </div>
     </div>
 

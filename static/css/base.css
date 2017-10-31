@@ -12,3 +12,9 @@ color: #8dc351;
 .my-disabled_link {
 pointer-events:none;
 }
+.my-form-submit_button {
+display: block;
+background-color: #8dc351;
+font-size: 15px;
+margin: 10px auto;
+}
