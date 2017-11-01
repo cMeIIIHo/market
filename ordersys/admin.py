@@ -8,14 +8,13 @@ class PickupPointAdmin(admin.ModelAdmin):
 
 class OrderItemInline(admin.StackedInline):
     model = OrderItem
-    raw_id_fields = ("spec_prod", "order")
+    raw_id_fields = ("spec_prod",)
 
 
 class OrderAdmin(admin.ModelAdmin):
     inlines = [OrderItemInline]
 
 admin.site.register(PickupPoint, PickupPointAdmin)
-admin.site.register(OrderItem)
 admin.site.register(Order, OrderAdmin)
 
 # class OrderItem(models.Model):
