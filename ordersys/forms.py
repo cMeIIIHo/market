@@ -1,12 +1,14 @@
 from django import forms
 from ordersys.models import Order, PickupPoint
+from phonenumber_field.formfields import PhoneNumberField
 
 
 class OrderForm(forms.ModelForm):
     name = forms.CharField(max_length=50, required=True,
                            widget=forms.TextInput(attrs={'placeholder': 'example: Naumov Vitaly'}))
-    phone = forms.CharField(max_length=50, required=True,
-                            widget=forms.TextInput(attrs={'placeholder': 'example: 9110254614'}))
+    phone = PhoneNumberField(max_length=50, required=True,
+                             widget=forms.TextInput(attrs={'placeholder': 'example: +79110254614', 'type': 'tel'}),
+                             error_messages={'invalid': 'Please, enter valid number, example: +79110254614'})
     address = forms.CharField(max_length=100, required=False,
                               widget=forms.TextInput(attrs={'placeholder': 'example: SPB, Vernosti 28'}))
     pickup_point = forms.ModelChoiceField(queryset=PickupPoint.objects.filter(is_active=True),

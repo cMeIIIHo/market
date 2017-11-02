@@ -5,6 +5,7 @@ from django.utils import timezone
 from django.shortcuts import get_object_or_404
 from funcs import clean_data
 from django.core.exceptions import ObjectDoesNotExist
+from phonenumber_field.modelfields import PhoneNumberField
 
 
 class PickupPoint(models.Model):
@@ -20,7 +21,7 @@ class PickupPoint(models.Model):
 class Order(models.Model):
     customer = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
     name = models.CharField(max_length=50, blank=True, verbose_name='имя, Фамилия')
-    phone = models.CharField(max_length=50, blank=True, verbose_name="телефон")
+    phone = PhoneNumberField(blank=True, verbose_name="телефон")
     express_delivery = models.BooleanField(default=True, verbose_name="курьерская доставка")
     address = models.CharField(max_length=100, blank=True, verbose_name="адрес доставки")
     pickup_point = models.ForeignKey(PickupPoint, on_delete=models.PROTECT, blank=True, null=True, verbose_name="пункт самовывоза")
