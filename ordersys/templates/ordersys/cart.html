@@ -35,8 +35,6 @@ font-size: 20px;
 padding-top: 10px;
 padding-bottom: 10px;
 }
-.my-order_form-text {
-}
 .my-order_form-label {
 font-size: 16px;
 }
@@ -52,13 +50,18 @@ color: red;
 <form class="my-order_form" action="" method="post">
     {% csrf_token %}
     <div class="mdl-grid">
+        <div class="my-order_form-title  mdl-cell mdl-cell--12-col">
+            Товары в корзине
+        </div>
         {% for ordered_item, ordered_item_form in formset.items %}
         <div class="mdl-cell mdl-cell--4-col mdl-cell--3-col-tablet mdl-cell--1-col-phone">
             <img src="{{ ordered_item.product.picture.url }}">
         </div>
         <div class="mdl-cell mdl-cell--4-col mdl-cell--3-col-tablet mdl-cell--1-col-phone">
-            {{ ordered_item }}
-            {{ ordered_item.get_choosable_options }}
+            <strong>{{ ordered_item }}</strong>
+            {% for opt in ordered_item.get_choosable_options %}
+                <div>{{ opt.name }}: {{ opt.value }}</div>
+            {% endfor %}
         </div>
         <div class="mdl-cell mdl-cell--2-col mdl-cell--1-col-tablet mdl-cell--1-col-phone">
             {{ ordered_item_form.quantity.label_tag }}
@@ -75,7 +78,7 @@ color: red;
             Контактная информация покупателя
         </div>
         {% if not user.is_authenticated %}
-        <div class="my-order_form-text mdl-cell mdl-cell--12-col">
+        <div class="mdl-cell mdl-cell--12-col">
             <a class="my-link_in_the_text" href="{% url 'loginsys:user_login' %}">Войдите</a>, если вы зарегистрированы
             у нас
         </div>
