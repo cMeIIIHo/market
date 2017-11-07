@@ -53,7 +53,8 @@ color: red;
         <div class="my-order_form-title  mdl-cell mdl-cell--12-col">
             Товары в корзине
         </div>
-        {% for ordered_item, ordered_item_form in formset.items %}
+        {{ formset.management_form }}
+        {% for ordered_item, ordered_item_form in formdict.items %}
         <div class="mdl-cell mdl-cell--4-col mdl-cell--3-col-tablet mdl-cell--1-col-phone">
             <img src="{{ ordered_item.product.picture.url }}">
         </div>
@@ -64,6 +65,7 @@ color: red;
             {% endfor %}
         </div>
         <div class="mdl-cell mdl-cell--2-col mdl-cell--1-col-tablet mdl-cell--1-col-phone">
+            {{ ordered_item_form.id }}
             {{ ordered_item_form.quantity.label_tag }}
             {{ ordered_item_form.quantity }}
             {{ ordered_item_form.errors }}

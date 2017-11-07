@@ -35,6 +35,7 @@ def add_sp_to_cart(request):
 
 
 def show_cart(request):
+    OrderItemFormSet = inlineformset_factory(Order, OrderItem, form=OrderItemForm, extra=0)
     session = request.session
     if Order.is_tied_to(session):                                                               # getting Order object
         order_id = session['order']
@@ -45,24 +46,30 @@ def show_cart(request):
             raise Http404('This order does not exist')
     else:
         raise Http404('Your cart is empty')
-    ordered_sps = order.orderitem_set.all()                                                     # getting Ordered Item objects
-    if request.method == 'GET':                                                                 # GET method logic
+    ordered_items = order.orderitem_set.all()                                                    # getting Ordered Item objects
+
+    if request.method == 'GET':                                                                  # GET method logic
         order_form = OrderForm(instance=order)
-        formset = {sp.spec_prod: OrderItemForm(instance=sp) for sp in ordered_sps}
+        formset = OrderItemFormSet(instance=order)
+        formdict = {ordered_item.spec_prod: ordered_item_form for ordered_item in ordered_items for ordered_item_form in formset}
         return render(request, 'ordersys/cart.html', {'order_form': order_form,
-                                                      'formset': formset,})
+                                                      'formset': formset,
+                                                      'formdict': formdict})
 
     elif request.method == 'POST':                                                              # POST method logic
         filled_form = OrderForm(request.POST, instance=order)
-        formset = {sp.spec_prod: OrderItemForm(data=request.POST, instance=sp) for sp in ordered_sps}
-        if filled_form.is_valid() and (False not in [order_item_form.is_valid() for order_item_form in formset.values()]):
-            order = filled_form.save()
+        filled_formset = OrderItemFormSet(request.POST, instance=order)
+        if filled_form.is_valid() and filled_formset.is_valid():
+            order = filled_form.save(commit=False)
             order.confirm()
             order.save()
+            filled_formset.save()
             return redirect('catalog:index')
         else:
+            filled_formdict = {ordered_item.spec_prod: ordered_item_form for ordered_item in ordered_items for ordered_item_form in filled_formset}
             return render(request, 'ordersys/cart.html', {'order_form': filled_form,
-                                                          'formset': formset,})
+                                                          'formset': filled_formset,
+                                                          'formdict': filled_formdict})
 
 # def show_cart(request):
 #     OrderItemFormSet = inlineformset_factory(Order, OrderItem, fields=('spec_prod', 'quantity'), extra=0,
