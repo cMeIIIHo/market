@@ -1,11 +1,13 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
 from catalog.models import Spec_prod
-from ordersys.models import Order
+from ordersys.models import Order, OrderItem
 from funcs import clean_data
-from ordersys.forms import OrderForm
+from ordersys.forms import OrderForm, OrderItemForm
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404
+from django.forms import inlineformset_factory
+from django import forms
 
 
 def add_sp_to_cart(request):
@@ -43,23 +45,53 @@ def show_cart(request):
             raise Http404('This order does not exist')
     else:
         raise Http404('Your cart is empty')
+    ordered_sps = order.orderitem_set.all()                                                     # getting Ordered Item objects
     if request.method == 'GET':                                                                 # GET method logic
         order_form = OrderForm(instance=order)
-        return render(request, 'ordersys/cart.html', {'form': order_form})
+        formset = {sp.spec_prod: OrderItemForm(instance=sp) for sp in ordered_sps}
+        return render(request, 'ordersys/cart.html', {'order_form': order_form,
+                                                      'formset': formset,})
+
     elif request.method == 'POST':                                                              # POST method logic
         filled_form = OrderForm(request.POST, instance=order)
-        if filled_form.is_valid():
+        formset = {sp.spec_prod: OrderItemForm(data=request.POST, instance=sp) for sp in ordered_sps}
+        if filled_form.is_valid() and (False not in [order_item_form.is_valid() for order_item_form in formset.values()]):
             order = filled_form.save()
             order.confirm()
             order.save()
             return redirect('catalog:index')
         else:
-            return render(request, 'ordersys/cart.html', {'form': filled_form})
+            return render(request, 'ordersys/cart.html', {'order_form': filled_form,
+                                                          'formset': formset,})
 
-
-
-
-
+# def show_cart(request):
+#     OrderItemFormSet = inlineformset_factory(Order, OrderItem, fields=('spec_prod', 'quantity'), extra=0,
+#                                              widgets={'spec_prod': forms.TextInput()})
+#     session = request.session
+#     if Order.is_tied_to(session):  # getting Order object
+#         order_id = session['order']
+#         try:
+#             order = Order.objects.get(pk=order_id)
+#         except ObjectDoesNotExist:
+#             session.pop('order')
+#             raise Http404('This order does not exist')
+#     else:
+#         raise Http404('Your cart is empty')
+#
+#     if request.method == 'GET':  # GET method logic
+#         order_form = OrderForm(instance=order)
+#         formset = OrderItemFormSet(instance=order)
+#         return render(request, 'ordersys/cart.html', {'order_form': order_form, 'formset': formset})
+#
+#     elif request.method == 'POST':  # POST method logic
+#         filled_form = OrderForm(request.POST, instance=order)
+#         if filled_form.is_valid():
+#             order = filled_form.save()
+#             order.confirm()
+#             order.save()
+#             return redirect('catalog:index')
+#         else:
+#             return render(request, 'ordersys/cart.html', {'order_form': filled_form})
 
 
 

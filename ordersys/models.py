@@ -76,6 +76,7 @@ class Order(models.Model):
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
     spec_prod = models.ForeignKey(Spec_prod)
+    # todo: max_length of SP quantity
     quantity = models.PositiveSmallIntegerField()
     confirmed_by_price = models.FloatField(blank=True, null=True)
 

@@ -163,6 +163,9 @@ class Spec_prod(models.Model):
         return opt_list
 
 
+
+
+
 # only for index.html page
 class Sale_card(models.Model):
     picture = models.ImageField(upload_to='sale_cards/', blank=True)

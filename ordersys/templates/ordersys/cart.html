@@ -22,6 +22,9 @@ width: 100%;
 .my-order_form textarea {
 width: 100%;
 }
+.my-order_form img {
+width: 100%;
+}
 .my-order_form div > div {
 padding-left: 20px;
 }
@@ -49,6 +52,25 @@ color: red;
 <form class="my-order_form" action="" method="post">
     {% csrf_token %}
     <div class="mdl-grid">
+        {% for ordered_item, ordered_item_form in formset.items %}
+        <div class="mdl-cell mdl-cell--4-col mdl-cell--3-col-tablet mdl-cell--1-col-phone">
+            <img src="{{ ordered_item.product.picture.url }}">
+        </div>
+        <div class="mdl-cell mdl-cell--4-col mdl-cell--3-col-tablet mdl-cell--1-col-phone">
+            {{ ordered_item }}
+            {{ ordered_item.option_list }}
+        </div>
+        <div class="mdl-cell mdl-cell--2-col mdl-cell--1-col-tablet mdl-cell--1-col-phone">
+            {{ ordered_item_form.quantity.label_tag }}
+            {{ ordered_item_form.quantity }}
+            {{ ordered_item_form.errors }}
+        </div>
+        <div class="mdl-cell mdl-cell--2-col mdl-cell--1-col-tablet mdl-cell--1-col-phone">
+            4
+        </div>
+        {% endfor %}
+
+
         <div class="my-order_form-title  mdl-cell mdl-cell--12-col">
             Контактная информация покупателя
         </div>
@@ -59,18 +81,18 @@ color: red;
         </div>
         {% endif %}
         <div class="my-order_form-label mdl-cell mdl-cell--2-col mdl-cell--1-col-phone">
-            {{ form.name.label_tag }}
+            {{ order_form.name.label_tag }}
         </div>
         <div class="mdl-cell mdl-cell--10-col mdl-cell--6-col-tablet mdl-cell--3-col-phone">
-            {{ form.name }}
-            {{ form.name.errors }}
+            {{ order_form.name }}
+            {{ order_form.name.errors }}
         </div>
         <div class="my-order_form-label mdl-cell mdl-cell--2-col  mdl-cell--1-col-phone">
-            {{ form.phone.label_tag }}
+            {{ order_form.phone.label_tag }}
         </div>
         <div class="mdl-cell mdl-cell--10-col mdl-cell--6-col-tablet  mdl-cell--3-col-phone">
-            {{ form.phone }}
-            {{ form.phone.errors }}
+            {{ order_form.phone }}
+            {{ order_form.phone.errors }}
         </div>
         <div class="my-order_form-title  mdl-cell mdl-cell--12-col">
             Условия доставки
@@ -78,24 +100,24 @@ color: red;
 
         <div class="mdl-cell mdl-cell--12-col">
             <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" onclick="turn_off_pickup_point_radio();"
-                   for="{{ form.express_delivery.id_for_label }}">
-                {{ form.express_delivery|add_class:'mdl-checkbox__input' }}
-                <span class="mdl-checkbox__label">{{ form.express_delivery.label }}</span>
+                   for="{{ order_form.express_delivery.id_for_label }}">
+                {{ order_form.express_delivery|add_class:'mdl-checkbox__input' }}
+                <span class="mdl-checkbox__label">{{ order_form.express_delivery.label }}</span>
             </label>
         </div>
 
         <div class="my-order_form-label mdl-cell mdl-cell--2-col  mdl-cell--1-col-phone">
-            {{ form.address.label_tag }}
+            {{ order_form.address.label_tag }}
         </div>
         <div class="mdl-cell mdl-cell--10-col mdl-cell--6-col-tablet mdl-cell--11-col-phone">
-            {{ form.address }}
-            {{ form.address.errors }}
+            {{ order_form.address }}
+            {{ order_form.address.errors }}
         </div>
         <div class="my-order_form-text mdl-cell mdl-cell--12-col">
             <b>Или выберите один из пунктов самовывоза:</b>
         </div>
 
-        {% for radio in form.pickup_point %}
+        {% for radio in order_form.pickup_point %}
         <div class="mdl-cell mdl-cell--12-col">
             <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" onclick="turn_off_express_delivery_checkbox();"
                    for="{{ radio.id_for_label }}">
@@ -106,14 +128,14 @@ color: red;
         {% endfor %}
 
         <div class="my-order_form-label mdl-cell mdl-cell--2-col">
-            {{ form.comment.label_tag }}
+            {{ order_form.comment.label_tag }}
         </div>
         <div class="mdl-cell mdl-cell--10-col mdl-cell--6-col-tablet">
-            {{ form.comment }}
-            {{ form.comment.errors }}
+            {{ order_form.comment }}
+            {{ order_form.comment.errors }}
         </div>
         <div class="mdl-cell mdl-cell--12-col mdl-cell--8-col-tablet mdl-cell--4-col-phone">
-            {{ form.non_field_errors }}
+            {{ order_form.non_field_errors }}
             <button class="my-form-submit_button mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Подтвердить заказ</button>
         </div>
     </div>

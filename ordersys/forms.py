@@ -1,5 +1,5 @@
 from django import forms
-from ordersys.models import Order, PickupPoint
+from ordersys.models import Order, PickupPoint, OrderItem
 from phonenumber_field.formfields import PhoneNumberField
 
 
@@ -33,6 +33,13 @@ class OrderForm(forms.ModelForm):
             self.add_error('address', "You've specified your address, but also u chose PICKUP_POINT")
         if not express_delivery and not pickup_point:
             raise forms.ValidationError('Please specify delivery conditions')
+
+
+class OrderItemForm(forms.ModelForm):
+
+    class Meta:
+        model = OrderItem
+        fields = ['quantity']
 
 
 
