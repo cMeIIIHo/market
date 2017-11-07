@@ -162,7 +162,9 @@ class Spec_prod(models.Model):
         opt_list.extend(list(self.float_opts.all()))
         return opt_list
 
-
+    def get_choosable_options(self):
+        prod_choosable_opt_name_objs = self.product.get_choosable_options().keys()
+        return [opt for opt in self.option_list() if opt.name in prod_choosable_opt_name_objs]
 
 
 

@@ -58,7 +58,7 @@ color: red;
         </div>
         <div class="mdl-cell mdl-cell--4-col mdl-cell--3-col-tablet mdl-cell--1-col-phone">
             {{ ordered_item }}
-            {{ ordered_item.option_list }}
+            {{ ordered_item.get_choosable_options }}
         </div>
         <div class="mdl-cell mdl-cell--2-col mdl-cell--1-col-tablet mdl-cell--1-col-phone">
             {{ ordered_item_form.quantity.label_tag }}
