@@ -46,15 +46,12 @@ def show_cart(request):
             raise Http404('This order does not exist')
     else:
         raise Http404('Your cart is empty')
-    ordered_items = order.orderitem_set.all()                                                    # getting Ordered Item objects
 
     if request.method == 'GET':                                                                  # GET method logic
         order_form = OrderForm(instance=order)
         formset = OrderItemFormSet(instance=order)
-        formdict = {ordered_item.spec_prod: ordered_item_form for ordered_item in ordered_items for ordered_item_form in formset}
         return render(request, 'ordersys/cart.html', {'order_form': order_form,
-                                                      'formset': formset,
-                                                      'formdict': formdict})
+                                                      'formset': formset,})
 
     elif request.method == 'POST':                                                              # POST method logic
         filled_form = OrderForm(request.POST, instance=order)
@@ -66,10 +63,8 @@ def show_cart(request):
             filled_formset.save()
             return redirect('catalog:index')
         else:
-            filled_formdict = {ordered_item.spec_prod: ordered_item_form for ordered_item in ordered_items for ordered_item_form in filled_formset}
             return render(request, 'ordersys/cart.html', {'order_form': filled_form,
-                                                          'formset': filled_formset,
-                                                          'formdict': filled_formdict})
+                                                          'formset': filled_formset,})
 
 # def show_cart(request):
 #     OrderItemFormSet = inlineformset_factory(Order, OrderItem, fields=('spec_prod', 'quantity'), extra=0,

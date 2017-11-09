@@ -45,6 +45,7 @@ width: auto;
 text-align: center;
 color: red;
 }
+
 </style>
 
 <form class="my-order_form" action="" method="post">
@@ -54,21 +55,22 @@ color: red;
             Товары в корзине
         </div>
         {{ formset.management_form }}
-        {% for ordered_item, ordered_item_form in formdict.items %}
+        {% for form in formset %}
+        {{ form.id }}
         <div class="mdl-cell mdl-cell--4-col mdl-cell--3-col-tablet mdl-cell--1-col-phone">
-            <img src="{{ ordered_item.product.picture.url }}">
+            <img src="{{ form.instance.spec_prod.product.picture.url }}">
         </div>
         <div class="mdl-cell mdl-cell--4-col mdl-cell--3-col-tablet mdl-cell--1-col-phone">
-            <strong>{{ ordered_item }}</strong>
-            {% for opt in ordered_item.get_choosable_options %}
-                <div>{{ opt.name }}: {{ opt.value }}</div>
+            <strong>{{ form.instance.spec_prod }}</strong>
+            {% for opt in form.instance.spec_prod.get_choosable_options %}
+            <div>{{ opt.name }}: {{ opt.value }}</div>
             {% endfor %}
         </div>
         <div class="mdl-cell mdl-cell--2-col mdl-cell--1-col-tablet mdl-cell--1-col-phone">
-            {{ ordered_item_form.id }}
-            {{ ordered_item_form.quantity.label_tag }}
-            {{ ordered_item_form.quantity }}
-            {{ ordered_item_form.errors }}
+
+            {{ form.quantity.label_tag }}
+            {{ form.quantity }}
+            {{ form.errors }}
         </div>
         <div class="mdl-cell mdl-cell--2-col mdl-cell--1-col-tablet mdl-cell--1-col-phone">
             4
@@ -141,7 +143,9 @@ color: red;
         </div>
         <div class="mdl-cell mdl-cell--12-col mdl-cell--8-col-tablet mdl-cell--4-col-phone">
             {{ order_form.non_field_errors }}
-            <button class="my-form-submit_button mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Подтвердить заказ</button>
+            <button class="my-form-submit_button mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
+                Подтвердить заказ
+            </button>
         </div>
     </div>
 
