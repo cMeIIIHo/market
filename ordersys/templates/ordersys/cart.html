@@ -48,7 +48,7 @@ color: red;
 
 </style>
 
-<form class="my-order_form" action="" method="post">
+<form id="{{ order_form.instance.id }}" class="my-order_form" action="" method="post">
     {% csrf_token %}
     <div class="mdl-grid">
         <div class="my-order_form-title  mdl-cell mdl-cell--12-col">
