@@ -56,24 +56,28 @@ color: red;
         </div>
         {{ formset.management_form }}
         {% for form in formset %}
-        {{ form.id }}
-        <div class="mdl-cell mdl-cell--4-col mdl-cell--3-col-tablet mdl-cell--1-col-phone">
-            <img src="{{ form.instance.spec_prod.product.picture.url }}">
-        </div>
-        <div class="mdl-cell mdl-cell--4-col mdl-cell--3-col-tablet mdl-cell--1-col-phone">
-            <strong>{{ form.instance.spec_prod }}</strong>
-            {% for opt in form.instance.spec_prod.get_choosable_options %}
-            <div>{{ opt.name }}: {{ opt.value }}</div>
-            {% endfor %}
-        </div>
-        <div class="mdl-cell mdl-cell--2-col mdl-cell--1-col-tablet mdl-cell--1-col-phone">
+        <div id="{{ form.instance.id }}" class="mdl-cell mdl-cell--12-col mdl-cell--8-col-tablet mdl-cell--4-col-phone">
+            <div class="mdl-grid">
+                {{ form.id }}
+                <div class="mdl-cell mdl-cell--4-col mdl-cell--3-col-tablet mdl-cell--1-col-phone">
+                    <img src="{{ form.instance.spec_prod.product.picture.url }}">
+                </div>
+                <div class="mdl-cell mdl-cell--4-col mdl-cell--3-col-tablet mdl-cell--1-col-phone">
+                    <strong>{{ form.instance.spec_prod }}</strong>
+                    {% for opt in form.instance.spec_prod.get_choosable_options %}
+                    <div>{{ opt.name }}: {{ opt.value }}</div>
+                    {% endfor %}
+                </div>
+                <div class="mdl-cell mdl-cell--2-col mdl-cell--1-col-tablet mdl-cell--1-col-phone">
 
-            {{ form.quantity.label_tag }}
-            {{ form.quantity }}
-            {{ form.errors }}
-        </div>
-        <div class="mdl-cell mdl-cell--2-col mdl-cell--1-col-tablet mdl-cell--1-col-phone">
-            4
+                    {{ form.quantity.label_tag }}
+                    {{ form.quantity }}
+                    {{ form.errors }}
+                </div>
+                <div class="mdl-cell mdl-cell--2-col mdl-cell--1-col-tablet mdl-cell--1-col-phone">
+                    4
+                </div>
+            </div>
         </div>
         {% endfor %}
 
