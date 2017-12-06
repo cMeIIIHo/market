@@ -19,6 +19,9 @@ width: 100%;
 .my-order_form input[type = 'tel'] {
 width: 100%;
 }
+.my-order_form input[type = 'number'] {
+width: 100%;
+}
 .my-order_form textarea {
 width: 100%;
 }
@@ -45,7 +48,14 @@ width: auto;
 text-align: center;
 color: red;
 }
-
+[id ^= order_item_] {
+border-radius: 5px;
+box-shadow: 0 4px 5px 0 rgba(0,0,0,.14),0 1px 10px 0 rgba(0,0,0,.12),0 2px 4px -1px rgba(0,0,0,.2);
+}
+[id ^= order_item_] button {
+display: block;
+margin: 0 auto;
+}
 </style>
 
 <form id="{{ order_form.instance.id }}" class="my-order_form" action="" method="post">
@@ -56,28 +66,34 @@ color: red;
         </div>
         {{ formset.management_form }}
         {% for form in formset %}
-        <div id="{{ form.instance.id }}" class="mdl-cell mdl-cell--12-col mdl-cell--8-col-tablet mdl-cell--4-col-phone">
+        <div id="order_item_{{ form.instance.id }}" class="mdl-cell mdl-cell--12-col mdl-cell--8-col-tablet mdl-cell--4-col-phone">
             <div class="mdl-grid">
                 {{ form.id }}
-                <div class="mdl-cell mdl-cell--4-col mdl-cell--3-col-tablet mdl-cell--1-col-phone">
+                <div class="mdl-cell mdl-cell--2-col">
                     <img src="{{ form.instance.spec_prod.product.picture.url }}">
                 </div>
-                <div class="mdl-cell mdl-cell--4-col mdl-cell--3-col-tablet mdl-cell--1-col-phone">
+                <div class="mdl-cell mdl-cell--6-col">
                     <strong>{{ form.instance.spec_prod }}</strong>
                     {% for opt in form.instance.spec_prod.get_choosable_options %}
                     <div>{{ opt.name }}: {{ opt.value }}</div>
                     {% endfor %}
                 </div>
-                <div class="mdl-cell mdl-cell--2-col mdl-cell--1-col-tablet mdl-cell--1-col-phone">
+                <div class="mdl-cell mdl-cell--2-col mdl-cell--4-col-tablet">
 
                     {{ form.quantity.label_tag }}
                     {{ form.quantity }}
                     {{ form.errors }}
                 </div>
-                <div class="mdl-cell mdl-cell--2-col mdl-cell--1-col-tablet mdl-cell--1-col-phone">
-                    4
+                <div class="mdl-cell mdl-cell--2-col mdl-cell--4-col-tablet">
+                    <button class="mdl-button mdl-js-button mdl-button--raised" type="button">
+                        Удалить
+                    </button>
                 </div>
             </div>
+        </div>
+        <div class="mdl-js-snackbar mdl-snackbar">
+          <div class="mdl-snackbar__text"></div>
+          <button class="mdl-snackbar__action" type="button"></button>
         </div>
         {% endfor %}
 
