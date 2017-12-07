@@ -67,8 +67,10 @@ margin: 0 auto;
         {{ formset.management_form }}
         {% for form in formset %}
         <div id="order_item_{{ form.instance.id }}" class="mdl-cell mdl-cell--12-col mdl-cell--8-col-tablet mdl-cell--4-col-phone">
+            <!-- if item is removed, JS grants this input its name (name = 'remove') -->
+            <input type="hidden" data-input_for_removing="yes" value="{{ form.instance.id }}">
+            {{ form.id }}
             <div class="mdl-grid">
-                {{ form.id }}
                 <div class="mdl-cell mdl-cell--2-col">
                     <img src="{{ form.instance.spec_prod.product.picture.url }}">
                 </div>

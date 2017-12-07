@@ -12,13 +12,16 @@ $( document ).ready(function() {
             console.log(element);
             var snackbarContainer = $(element).parent().find('.mdl-js-snackbar');
             var showSnackbarButton = $(element).find('.mdl-js-button');
+            var deletion_mark = $(element).find('input[data-input_for_removing = yes]');    // this input gonna get NAME if item is removed
             var handler = function(event) {
             $(element).css('display', 'initial');
+            deletion_mark.removeAttr('name');                                               // input loses NAME cuz item is back
             };
             console.log(element);
             showSnackbarButton.on('click', function() {
                 'use strict';
                 $(element).css('display', 'none');
+                deletion_mark.attr('name', 'remove');                                       // input gets name cuz item is removed
                 var data = {
                   message: 'Товар удален из корзины',
                   timeout: 5000,

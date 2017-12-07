@@ -61,7 +61,6 @@ def show_cart(request):
             order.confirm()
             order.save()
             filled_formset.save()
-            return redirect('catalog:index')
         else:
             return render(request, 'ordersys/cart.html', {'order_form': filled_form,
                                                           'formset': filled_formset,})
