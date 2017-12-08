@@ -14,7 +14,13 @@ class OrderItemInline(admin.StackedInline):
 class OrderAdmin(admin.ModelAdmin):
     inlines = [OrderItemInline]
 
+
+class OrderItemAdmin(admin. ModelAdmin):
+    model = OrderItem
+    raw_id_fields = ['spec_prod']
+
 admin.site.register(PickupPoint, PickupPointAdmin)
+admin.site.register(OrderItem, OrderItemAdmin)
 admin.site.register(Order, OrderAdmin)
 
 # class OrderItem(models.Model):

@@ -8,6 +8,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404
 from django.forms import inlineformset_factory
 from django import forms
+import funcs
 
 
 def add_sp_to_cart(request):
@@ -61,6 +62,10 @@ def show_cart(request):
             order.confirm()
             order.save()
             filled_formset.save()
+            if 'remove' in request.POST:
+                removed_item_ids = [funcs.clean_data(item_id, int) for item_id in request.POST.getlist('remove')]
+                for item_id in removed_item_ids:
+                    order.remove_ordered_item(item_id)
             return redirect('catalog:index')
         else:
             return render(request, 'ordersys/cart.html', {'order_form': filled_form,

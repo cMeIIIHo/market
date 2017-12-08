@@ -6,6 +6,7 @@ from django.shortcuts import get_object_or_404
 from funcs import clean_data
 from django.core.exceptions import ObjectDoesNotExist
 from phonenumber_field.modelfields import PhoneNumberField
+from django.http import Http404
 
 
 class PickupPoint(models.Model):
@@ -44,6 +45,14 @@ class Order(models.Model):
             order_item.quantity += quantity
             order_item.save()
 
+    def remove_ordered_item(self, oi_id):
+        try:
+            oi = self.orderitem_set.get(id=oi_id)
+        except ObjectDoesNotExist:
+            # todo send SIGNAL to admin (make SIGNALS model and realize signal-sending func)
+            raise Http404
+        oi.delete()
+
     def tie(self, session):
         session['order'] = self.id
 
@@ -75,7 +84,7 @@ class Order(models.Model):
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
-    spec_prod = models.ForeignKey(Spec_prod)
+    spec_prod = models.ForeignKey(Spec_prod, on_delete=models.PROTECT)
     # todo: max_length of SP quantity
     quantity = models.PositiveSmallIntegerField(verbose_name="количество")
     confirmed_by_price = models.FloatField(blank=True, null=True)
