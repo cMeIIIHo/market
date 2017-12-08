@@ -7,6 +7,7 @@ from funcs import clean_data
 from django.core.exceptions import ObjectDoesNotExist
 from phonenumber_field.modelfields import PhoneNumberField
 from django.http import Http404
+import funcs
 
 
 class PickupPoint(models.Model):
@@ -30,8 +31,9 @@ class Order(models.Model):
     confirmed = models.DateField(blank=True, null=True)
     closed = models.DateField(blank=True, null=True)
 
-    def confirm(self):
+    def confirm(self, session):
         self.confirmed = timezone.now()
+        self.untie(session)
 
     def close(self):
         self.closed = timezone.now()
@@ -49,12 +51,18 @@ class Order(models.Model):
         try:
             oi = self.orderitem_set.get(id=oi_id)
         except ObjectDoesNotExist:
-            # todo send SIGNAL to admin (make SIGNALS model and realize signal-sending func)
+            funcs.signal('attempt of deleting nonexistent order_item (id: %s) from order (id: %s)' % (oi_id, self.id))
             raise Http404
         oi.delete()
+        if self.orderitem_set.count() == 0:
+            self.delete()
 
     def tie(self, session):
         session['order'] = self.id
+
+    def untie(self, session):
+        if not session.pop('order', default=False):
+            funcs.signal('Untying from session alrdy untied order. User id: %s' % session.user.id)
 
     @staticmethod
     def is_tied_to(session):

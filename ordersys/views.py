@@ -59,7 +59,7 @@ def show_cart(request):
         filled_formset = OrderItemFormSet(request.POST, instance=order)
         if filled_form.is_valid() and filled_formset.is_valid():
             order = filled_form.save(commit=False)
-            order.confirm()
+            order.confirm(session)
             order.save()
             filled_formset.save()
             if 'remove' in request.POST:

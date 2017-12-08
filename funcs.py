@@ -11,3 +11,7 @@ def clean_data(data, data_type):
         raise Http404('unexpected data %s passed, could not convert to a suitable format %s' % (data, data_type))
     else:
         return data
+
+
+def signal(msg):
+    pass
