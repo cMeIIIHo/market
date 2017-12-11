@@ -6,7 +6,15 @@ django.setup()
 
 from catalog.models import *
 from ordersys.models import *
+import random
 
-model = OrderItem
-obj = model.objects.get()
-print(obj.order)
+# sps = Spec_prod.objects.all()
+# for sp in sps:
+#     sp.price = random.randint(100, 300)
+#     sp.save()
+
+sps = Spec_prod.objects.all()
+for sp in sps:
+    print(sp.price)
+
+
