@@ -1,9 +1,7 @@
 from django.db import models
-from django.contrib.auth.models import User, AnonymousUser
+from django.contrib.auth.models import User
 from catalog.models import Spec_prod
 from django.utils import timezone
-from django.shortcuts import get_object_or_404
-from funcs import clean_data
 from django.core.exceptions import ObjectDoesNotExist
 from phonenumber_field.modelfields import PhoneNumberField
 from django.http import Http404

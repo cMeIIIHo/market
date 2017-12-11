@@ -1,7 +1,4 @@
 from django.db import models
-# from django.utils.encoding import  import python_2_unicode_compatible
-import datetime
-from django.utils import timezone
 
 
 class Mark(models.Model):

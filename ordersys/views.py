@@ -7,7 +7,6 @@ from ordersys.forms import OrderForm, OrderItemForm
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404
 from django.forms import inlineformset_factory
-from django import forms
 import funcs
 
 
@@ -61,6 +60,7 @@ def show_cart(request):
             order = filled_form.save(commit=False)
             order.confirm(session)
             order.save()
+            # todo: what if user will set amount of ordered SP equal to ZERO ? - we should del this position (?)
             filled_formset.save()
             if 'remove' in request.POST:
                 removed_item_ids = [funcs.clean_data(item_id, int) for item_id in request.POST.getlist('remove')]

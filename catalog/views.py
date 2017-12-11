@@ -1,20 +1,11 @@
-from django.shortcuts import get_object_or_404, render, render_to_response
+from django.shortcuts import get_object_or_404, render
 from catalog.models import *
 import collections
 from utils import MyPaginator
 from django.core.paginator import InvalidPage
 from django.http import JsonResponse
-from django.db.models import Max, Min
-from django.template.context_processors import csrf
-
-from django.db import connection
-from django.db.models import Q
-from django.http import HttpResponse, HttpResponseRedirect
-from django.core.urlresolvers import reverse
 from django.http import Http404
-from django.template import RequestContext, loader
-from django.views import generic
-from django.utils import timezone
+
 
 # Create your views here.
 
