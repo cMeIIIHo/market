@@ -48,13 +48,16 @@ width: auto;
 text-align: center;
 color: red;
 }
-[id ^= order_item_] {
+.order_item_line {
 border-radius: 5px;
 box-shadow: 0 4px 5px 0 rgba(0,0,0,.14),0 1px 10px 0 rgba(0,0,0,.12),0 2px 4px -1px rgba(0,0,0,.2);
 }
-[id ^= order_item_] button {
+.order_item_line-del_button {
 display: block;
 margin: 0 auto;
+}
+.not_displayed {
+display: none;
 }
 </style>
 
@@ -66,10 +69,10 @@ margin: 0 auto;
         </div>
         {{ formset.management_form }}
         {% for form in formset %}
-        <div id="order_item_{{ form.instance.id }}" class="mdl-cell mdl-cell--12-col mdl-cell--8-col-tablet mdl-cell--4-col-phone">
-            <!-- if item is removed, JS grants this input its name (name = 'remove') -->
-            <input type="hidden" data-input_for_removing="yes" value="{{ form.instance.id }}">
+        <div data-item_id="{{ form.instance.id }}" data-order_id="{{ order_form.instance.id }}"
+            class="order_item_line mdl-cell mdl-cell--12-col mdl-cell--8-col-tablet mdl-cell--4-col-phone">
             {{ form.id }}
+            {{ form.DELETE|add_class:"not_displayed" }}
             <div class="mdl-grid">
                 <div class="mdl-cell mdl-cell--2-col">
                     <img src="{{ form.instance.spec_prod.product.picture.url }}">
@@ -87,15 +90,11 @@ margin: 0 auto;
                     {{ form.errors }}
                 </div>
                 <div class="mdl-cell mdl-cell--2-col mdl-cell--4-col-tablet">
-                    <button class="mdl-button mdl-js-button mdl-button--raised" type="button">
+                    <button data-item_del_url="{% url 'ordersys:delete_order_item' %}" type="button" class="order_item_line-del_button mdl-button mdl-js-button mdl-button--raised">
                         Удалить
                     </button>
                 </div>
             </div>
-        </div>
-        <div class="mdl-js-snackbar mdl-snackbar">
-          <div class="mdl-snackbar__text"></div>
-          <button class="mdl-snackbar__action" type="button"></button>
         </div>
         {% endfor %}
 
@@ -165,38 +164,13 @@ margin: 0 auto;
         </div>
         <div class="mdl-cell mdl-cell--12-col mdl-cell--8-col-tablet mdl-cell--4-col-phone">
             {{ order_form.non_field_errors }}
-            <button class="my-form-submit_button mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
+            <button type="submit" class="my-form-submit_button mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
                 Подтвердить заказ
             </button>
         </div>
     </div>
-
-
-    <!--add non-field errors-->
-    <!--add field errors-->
-
-
-    <!--{{ order_form.non_field_errors }}-->
-    <!--{% for field in order_form %}-->
-    <!--<div>-->
-    <!--{{ field.errors }}-->
-    <!--{{ field.label_tag }}-->
-    <!--{{ field }}-->
-    <!--</div>-->
-    <!--{% endfor %}-->
 </form>
 
-
-<!--class Order(models.Model):-->
-<!--customer = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)-->
-<!--name = models.CharField(max_length=50, blank=True)-->
-<!--phone = models.CharField(max_length=50, blank=True)-->
-<!--express_delivery = models.BooleanField(default=True)-->
-<!--address = models.TextField(blank=True)-->
-<!--pickup_point = models.ForeignKey(PickupPoint, on_delete=models.PROTECT, blank=True, null=True)-->
-<!--comment = models.TextField(blank=True)-->
-<!--confirmed = models.DateField(blank=True, null=True)-->
-<!--closed = models.DateField(blank=True, null=True)-->
 
 {% endblock %}
 

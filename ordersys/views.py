@@ -35,7 +35,7 @@ def add_sp_to_cart(request):
 
 
 def show_cart(request):
-    OrderItemFormSet = inlineformset_factory(Order, OrderItem, form=OrderItemForm, extra=0)
+    OrderItemFormSet = inlineformset_factory(Order, OrderItem, form=OrderItemForm, extra=0, can_delete=True)
     session = request.session
     if Order.is_tied_to(session):                                                               # getting Order object
         order_id = session['order']
@@ -51,7 +51,7 @@ def show_cart(request):
         order_form = OrderForm(instance=order)
         formset = OrderItemFormSet(instance=order)
         return render(request, 'ordersys/cart.html', {'order_form': order_form,
-                                                      'formset': formset,})
+                                                      'formset': formset})
 
     elif request.method == 'POST':                                                              # POST method logic
         filled_form = OrderForm(request.POST, instance=order)
@@ -62,14 +62,28 @@ def show_cart(request):
             order.save()
             # todo: what if user will set amount of ordered SP equal to ZERO ? - we should del this position (?)
             filled_formset.save()
-            if 'remove' in request.POST:
-                removed_item_ids = [funcs.clean_data(item_id, int) for item_id in request.POST.getlist('remove')]
-                for item_id in removed_item_ids:
-                    order.remove_ordered_item(item_id)
             return redirect('catalog:index')
         else:
             return render(request, 'ordersys/cart.html', {'order_form': filled_form,
-                                                          'formset': filled_formset,})
+                                                          'formset': filled_formset})
+
+
+def delete_order_item(request):
+    order_id = funcs.clean_data(request.POST['order_id'], int)
+    item_id = funcs.clean_data(request.POST['item_id'], int)
+    try:
+        order = Order.objects.get(pk=order_id)
+    except ObjectDoesNotExist:
+        funcs.signal('some1 is trying to delete item from nonexistent order(id=%s)' % order_id)
+        raise Http404
+    try:
+        item = order.orderitem_set.get(pk=item_id)
+    except ObjectDoesNotExist:
+        funcs.signal('attempt of removing from the cart unexistent item or item that is not tied to taht order (order_id=%s, item_id=%s)' % (order_id, item_id))
+        raise Http404
+    item.delete()
+    # todo: if it is last item ?
+    return HttpResponse()
 
 # def show_cart(request):
 #     OrderItemFormSet = inlineformset_factory(Order, OrderItem, fields=('spec_prod', 'quantity'), extra=0,

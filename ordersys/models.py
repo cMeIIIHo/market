@@ -31,7 +31,7 @@ class Order(models.Model):
 
     def confirm(self, session):
         self.confirmed = timezone.now()
-        self.untie(session)
+        # self.untie(session)
 
     def close(self):
         self.closed = timezone.now()
@@ -45,20 +45,21 @@ class Order(models.Model):
             order_item.quantity += quantity
             order_item.save()
 
-    def remove_ordered_item(self, oi_id):
-        try:
-            oi = self.orderitem_set.get(id=oi_id)
-        except ObjectDoesNotExist:
-            funcs.signal('attempt of deleting nonexistent order_item (id: %s) from order (id: %s)' % (oi_id, self.id))
-            raise Http404
-        oi.delete()
-        if self.orderitem_set.count() == 0:
-            self.delete()
+    # def remove_ordered_item(self, oi_id):
+    #     try:
+    #         oi = self.orderitem_set.get(id=oi_id)
+    #     except ObjectDoesNotExist:
+    #         funcs.signal('attempt of deleting nonexistent order_item (id: %s) from order (id: %s)' % (oi_id, self.id))
+    #         raise Http404
+    #     oi.delete()
+    #     if self.orderitem_set.count() == 0:
+    #         self.delete()
 
     def tie(self, session):
         session['order'] = self.id
 
-    def untie(self, session):
+    @staticmethod
+    def untie(session):
         if not session.pop('order', default=False):
             funcs.signal('Untying from session alrdy untied order. User id: %s' % session.user.id)
 

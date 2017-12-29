@@ -7,7 +7,8 @@ app_name = 'ordersys'
 urlpatterns = [
 
     url(r'^ajax/add_sp_to_cart/$', views.add_sp_to_cart, name='add_sp_to_cart'),
-    url(r'^cart/', views.show_cart, name='show_cart')
+    url(r'^cart/', views.show_cart, name='show_cart'),
+    url(r'^ajax/delete_order_item/$', views.delete_order_item, name='delete_order_item'),
 ]
 
 # urlpatterns = [
