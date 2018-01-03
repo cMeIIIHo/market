@@ -45,6 +45,16 @@ class Order(models.Model):
             order_item.quantity += quantity
             order_item.save()
 
+    def is_empty(self):
+        return self.orderitem_set.exists()
+
+    def remove_item(self, order_item_id):
+        try:
+            order_item = self.orderitem_set.get(pk=order_item_id)
+        except ObjectDoesNotExist:
+            raise Http404("there is no orderitem with id '%s' in order with id '%s'" % (order_item_id, self.id))
+        order_item.delete()
+
     # def remove_ordered_item(self, oi_id):
     #     try:
     #         oi = self.orderitem_set.get(id=oi_id)
@@ -58,10 +68,9 @@ class Order(models.Model):
     def tie(self, session):
         session['order'] = self.id
 
-    @staticmethod
-    def untie(session):
-        if not session.pop('order', default=False):
-            funcs.signal('Untying from session alrdy untied order. User id: %s' % session.user.id)
+    def untie(self, session):
+        if self.is_tied_to(session):
+            session.pop('order')
 
     @staticmethod
     def is_tied_to(session):

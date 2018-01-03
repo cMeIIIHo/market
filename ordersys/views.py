@@ -22,6 +22,7 @@ def add_sp_to_cart(request):
             order = Order.objects.get(pk=order_id)
         except ObjectDoesNotExist:
             request.session.pop('order')
+            raise Http404('session contains order_id "%s", but order does not exist' % order_id)
         else:
             order.add_sp(sp, quantity)
     else:
@@ -45,6 +46,7 @@ def show_cart(request):
             session.pop('order')
             raise Http404('This order does not exist')
     else:
+        # todo: redirect into another place
         raise Http404('Your cart is empty')
 
     if request.method == 'GET':                                                                  # GET method logic
@@ -54,6 +56,8 @@ def show_cart(request):
                                                       'formset': formset})
 
     elif request.method == 'POST':                                                              # POST method logic
+        # for key, value in request.POST.lists():
+        #     print(key, ': ', value)
         filled_form = OrderForm(request.POST, instance=order)
         filled_formset = OrderItemFormSet(request.POST, instance=order)
         if filled_form.is_valid() and filled_formset.is_valid():
@@ -71,48 +75,13 @@ def show_cart(request):
 def delete_order_item(request):
     order_id = funcs.clean_data(request.POST['order_id'], int)
     item_id = funcs.clean_data(request.POST['item_id'], int)
-    try:
-        order = Order.objects.get(pk=order_id)
-    except ObjectDoesNotExist:
-        funcs.signal('some1 is trying to delete item from nonexistent order(id=%s)' % order_id)
-        raise Http404
-    try:
-        item = order.orderitem_set.get(pk=item_id)
-    except ObjectDoesNotExist:
-        funcs.signal('attempt of removing from the cart unexistent item or item that is not tied to taht order (order_id=%s, item_id=%s)' % (order_id, item_id))
-        raise Http404
-    item.delete()
-    # todo: if it is last item ?
+    order = get_object_or_404(Order, pk=order_id)
+    order.remove_item(item_id)
+    if order.is_empty():
+        order.untie(request.session)
+        order.delete()
     return HttpResponse()
 
-# def show_cart(request):
-#     OrderItemFormSet = inlineformset_factory(Order, OrderItem, fields=('spec_prod', 'quantity'), extra=0,
-#                                              widgets={'spec_prod': forms.TextInput()})
-#     session = request.session
-#     if Order.is_tied_to(session):  # getting Order object
-#         order_id = session['order']
-#         try:
-#             order = Order.objects.get(pk=order_id)
-#         except ObjectDoesNotExist:
-#             session.pop('order')
-#             raise Http404('This order does not exist')
-#     else:
-#         raise Http404('Your cart is empty')
-#
-#     if request.method == 'GET':  # GET method logic
-#         order_form = OrderForm(instance=order)
-#         formset = OrderItemFormSet(instance=order)
-#         return render(request, 'ordersys/cart.html', {'order_form': order_form, 'formset': formset})
-#
-#     elif request.method == 'POST':  # POST method logic
-#         filled_form = OrderForm(request.POST, instance=order)
-#         if filled_form.is_valid():
-#             order = filled_form.save()
-#             order.confirm()
-#             order.save()
-#             return redirect('catalog:index')
-#         else:
-#             return render(request, 'ordersys/cart.html', {'order_form': filled_form})
 
 
 
@@ -120,44 +89,16 @@ def delete_order_item(request):
 
 
 
-    # if 'order' in request.session:
-    #     order_id = request.session['order']
+    # try:
     #     order = Order.objects.get(pk=order_id)
-    #     order_form = OrderForm(instance=order)
-    #     context = {'form': order_form}
-    #     return render(request, 'ordersys/cart.html', context)
-    # else:
-    #     pass
+    # except ObjectDoesNotExist:
+    #     funcs.signal('some1 is trying to delete item from nonexistent order(id=%s)' % order_id)
+    #     raise Http404
+    # try:
+    #     item = order.orderitem_set.get(pk=item_id)
+    # except ObjectDoesNotExist:
+    #     funcs.signal('attempt of removing from the cart unexistent item or item that is not tied to taht order (order_id=%s, item_id=%s)' % (order_id, item_id))
+    #     raise Http404
+    # item.delete()
+    # return HttpResponse()
 
-
-# def add_sp_to_cart(request):
-#     """
-#     product_page ajax function
-#     """
-#     sp_id = clean_data(request.POST.get('sp_id'), int)
-#     sp = get_object_or_404(Spec_prod, pk=sp_id)
-#     quantity = clean_data(request.POST.get('sp_quantity'), int)
-#     user = request.user
-#     if user.is_authenticated():
-#         user = ProxyUser.objects.get(pk=user.pk)               # ProxyUser is made to add some methods (below)
-#     else:
-#         user = ProxyAnonymousUser()
-#     if user.tied_cart(request):                                 # this method,
-#         user.add_sp_to_cart(request, sp, quantity)             # this
-#     else:
-#         user.create_cart(request, sp, quantity)                # and this
-#     return HttpResponse()
-#
-#
-
-
-
-
-
-    # if 'cart' not in request.session:
-    #     context = {'error_header': 'Your cart is empty',
-    #                'error_message': 'Before coming here,please, add something in your cart'}
-    #     return render(request, USER_FRIENDLY_404, context)
-    # else:
-    #     order_id = request.session['cart']
-    #     return render(request, USER_FRIENDLY_404, {'error_header': 'works'})
