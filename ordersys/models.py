@@ -6,6 +6,12 @@ from django.core.exceptions import ObjectDoesNotExist
 from phonenumber_field.modelfields import PhoneNumberField
 from django.http import Http404
 import funcs
+from django.core.exceptions import ValidationError
+
+
+def validate_positive(value):
+    if value <= 0:
+        raise ValidationError('this number must be positive')
 
 
 class PickupPoint(models.Model):
@@ -102,7 +108,7 @@ class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
     spec_prod = models.ForeignKey(Spec_prod, on_delete=models.PROTECT)
     # todo: max_length of SP quantity
-    quantity = models.PositiveSmallIntegerField(verbose_name="количество")
+    quantity = models.PositiveSmallIntegerField(verbose_name="количество", validators=[validate_positive])
     confirmed_by_price = models.FloatField(blank=True, null=True)
 
     def __str__(self):
