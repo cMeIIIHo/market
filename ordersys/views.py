@@ -7,6 +7,7 @@ from ordersys.forms import OrderForm, OrderItemForm
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404
 from django.forms import inlineformset_factory
+from market.settings import INFORM_USER
 import funcs
 
 
@@ -46,8 +47,8 @@ def show_cart(request):
             session.pop('order')
             raise Http404('This order does not exist')
     else:
-        # todo: redirect into another place
-        raise Http404('Your cart is empty')
+        return render(request, INFORM_USER, {'header': 'Your cart is empty',
+                                             'message': 'No time to explain. GO and buy something'})
 
     if request.method == 'GET':                                                                  # GET method logic
         order_form = OrderForm(instance=order)

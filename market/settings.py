@@ -127,4 +127,4 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
-USER_FRIENDLY_404 = 'catalog/user_friendly_404.html'
+INFORM_USER = 'catalog/user_info.html'
