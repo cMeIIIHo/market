@@ -2,20 +2,19 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
 from catalog.models import Spec_prod
 from ordersys.models import Order, OrderItem
-from funcs import clean_data
+from funcs import clean_data, turn_integer, check_positive
 from ordersys.forms import OrderForm, OrderItemForm
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404
 from django.forms import inlineformset_factory
 from market.settings import INFORM_USER
-import funcs
 
 
 def add_sp_to_cart(request):
     """ product ajax function """
-    sp_id = clean_data(request.POST.get('sp_id'), int)
+    sp_id = check_positive(turn_integer(request.POST.get('sp_id', 'empty')))
     sp = get_object_or_404(Spec_prod, pk=sp_id)
-    quantity = clean_data(request.POST.get('sp_quantity'), int)
+    quantity = check_positive(turn_integer(request.POST.get('sp_quantity', 'empty')))
     user = request.user
     if Order.is_tied_to(request.session):
         order_id = request.session['order']
@@ -74,8 +73,8 @@ def show_cart(request):
 
 
 def delete_order_item(request):
-    order_id = funcs.clean_data(request.POST['order_id'], int)
-    item_id = funcs.clean_data(request.POST['item_id'], int)
+    order_id = clean_data(request.POST['order_id'], int)
+    item_id = clean_data(request.POST['item_id'], int)
     order = get_object_or_404(Order, pk=order_id)
     order.remove_item(item_id)
     if order.is_empty():
