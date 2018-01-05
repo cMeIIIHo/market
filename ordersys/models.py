@@ -52,7 +52,7 @@ class Order(models.Model):
             order_item.save()
 
     def is_empty(self):
-        return self.orderitem_set.exists()
+        return not self.orderitem_set.exists()
 
     def remove_item(self, order_item_id):
         try:
@@ -107,7 +107,6 @@ class Order(models.Model):
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
     spec_prod = models.ForeignKey(Spec_prod, on_delete=models.PROTECT)
-    # todo: max_length of SP quantity
     quantity = models.PositiveSmallIntegerField(verbose_name="количество", validators=[validate_positive])
     confirmed_by_price = models.FloatField(blank=True, null=True)
 

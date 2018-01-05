@@ -61,11 +61,10 @@ def show_cart(request):
         filled_form = OrderForm(request.POST, instance=order)
         filled_formset = OrderItemFormSet(request.POST, instance=order)
         if filled_form.is_valid() and filled_formset.is_valid():
+            filled_formset.save()
             order = filled_form.save(commit=False)
             order.confirm(session)
             order.save()
-            # todo: what if user will set amount of ordered SP equal to ZERO ? - we should del this position (?)
-            filled_formset.save()
             return redirect('catalog:index')
         else:
             return render(request, 'ordersys/cart.html', {'order_form': filled_form,

@@ -160,4 +160,5 @@ from django.db.models import Q
 # print(a)
 #__________________
 
+print(Product.objects.get(pk=444))
 

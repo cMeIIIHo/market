@@ -5,6 +5,7 @@ from utils import MyPaginator
 from django.core.paginator import InvalidPage
 from django.http import JsonResponse
 from django.http import Http404
+from funcs import turn_integer, check_positive
 
 
 # Create your views here.
@@ -172,26 +173,24 @@ def product_page(request, product_id):
 
 # product_page, ajax function
 def get_price(request):
-    # todo: does that input data has to be checked ? amount may be negative
-    data = {}
-    ajax_data = request.POST
-    product_id = ajax_data.get('product_id')
+    response_data = {}
+    product_id = turn_integer(request.POST.get('product_id', 'empty'))
     product = get_object_or_404(Product, pk=product_id)
     spec_prods = product.spec_prod_set.filter(amount__gt=0)
-    for option_name_id, type_opt_id in ajax_data.items():
+    for option_name_id, type_opt_id in request.POST.items():
         if option_name_id.isdigit() and type_opt_id.isdigit():
-            option_name = get_object_or_404(Option_name, pk=int(option_name_id))
+            option_name = get_object_or_404(Option_name, pk=turn_integer(option_name_id))
             # type_func = {'float': float, 'int': int, 'text': str}[option_name.data_type]
-            spec_prods = spec_prods.filter(**{'%s_opts__id' % option_name.data_type: int(type_opt_id)})
+            spec_prods = spec_prods.filter(**{'%s_opts__id' % option_name.data_type: turn_integer(type_opt_id)})
     if spec_prods.count() == 1:
         chosen_sp = spec_prods[0]
-        amount = int(ajax_data.get('amount'))
-        data['price'] = chosen_sp.price * amount
-        data['spec_prod_id'] = chosen_sp.id
+        amount = check_positive(turn_integer(request.POST.get('amount')))
+        response_data['price'] = chosen_sp.price * amount
+        response_data['spec_prod_id'] = chosen_sp.id
     elif spec_prods.count() == 0:
-        data['error_message'] = 'SORRY... out of stock'
+        response_data['error_message'] = 'SORRY... out of stock'
     elif spec_prods.count() > 1:
         raise Http404('too many spec_prods... there is a mistake in database ( same spec_prod in different lines - doubleing )')
-    return JsonResponse(data)
+    return JsonResponse(response_data)
 
 
