@@ -5,7 +5,6 @@ from django.utils import timezone
 from django.core.exceptions import ObjectDoesNotExist
 from phonenumber_field.modelfields import PhoneNumberField
 from django.http import Http404
-import funcs
 from django.core.exceptions import ValidationError
 
 
