@@ -73,20 +73,17 @@ def show_cart(request):
 
 def delete_order_item(request):
     order_id = clean_data(request.POST['order_id'], int)
-    item_id = clean_data(request.POST['item_id'], int)
     order = get_object_or_404(Order, pk=order_id)
-    order.remove_item(item_id)
+    item_id = clean_data(request.POST['item_id'], int)
+    try:
+        item = order.orderitem_set.get(pk=item_id)
+    except ObjectDoesNotExist:
+        raise Http404("there is no orderitem with id '%s' in order with id '%s'" % (item_id, order_id))
+    item.delete()
     if order.is_empty():
         order.untie(request.session)
         order.delete()
     return HttpResponse()
-
-
-
-
-
-
-
 
     # try:
     #     order = Order.objects.get(pk=order_id)

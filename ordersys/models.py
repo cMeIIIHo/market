@@ -53,13 +53,6 @@ class Order(models.Model):
     def is_empty(self):
         return not self.orderitem_set.exists()
 
-    def remove_item(self, order_item_id):
-        try:
-            order_item = self.orderitem_set.get(pk=order_item_id)
-        except ObjectDoesNotExist:
-            raise Http404("there is no orderitem with id '%s' in order with id '%s'" % (order_item_id, self.id))
-        order_item.delete()
-
     def tie(self, session):
         session['order'] = self.id
 
