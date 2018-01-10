@@ -160,5 +160,6 @@ from django.db.models import Q
 # print(a)
 #__________________
 
-print(Product.objects.get(pk=444))
-
+# cats = Category.objects.all()
+# cat = cats.get(name="Прозрачные линзы")
+# print(cat.opt_list.all())

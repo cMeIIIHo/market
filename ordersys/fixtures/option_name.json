@@ -1,0 +1,56 @@
+[
+  {
+    "model": "catalog.option_name",
+    "pk": 1,
+    "fields": {
+      "name": "name1",
+      "usage_in_filters": true,
+      "data_type": "int"
+    }
+  },
+  {
+    "model": "catalog.option_name",
+    "pk": 2,
+    "fields": {
+      "name": "name2",
+      "usage_in_filters": false,
+      "data_type": "int"
+    }
+  },
+  {
+    "model": "catalog.option_name",
+    "pk": 3,
+    "fields": {
+      "name": "name3",
+      "usage_in_filters": true,
+      "data_type": "text"
+    }
+  },
+  {
+    "model": "catalog.option_name",
+    "pk": 4,
+    "fields": {
+      "name": "name4",
+      "usage_in_filters": false,
+      "data_type": "text"
+    }
+  },
+  {
+    "model": "catalog.option_name",
+    "pk": 5,
+    "fields": {
+      "name": "name5",
+      "usage_in_filters": true,
+      "data_type": "float"
+    }
+  },
+  {
+    "model": "catalog.option_name",
+    "pk": 6,
+    "fields": {
+      "name": "name6",
+      "usage_in_filters": false,
+      "data_type": "float"
+    }
+  }
+]

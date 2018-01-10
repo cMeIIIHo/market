@@ -1,0 +1,38 @@
+[
+  {
+    "model": "ordersys.orderitem",
+    "pk": 1,
+    "fields": {
+      "order": 1,
+      "spec_prod": 1,
+      "quantity": 2
+    }
+  },
+  {
+    "model": "ordersys.orderitem",
+    "pk": 2,
+    "fields": {
+      "order": 1,
+      "spec_prod": 2,
+      "quantity": 1
+    }
+  },
+  {
+    "model": "ordersys.orderitem",
+    "pk": 3,
+    "fields": {
+      "order": 2,
+      "spec_prod": 1,
+      "quantity": 1
+    }
+  },
+  {
+    "model": "ordersys.orderitem",
+    "pk": 4,
+    "fields": {
+      "order": 2,
+      "spec_prod": 3,
+      "quantity": 3
+    }
+  }
+]

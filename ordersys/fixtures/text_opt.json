@@ -1,0 +1,34 @@
+[
+  {
+    "model": "catalog.text_opt",
+    "pk": 1,
+    "fields": {
+      "name": 3,
+      "value": "value_a"
+    }
+  },
+  {
+    "model": "catalog.text_opt",
+    "pk": 2,
+    "fields": {
+      "name": 3,
+      "value": "value_b"
+    }
+  },
+  {
+    "model": "catalog.text_opt",
+    "pk": 3,
+    "fields": {
+      "name": 4,
+      "value": "value_c"
+    }
+  },
+  {
+    "model": "catalog.text_opt",
+    "pk": 4,
+    "fields": {
+      "name": 4,
+      "value": "value_d"
+    }
+  }
+]

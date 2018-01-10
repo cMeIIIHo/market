@@ -1,0 +1,18 @@
+[
+  {
+    "model": "catalog.mark",
+    "pk": 1,
+    "fields": {
+      "producer": "producer1",
+      "brand": "brand1"
+    }
+  },
+  {
+    "model": "catalog.mark",
+    "pk": 2,
+    "fields": {
+      "producer": "producer2",
+      "brand": "brand2"
+    }
+  }
+]

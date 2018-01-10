@@ -84,17 +84,3 @@ def delete_order_item(request):
         order.untie(request.session)
         order.delete()
     return HttpResponse()
-
-    # try:
-    #     order = Order.objects.get(pk=order_id)
-    # except ObjectDoesNotExist:
-    #     funcs.signal('some1 is trying to delete item from nonexistent order(id=%s)' % order_id)
-    #     raise Http404
-    # try:
-    #     item = order.orderitem_set.get(pk=item_id)
-    # except ObjectDoesNotExist:
-    #     funcs.signal('attempt of removing from the cart unexistent item or item that is not tied to taht order (order_id=%s, item_id=%s)' % (order_id, item_id))
-    #     raise Http404
-    # item.delete()
-    # return HttpResponse()
-

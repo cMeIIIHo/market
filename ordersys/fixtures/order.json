@@ -1,0 +1,25 @@
+[
+  {
+    "model": "ordersys.order",
+    "pk": 1,
+    "fields": {
+      "name": "name_1",
+      "phone": "+79110254614",
+      "express_delivery": true,
+      "address": "address1",
+      "comment": "comment1"
+    }
+  },
+  {
+    "model": "ordersys.order",
+    "pk": 2,
+    "fields": {
+      "customer": 1,
+      "name": "name_2",
+      "phone": "+79110254615",
+      "express_delivery": false,
+      "pickup_point": 1,
+      "comment": "comment2"
+    }
+  }
+]

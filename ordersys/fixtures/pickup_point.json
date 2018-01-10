@@ -1,0 +1,22 @@
+[
+  {
+    "model": "ordersys.pickuppoint",
+    "pk": 1,
+    "fields": {
+      "address": "address1",
+      "opening_hours": "tile1",
+      "is_active": true,
+      "closest_subway": "subway1"
+    }
+  },
+  {
+    "model": "ordersys.pickuppoint",
+    "pk": 2,
+    "fields": {
+      "address": "address2",
+      "opening_hours": "time2",
+      "is_active": true,
+      "closest_subway": "subway2"
+    }
+  }
+]

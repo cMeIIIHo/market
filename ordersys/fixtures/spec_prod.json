@@ -1,0 +1,146 @@
+[
+  {
+    "model": "catalog.spec_prod",
+    "pk": 1,
+    "fields": {
+      "product": 1,
+      "int_opts": [1,3],
+      "text_opts": [2,4],
+      "float_opts": [1,3],
+      "amount": 3,
+      "price": 345
+    }
+  },
+  {
+    "model": "catalog.spec_prod",
+    "pk": 2,
+    "fields": {
+      "product": 1,
+      "int_opts": [1],
+      "text_opts": [4],
+      "amount": 1,
+      "price": 113
+    }
+  },
+
+  {
+    "model": "catalog.spec_prod",
+    "pk": 3,
+    "fields": {
+      "product": 2,
+      "text_opts": [1,3],
+      "float_opts": [2],
+      "amount": 5,
+      "price": 232
+    }
+  },
+  {
+    "model": "catalog.spec_prod",
+    "pk": 4,
+    "fields": {
+      "product": 2,
+      "int_opts": [2,4],
+      "text_opts": [1,3],
+      "float_opts": [2,4],
+      "amount": 4,
+      "price": 343
+    }
+  },
+
+  {
+    "model": "catalog.spec_prod",
+    "pk": 5,
+    "fields": {
+      "product": 3,
+      "int_opts": [1],
+      "text_opts": [2],
+      "float_opts": [1],
+      "amount": 2,
+      "price": 454
+    }
+  },
+  {
+    "model": "catalog.spec_prod",
+    "pk": 6,
+    "fields": {
+      "product": 3,
+      "text_opts": [2],
+      "float_opts": [1],
+      "amount": 3,
+      "price": 565
+    }
+  },
+
+  {
+    "model": "catalog.spec_prod",
+    "pk": 7,
+    "fields": {
+      "product": 4,
+      "int_opts": [1],
+      "text_opts": [1],
+      "float_opts": [1],
+      "amount": 2,
+      "price": 111
+    }
+  },
+  {
+    "model": "catalog.spec_prod",
+    "pk": 8,
+    "fields": {
+      "product": 4,
+      "int_opts": [2],
+      "text_opts": [2],
+      "float_opts": [2],
+      "amount": 3,
+      "price": 222
+    }
+  },
+
+  {
+    "model": "catalog.spec_prod",
+    "pk": 9,
+    "fields": {
+      "product": 5,
+      "int_opts": [3],
+      "text_opts": [4],
+      "amount": 4,
+      "price": 444
+    }
+  },
+  {
+    "model": "catalog.spec_prod",
+    "pk": 10,
+    "fields": {
+      "product": 5,
+      "text_opts": [4],
+      "float_opts": [3],
+      "amount": 5,
+      "price": 555
+    }
+  },
+
+  {
+    "model": "catalog.spec_prod",
+    "pk": 11,
+    "fields": {
+      "product": 6,
+      "int_opts": [3],
+      "text_opts": [3],
+      "float_opts": [3],
+      "amount": 2,
+      "price": 666
+    }
+  },
+  {
+    "model": "catalog.spec_prod",
+    "pk": 12,
+    "fields": {
+      "product": 6,
+      "int_opts": [4],
+      "text_opts": [4],
+      "float_opts": [4],
+      "amount": 1,
+      "price": 553
+    }
+  }
+]
