@@ -5,5 +5,12 @@
             "username": "user1",
             "password": "password1"
         }
+    },
+    { "model": "auth.user",
+        "pk": 2,
+        "fields": {
+            "username": "user2",
+            "password": "password2"
+        }
     }
 ]

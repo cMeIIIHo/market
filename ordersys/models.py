@@ -38,6 +38,12 @@ class Order(models.Model):
         self.confirmed = timezone.now()
         self.untie(session)
 
+    @classmethod
+    def exists(cls, **kwargs):
+        if cls.objects.filter(**kwargs).count() == 0:
+            return False
+        return True
+
     def close(self):
         self.closed = timezone.now()
 
